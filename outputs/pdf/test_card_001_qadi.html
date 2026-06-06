@@ -69,8 +69,8 @@ body {
 }
 
 .cover-label {
-  font-family: 'NotoNaskh', serif;
-  font-size: 13pt;
+  font-family: 'NotoKufi', sans-serif;
+  font-size: 12pt;
   color: #5e4360;
   font-weight: bold;
   margin-bottom: 8mm;
@@ -79,6 +79,7 @@ body {
   text-align: center;
 }
 
+/* عنوان المهنة: Aniq (بديل مؤقت NotoNaskh) — أكبر من عنوان العنصر بخمس درجات: 12+5=17pt على الغلاف نحتاج 52 */
 .cover-profession {
   font-family: 'NotoNaskh', serif;
   font-size: 52pt;
@@ -112,11 +113,12 @@ body {
   z-index: 1;
 }
 
+/* عنوان المهنة في الهيدر: Aniq بديل NotoNaskh */
 .page-header-title {
   font-family: 'NotoNaskh', serif;
-  font-size: 12pt;
+  font-size: 13pt;
   font-weight: bold;
-  color: #ffffff;
+  color: #049e9e;
 }
 
 .page-header-logo {
@@ -150,19 +152,20 @@ body {
   box-shadow: 0 1px 3px rgba(2,54,99,0.08);
 }
 
+/* عنوان العنصر: NotoKufi (Droid Arabic Kufi بديلاً) — 12pt = محتوى 10pt + 2 */
 .section-heading {
   background: #023663;
-  color: #ffffff;
-  font-family: 'NotoNaskh', serif;
-  font-size: 11pt;
+  color: #5e4360;
+  font-family: 'NotoKufi', sans-serif;
+  font-size: 12pt;
   font-weight: bold;
   padding: 2.5mm 5mm;
-  color: #ffffff;
+  background: #f0f4f8;
 }
 
-/* override: element name color as specified (#5e4360) via sub-heading */
+/* عنوان فرعي h3 داخل العنصر */
 .section-body h3 {
-  font-family: 'NotoNaskh', serif;
+  font-family: 'NotoKufi', sans-serif;
   font-size: 10.5pt;
   font-weight: bold;
   color: #5e4360;
@@ -171,9 +174,11 @@ body {
   border-right: 3px solid #5e4360;
 }
 
+/* محتوى العنصر: NotoKufi — 10pt */
 .section-body {
   padding: 4mm 6mm;
   color: #023663;
+  font-family: 'NotoKufi', sans-serif;
   font-size: 10pt;
 }
 
