@@ -124,7 +124,7 @@
 
 الدورات الداعمة
 دورة [نظام الأحوال الشخصية](https://ethrai.sa/course-details/%D9%86%D8%B8%D8%A7%D9%85-%D8%A7%D9%84%D8%A3%D8%AD%D9%88%D8%A7%D9%84-%D8%A7%D9%84%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9): تدعم مهارة تكييف الوقائع قضائيًا
-دورة [التحقيق الإداري](https://ethrai.sa/course-details/%D8%A7%D9%84%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%A5%D8%AF%D8%A7%D8%B1%D9%8A): تدعم مهارة تسبيب الأحكام القضائية
+دورة [A Law Student's Toolkit](https://www.coursera.org/learn/law-student): تدعم مهارة تسبيب الأحكام القضائية
 دورة [قضاء التنفيذ](https://ethrai.sa/course-details/eb5b9ea5-3261-ea11-80d7-0050568c1fee): تدعم مهارة إدارة إجراءات الجلسات
-دورة [A Law Student's Toolkit](https://www.coursera.org/learn/law-student): تدعم مهارة تحرير منطوق الحكم
+دورة [An Introduction to American Law](https://www.coursera.org/learn/american-law): تدعم مهارة تحرير منطوق الحكم
 دورة [Challenging Forensic Science: How Science Should Speak to Court](https://www.coursera.org/learn/challenging-forensic-science): تدعم مهارة تقدير حجية الأدلة
