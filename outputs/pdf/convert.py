@@ -1,22 +1,29 @@
 import markdown
 import re
 import os
+from weasyprint import HTML, CSS
 
-with open('/home/user/tawjeeh-sharia-cards/outputs/test_card_001_qadi.md', 'r', encoding='utf-8') as f:
-    lines = f.readlines()
+# ── Social handles (edit here) ──────────────────────────────────────────────
+X_USERNAME      = "tawjeeh_hub"
+TIKTOK_USERNAME = "tawjeeh.hub"
+X_URL           = f"https://x.com/{X_USERNAME}"
+TIKTOK_URL      = f"https://www.tiktok.com/@{TIKTOK_USERNAME}"
+LOGO_TEXT_AR    = "مركز توجيه"
+LOGO_TEXT_EN    = "Tawjeeh HUB"
 
+# ── Section heading sets ─────────────────────────────────────────────────────
 H2_HEADINGS = {
     'المسميات المكافئة',
     'التصنيف الوطني SSC',
     'طبيعة العمل',
     'المهام الرئيسية',
-    'المرتبة والراتب',
-    'المزايا الوظيفية',
+    'الراتب والدرجة الوظيفية',
+    'المزايا والحوافز',
     'الشروط والمؤهلات',
-    'متطلبات التقييم والتهيئة المهنية',
-    'الخبرات المطلوبة',
-    'برامج التأهيل المعتمدة',
-    'الشهادات المهنية الاحترافية',
+    'التقييم والإلحاق الوظيفي',
+    'الخبرة المطلوبة',
+    'البرامج التدريبية المعتمدة',
+    'الشهادات المهنية',
     'المهارات المطلوبة',
     'الدورات الداعمة',
     'جهات التوظيف وطريقة التقديم',
@@ -28,21 +35,28 @@ H2_HEADINGS = {
 
 H3_HEADINGS = {
     'الجهات الحكومية',
-    'الجهات شبه الحكومية',
     'القطاع الحكومي',
-    'القطاع شبه الحكومي',
     'القطاع الخاص',
     'القطاع غير الربحي',
-    'القطاع المستقل',
     'العمل الحر',
-    'السلك القضائي — وزارة العدل وديوان المظالم',
-    'جهات سبق وأعلنت',
+    'الجهات الموصى بها',
+    'ملاحظة مهمة',
 }
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+MD_FILE  = os.path.join(REPO_DIR, "outputs", "test_card_001_qadi.md")
+HTML_OUT = os.path.join(BASE_DIR, "test_card_001_qadi.html")
+PDF_OUT  = os.path.join(BASE_DIR, "test_card_001_qadi.pdf")
+
+# ── Load & pre-process markdown ──────────────────────────────────────────────
+with open(MD_FILE, encoding="utf-8") as f:
+    lines = f.readlines()
 
 processed = []
 for line in lines:
     stripped = line.rstrip()
-    if re.match(r'^\d+\.\s+\S', stripped) and len(stripped) < 30:
+    if re.match(r'^\d+\.\s+\S', stripped) and len(stripped) < 35:
         title = re.sub(r'^\d+\.\s+', '', stripped)
         processed.append(f'# {title}\n')
     elif stripped in H2_HEADINGS:
@@ -53,296 +67,352 @@ for line in lines:
         processed.append(line)
 
 md_content = ''.join(processed)
+md_content = re.sub(r'---\s*\n## سجل المصادر.*', '', md_content, flags=re.DOTALL)
 
-html_body = markdown.markdown(
-    md_content,
-    extensions=['tables', 'nl2br'],
-    output_format='html'
-)
+html_body = markdown.markdown(md_content, extensions=['tables', 'nl2br'])
 
-# Wrap sections in styled cards
-def wrap_sections(html_body):
-    parts = re.split(r'(<h2>.*?</h2>)', html_body, flags=re.DOTALL)
-    result = []
+# ── Extract cover title & sections ──────────────────────────────────────────
+cover_match = re.search(r'<h1>(.*?)</h1>', html_body, re.DOTALL)
+cover_title = cover_match.group(1) if cover_match else ''
 
-    if parts:
-        first = parts[0].strip()
-        h1_match = re.search(r'<h1>(.*?)</h1>', first, re.DOTALL)
-        if h1_match:
-            title = h1_match.group(1)
-            result.append(f'''<div class="card-header">
-  <div class="header-accent"></div>
-  <div class="header-content">
-    <div class="header-label">بطاقة مهنية</div>
-    <h1>{title}</h1>
-    <div class="header-sub">Tawjeeh HUB &nbsp;·&nbsp; منصة التوجيه المهني</div>
+# Split on h2 tags to get individual section content blocks
+raw_sections = re.split(r'(?=<h2>)', html_body)
+section_cards = []
+for part in raw_sections:
+    if not part.strip() or not part.startswith('<h2>'):
+        continue
+    hm = re.match(r'<h2>(.*?)</h2>', part, re.DOTALL)
+    if not hm:
+        continue
+    heading = hm.group(1)
+    body    = part[hm.end():]
+    section_cards.append((heading, body))
+
+# ── Footer & header HTML ──────────────────────────────────────────────────────
+def footer_html():
+    return f"""<div class="page-footer">
+  <span class="footer-brand">{LOGO_TEXT_AR} | {LOGO_TEXT_EN}</span>
+  <div class="footer-links">
+    <a class="footer-link" href="{X_URL}">&#x1D54F; @{X_USERNAME}</a>
+    <span class="footer-sep">|</span>
+    <a class="footer-link" href="{TIKTOK_URL}">TikTok @{TIKTOK_USERNAME}</a>
   </div>
+</div>"""
+
+def page_header_html():
+    return f"""<div class="page-header">
+  <span class="page-header-title">{cover_title}</span>
+  <span class="page-header-brand">{LOGO_TEXT_EN}</span>
 </div>
-<div class="content-area">''')
-        else:
-            result.append('<div class="content-area">')
+<div class="page-accent-bar"></div>"""
 
-    i = 1
-    while i < len(parts):
-        h2_tag = parts[i]
-        body = parts[i+1].strip() if i+1 < len(parts) else ''
-        result.append(f'''<div class="section-card">
-  <div class="section-header">{h2_tag}</div>
+def watermark_html():
+    return f'<div class="page-watermark">{LOGO_TEXT_AR}<br>{LOGO_TEXT_EN}</div>'
+
+# ── Build pages ───────────────────────────────────────────────────────────────
+SECTIONS_PER_PAGE = 3
+pages = []
+
+# Cover page
+pages.append(f"""<div class="cover-page">
+  <div class="cover-top-bar"></div>
+  <div class="cover-accent-bar"></div>
+  {watermark_html()}
+  <div class="cover-content">
+    <div class="cover-label">بطاقة المهنة الشرعية</div>
+    <div class="cover-profession">{cover_title}</div>
+    <div class="cover-divider"></div>
+    <div class="cover-brand">{LOGO_TEXT_AR}</div>
+    <div class="cover-brand-en">{LOGO_TEXT_EN}</div>
+  </div>
+  {footer_html()}
+</div>""")
+
+# Content pages: group sections
+for i in range(0, len(section_cards), SECTIONS_PER_PAGE):
+    chunk = section_cards[i:i + SECTIONS_PER_PAGE]
+    cards_html = ''
+    for heading, body in chunk:
+        cards_html += f"""<div class="section-card">
+  <div class="section-heading">{heading}</div>
   <div class="section-body">{body}</div>
-</div>''')
-        i += 2
+</div>
+"""
+    pages.append(f"""<div class="content-page">
+  {page_header_html()}
+  {watermark_html()}
+  <div class="page-body">{cards_html}</div>
+  {footer_html()}
+</div>""")
 
-    result.append('</div>')  # close content-area
-    result.append('''<div class="card-footer">
-  <span>Tawjeeh HUB</span>
-  <span class="sep">·</span>
-  <span>بطاقة مهنية — للاستخدام التجريبي فقط</span>
-</div>''')
-    return '\n'.join(result)
-
-wrapped_body = wrap_sections(html_body)
-
-css = """
-@page {
-  size: A4;
-  margin: 0;
+# ── CSS ───────────────────────────────────────────────────────────────────────
+CSS_STR = """
+@font-face {
+  font-family: 'NotoKufi';
+  src: url('/usr/share/fonts/truetype/noto/NotoKufiArabic-Regular.ttf');
+  font-weight: normal;
 }
+@font-face {
+  font-family: 'NotoKufi';
+  src: url('/usr/share/fonts/truetype/noto/NotoKufiArabic-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoNaskh';
+  src: url('/usr/share/fonts/truetype/noto/NotoNaskhArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoNaskh';
+  src: url('/usr/share/fonts/truetype/noto/NotoNaskhArabic-Bold.ttf');
+  font-weight: bold;
+}
+
+@page { size: A4; margin: 0; }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Arial', 'Tahoma', sans-serif;
-  font-size: 10pt;
-  line-height: 1.8;
-  color: #1c2b3a;
   direction: rtl;
-  text-align: right;
-  background: #f0f4f8;
+  font-family: 'NotoKufi', sans-serif;
+  background: #f4f6f9;
+  color: #023663;
+  font-size: 10.5pt;
+  line-height: 1.85;
 }
 
-/* ─── Page wrapper ─── */
-.page-wrapper {
+/* ── Cover ─────────────────────────────── */
+.cover-page {
   width: 210mm;
   min-height: 297mm;
-  background: #f0f4f8;
-  margin: 0 auto;
-}
-
-/* ─── Header ─── */
-.card-header {
-  background: #023663;
-  position: relative;
-  overflow: hidden;
-  padding: 0;
-  display: flex;
-  min-height: 90px;
-}
-.header-accent {
-  width: 8px;
-  background: #049e9e;
-  flex-shrink: 0;
-}
-.header-content {
-  padding: 20px 24px 18px 20px;
-  flex: 1;
-}
-.header-label {
-  font-size: 7.5pt;
-  color: #049e9e;
-  letter-spacing: 2px;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.card-header h1 {
-  font-size: 26pt;
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.1;
-  margin: 0 0 6px 0;
-}
-.header-sub {
-  font-size: 8pt;
-  color: rgba(255,255,255,0.55);
-  font-weight: 400;
-}
-
-/* ─── Content area ─── */
-.content-area {
-  padding: 16px 16px 8px 16px;
-}
-
-/* ─── Section cards ─── */
-.section-card {
   background: #ffffff;
-  border-radius: 6px;
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  page-break-after: always;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-  page-break-inside: avoid;
+}
+.cover-top-bar  { width: 100%; height: 14mm; background: #023663; }
+.cover-accent-bar { width: 100%; height: 5mm; background: #049e9e; }
+
+.cover-watermark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'NotoNaskh', serif;
+  font-size: 68pt;
+  font-weight: bold;
+  color: rgba(2,54,99,0.07);
+  white-space: nowrap;
+  text-align: center;
+  line-height: 1.25;
+  pointer-events: none;
 }
 
-.section-header {
-  background: #023663;
-  padding: 0;
+.cover-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18mm 22mm;
+  text-align: center;
+  position: relative;
+  z-index: 1;
 }
-.section-header h2 {
-  font-size: 10.5pt;
-  font-weight: 700;
-  color: #ffffff;
-  padding: 7px 12px 7px 10px;
-  margin: 0;
+.cover-label {
+  font-family: 'NotoNaskh', serif;
+  font-size: 13pt;
+  color: #5e4360;
+  font-weight: bold;
+  margin-bottom: 8mm;
+}
+.cover-profession {
+  font-family: 'NotoNaskh', serif;
+  font-size: 44pt;
+  font-weight: bold;
+  color: #049e9e;
+  line-height: 1.15;
+  margin-bottom: 10mm;
+}
+.cover-divider {
+  width: 55mm; height: 2px;
+  background: linear-gradient(to left, transparent, #049e9e, transparent);
+  margin-bottom: 10mm;
+}
+.cover-brand {
+  font-family: 'NotoNaskh', serif;
+  font-size: 16pt;
+  font-weight: bold;
+  color: #023663;
+}
+.cover-brand-en {
+  font-size: 11pt;
+  color: #5e4360;
+  margin-top: 2mm;
+}
+
+/* ── Content page ──────────────────────── */
+.content-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  page-break-after: always;
+  overflow: hidden;
+}
+
+.page-header {
+  width: 100%;
+  background: #023663;
+  padding: 4mm 12mm;
   display: flex;
   align-items: center;
-  gap: 8px;
-  page-break-after: avoid;
+  justify-content: space-between;
 }
-.section-header h2::before {
-  content: '';
-  display: inline-block;
-  width: 3px;
-  height: 14px;
-  background: #049e9e;
-  border-radius: 2px;
-  margin-left: 6px;
-  flex-shrink: 0;
+.page-header-title {
+  font-family: 'NotoNaskh', serif;
+  font-size: 12pt;
+  font-weight: bold;
+  color: #ffffff;
 }
-
-/* ─── Section body ─── */
-.section-body {
-  padding: 10px 14px 12px 14px;
-}
-
-.section-body h3 {
-  font-size: 9.5pt;
-  font-weight: 700;
-  color: #023663;
-  background: #e8f5f5;
-  border-right: 3px solid #049e9e;
-  padding: 4px 10px;
-  margin: 10px 0 5px 0;
-  border-radius: 0 4px 4px 0;
-  page-break-after: avoid;
-}
-
-.section-body p {
-  margin: 4px 0;
-  font-size: 9.5pt;
-  color: #2d3e50;
-}
-
-.section-body ul {
-  padding-right: 18px;
-  padding-left: 0;
-  margin: 4px 0;
-}
-.section-body ul li {
-  margin: 3px 0;
-  font-size: 9.5pt;
-  color: #2d3e50;
-}
-.section-body ol {
-  padding-right: 18px;
-  padding-left: 0;
-  margin: 4px 0;
-}
-.section-body ol li {
-  margin: 6px 0;
-  font-size: 9.5pt;
-  color: #2d3e50;
-}
-
-/* ─── Links ─── */
-a {
+.page-header-brand {
+  font-size: 9pt;
   color: #049e9e;
-  text-decoration: none;
-  border-bottom: 1px dotted rgba(4,158,158,0.5);
+  font-family: 'NotoKufi', sans-serif;
+}
+.page-accent-bar { width: 100%; height: 3mm; background: #049e9e; }
+
+.page-watermark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'NotoNaskh', serif;
+  font-size: 50pt;
+  font-weight: bold;
+  color: rgba(2,54,99,0.045);
+  white-space: nowrap;
+  text-align: center;
+  line-height: 1.25;
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* ─── Tables ─── */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 8px 0;
-  font-size: 8pt;
-  border-radius: 4px;
+.page-body {
+  flex: 1;
+  padding: 7mm 12mm 5mm;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Section card ──────────────────────── */
+.section-card {
+  background: #f8fafc;
+  border-radius: 5px;
+  border-right: 4px solid #049e9e;
+  margin-bottom: 5mm;
   overflow: hidden;
-  page-break-inside: auto;
+  box-shadow: 0 1px 4px rgba(2,54,99,0.08);
 }
-thead { display: table-header-group; }
-tr { page-break-inside: avoid; }
-
-th {
+.section-heading {
   background: #023663;
   color: #ffffff;
-  padding: 7px 9px;
-  text-align: right;
-  font-weight: 700;
-  font-size: 8.5pt;
-  border: none;
-  border-left: 1px solid rgba(255,255,255,0.1);
+  font-family: 'NotoNaskh', serif;
+  font-size: 11.5pt;
+  font-weight: bold;
+  padding: 2.5mm 5mm;
 }
-th:last-child { border-left: none; }
-
-td {
-  padding: 6px 9px;
-  border-bottom: 1px solid #e8eef4;
-  border-left: 1px solid #e8eef4;
-  vertical-align: top;
-  text-align: right;
-  font-size: 8pt;
-  color: #2d3e50;
+.section-body {
+  padding: 4mm 6mm;
+  color: #023663;
+  font-size: 10pt;
 }
-td:last-child { border-left: none; }
-tr:last-child td { border-bottom: none; }
-tr:nth-child(even) td { background: #f5fafc; }
+.section-body h3 {
+  font-family: 'NotoNaskh', serif;
+  font-size: 10.5pt;
+  font-weight: bold;
+  color: #5e4360;
+  margin: 3mm 0 1.5mm;
+  padding-right: 3mm;
+  border-right: 3px solid #5e4360;
+}
+.section-body ul, .section-body ol {
+  padding-right: 5mm;
+  margin-top: 1mm;
+}
+.section-body li { margin-bottom: 0.8mm; }
+.section-body p  { margin-bottom: 1.2mm; }
+.section-body a  { color: #049e9e; text-decoration: none; }
+.section-body strong { color: #023663; }
 
-/* ─── Footer ─── */
-.card-footer {
+/* tables */
+.section-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9pt;
+  margin-top: 2mm;
+}
+.section-body th {
   background: #023663;
-  color: rgba(255,255,255,0.5);
+  color: #ffffff;
+  padding: 2mm 3mm;
   text-align: center;
-  font-size: 7.5pt;
-  padding: 8px;
-  letter-spacing: 0.5px;
+  font-weight: bold;
 }
-.card-footer .sep { margin: 0 6px; color: #049e9e; }
+.section-body td {
+  padding: 1.8mm 3mm;
+  border: 1px solid #cdd9e5;
+  text-align: center;
+  color: #023663;
+}
+.section-body tr:nth-child(even) td { background: #eef3f8; }
+
+/* ── Footer ───────────────────────────── */
+.page-footer {
+  width: 100%;
+  background: #023663;
+  padding: 3mm 12mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-brand {
+  font-family: 'NotoNaskh', serif;
+  font-size: 9pt;
+  color: #ffffff;
+  font-weight: bold;
+}
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 6mm;
+  direction: ltr;
+}
+.footer-link {
+  font-size: 8.5pt;
+  color: #049e9e;
+  text-decoration: none;
+  font-family: 'NotoKufi', sans-serif;
+}
+.footer-sep { color: rgba(255,255,255,0.3); font-size: 9pt; }
 """
 
-html = f"""<!DOCTYPE html>
+full_html = f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>بطاقة مهنة قاضي — Tawjeeh HUB</title>
-<style>
-{css}
-</style>
+  <meta charset="UTF-8">
+  <style>{CSS_STR}</style>
 </head>
 <body>
-<div class="page-wrapper">
-{wrapped_body}
-</div>
+{''.join(pages)}
 </body>
 </html>"""
 
-out_dir = '/home/user/tawjeeh-sharia-cards/outputs/pdf'
-with open(f'{out_dir}/test_card_001_qadi.html', 'w', encoding='utf-8') as f:
-    f.write(html)
+with open(HTML_OUT, "w", encoding="utf-8") as f:
+    f.write(full_html)
+print(f"HTML → {HTML_OUT}")
 
-from weasyprint import HTML as WH
-WH(filename=f'{out_dir}/test_card_001_qadi.html').write_pdf(
-    f'{out_dir}/test_card_001_qadi.pdf'
-)
-doc = WH(filename=f'{out_dir}/test_card_001_qadi.html').render()
-print(f'Pages: {len(doc.pages)}')
-print(f'PDF size: {os.path.getsize(f"{out_dir}/test_card_001_qadi.pdf"):,} bytes')
-
-# Verify all sections present
-with open(f'{out_dir}/test_card_001_qadi.html', 'r', encoding='utf-8') as f:
-    h = f.read()
-sections = ['المسميات المكافئة','التصنيف الوطني','المرتبة والراتب','برامج التأهيل',
-            'الشهادات المهنية','الدورات الداعمة','جهات التوظيف','الملاحظات المهنية',
-            'النصائح العملية','جدول مدى قبول التخصصات']
-all_present = all(s in h for s in sections)
-print(f'All sections present: {all_present}')
-print(f'SOURCES_LOG absent: {"SOURCES_LOG" not in h}')
-print('Done')
+HTML(HTML_OUT).write_pdf(PDF_OUT)
+print(f"PDF  → {PDF_OUT}")
