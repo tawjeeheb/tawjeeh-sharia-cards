@@ -1,53 +1,43 @@
 import markdown
 import re
 import os
-from weasyprint import HTML, CSS
+import base64
+from weasyprint import HTML
 
-# ── Social handles (edit here) ──────────────────────────────────────────────
+# ── Social handles ───────────────────────────────────────────────────────────
 X_USERNAME      = "tawjeeh_hub"
 TIKTOK_USERNAME = "tawjeeh.hub"
+WEBSITE         = "www.tawjeeh.com"
 X_URL           = f"https://x.com/{X_USERNAME}"
 TIKTOK_URL      = f"https://www.tiktok.com/@{TIKTOK_USERNAME}"
-LOGO_TEXT_AR    = "مركز توجيه"
-LOGO_TEXT_EN    = "Tawjeeh HUB"
+WEBSITE_URL     = f"https://{WEBSITE}"
+
+# ── Paths ────────────────────────────────────────────────────────────────────
+BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
+REPO_DIR  = os.path.dirname(os.path.dirname(BASE_DIR))
+MD_FILE   = os.path.join(REPO_DIR, "outputs", "test_card_001_qadi.md")
+LOGO_FILE = os.path.join(REPO_DIR, "design_reference", "tawjeeh_logo.jpeg")
+HTML_OUT  = os.path.join(BASE_DIR, "test_card_001_qadi.html")
+PDF_OUT   = os.path.join(BASE_DIR, "test_card_001_qadi.pdf")
+
+# ── Embed logo as base64 ─────────────────────────────────────────────────────
+with open(LOGO_FILE, "rb") as f:
+    LOGO_B64 = "data:image/jpeg;base64," + base64.b64encode(f.read()).decode()
 
 # ── Section heading sets ─────────────────────────────────────────────────────
 H2_HEADINGS = {
-    'المسميات المكافئة',
-    'التصنيف الوطني SSC',
-    'طبيعة العمل',
-    'المهام الرئيسية',
-    'الراتب والدرجة الوظيفية',
-    'المزايا والحوافز',
-    'الشروط والمؤهلات',
-    'التقييم والإلحاق الوظيفي',
-    'الخبرة المطلوبة',
-    'البرامج التدريبية المعتمدة',
-    'الشهادات المهنية',
-    'المهارات المطلوبة',
-    'الدورات الداعمة',
-    'جهات التوظيف وطريقة التقديم',
-    'المسار الوظيفي والتطور المهني',
-    'الملاحظات المهنية المتقدمة',
-    'النصائح العملية الإضافية',
-    'جدول مدى قبول التخصصات',
+    'المسميات المكافئة', 'التصنيف الوطني SSC', 'طبيعة العمل',
+    'المهام الرئيسية', 'الراتب والدرجة الوظيفية', 'المزايا والحوافز',
+    'الشروط والمؤهلات', 'التقييم والإلحاق الوظيفي', 'الخبرة المطلوبة',
+    'البرامج التدريبية المعتمدة', 'الشهادات المهنية', 'المهارات المطلوبة',
+    'الدورات الداعمة', 'جهات التوظيف وطريقة التقديم',
+    'المسار الوظيفي والتطور المهني', 'الملاحظات المهنية المتقدمة',
+    'النصائح العملية الإضافية', 'جدول مدى قبول التخصصات',
 }
-
 H3_HEADINGS = {
-    'الجهات الحكومية',
-    'القطاع الحكومي',
-    'القطاع الخاص',
-    'القطاع غير الربحي',
-    'العمل الحر',
-    'الجهات الموصى بها',
-    'ملاحظة مهمة',
+    'الجهات الحكومية', 'القطاع الحكومي', 'القطاع الخاص',
+    'القطاع غير الربحي', 'العمل الحر', 'الجهات الموصى بها', 'ملاحظة مهمة',
 }
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
-MD_FILE  = os.path.join(REPO_DIR, "outputs", "test_card_001_qadi.md")
-HTML_OUT = os.path.join(BASE_DIR, "test_card_001_qadi.html")
-PDF_OUT  = os.path.join(BASE_DIR, "test_card_001_qadi.pdf")
 
 # ── Load & pre-process markdown ──────────────────────────────────────────────
 with open(MD_FILE, encoding="utf-8") as f:
@@ -71,11 +61,10 @@ md_content = re.sub(r'---\s*\n## سجل المصادر.*', '', md_content, flags
 
 html_body = markdown.markdown(md_content, extensions=['tables', 'nl2br'])
 
-# ── Extract cover title & sections ──────────────────────────────────────────
+# ── Extract cover title & section cards ──────────────────────────────────────
 cover_match = re.search(r'<h1>(.*?)</h1>', html_body, re.DOTALL)
 cover_title = cover_match.group(1) if cover_match else ''
 
-# Split on h2 tags to get individual section content blocks
 raw_sections = re.split(r'(?=<h2>)', html_body)
 section_cards = []
 for part in raw_sections:
@@ -84,51 +73,45 @@ for part in raw_sections:
     hm = re.match(r'<h2>(.*?)</h2>', part, re.DOTALL)
     if not hm:
         continue
-    heading = hm.group(1)
-    body    = part[hm.end():]
-    section_cards.append((heading, body))
+    section_cards.append((hm.group(1), part[hm.end():]))
 
-# ── Footer & header HTML ──────────────────────────────────────────────────────
+# ── Watermark (logo image, centered, 30% opacity) ────────────────────────────
+def watermark_html():
+    return f'<img class="page-watermark" src="{LOGO_B64}" alt="watermark">'
+
+# ── Footer (matches reference: dark bar + handles) ───────────────────────────
 def footer_html():
     return f"""<div class="page-footer">
-  <span class="footer-brand">{LOGO_TEXT_AR} | {LOGO_TEXT_EN}</span>
-  <div class="footer-links">
-    <a class="footer-link" href="{X_URL}">&#x1D54F; @{X_USERNAME}</a>
-    <span class="footer-sep">|</span>
-    <a class="footer-link" href="{TIKTOK_URL}">TikTok @{TIKTOK_USERNAME}</a>
-  </div>
+  <a class="footer-handle" href="{TIKTOK_URL}">&#9654; {TIKTOK_USERNAME}</a>
+  <span class="footer-dot">&#9679;</span>
+  <a class="footer-handle" href="{X_URL}">&#x1D54F; {X_USERNAME}</a>
+  <span class="footer-dot">&#9679;</span>
+  <a class="footer-handle" href="{WEBSITE_URL}">{WEBSITE}</a>
 </div>"""
 
+# ── Page header (content pages only) ─────────────────────────────────────────
 def page_header_html():
     return f"""<div class="page-header">
   <span class="page-header-title">{cover_title}</span>
-  <span class="page-header-brand">{LOGO_TEXT_EN}</span>
+  <img class="page-header-logo" src="{LOGO_B64}" alt="Tawjeeh HUB">
 </div>
 <div class="page-accent-bar"></div>"""
-
-def watermark_html():
-    return f'<div class="page-watermark">{LOGO_TEXT_AR}<br>{LOGO_TEXT_EN}</div>'
 
 # ── Build pages ───────────────────────────────────────────────────────────────
 SECTIONS_PER_PAGE = 3
 pages = []
 
-# Cover page
+# Cover page — minimal, logo watermark centered, footer bar
 pages.append(f"""<div class="cover-page">
-  <div class="cover-top-bar"></div>
-  <div class="cover-accent-bar"></div>
   {watermark_html()}
   <div class="cover-content">
     <div class="cover-label">بطاقة المهنة الشرعية</div>
     <div class="cover-profession">{cover_title}</div>
-    <div class="cover-divider"></div>
-    <div class="cover-brand">{LOGO_TEXT_AR}</div>
-    <div class="cover-brand-en">{LOGO_TEXT_EN}</div>
   </div>
   {footer_html()}
 </div>""")
 
-# Content pages: group sections
+# Content pages
 for i in range(0, len(section_cards), SECTIONS_PER_PAGE):
     chunk = section_cards[i:i + SECTIONS_PER_PAGE]
     cards_html = ''
@@ -169,90 +152,71 @@ CSS_STR = """
 }
 
 @page { size: A4; margin: 0; }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   direction: rtl;
   font-family: 'NotoKufi', sans-serif;
-  background: #f4f6f9;
+  background: #ffffff;
   color: #023663;
   font-size: 10.5pt;
   line-height: 1.85;
 }
 
-/* ── Cover ─────────────────────────────── */
+/* ── Watermark image ───────────────────────── */
+.page-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120mm;
+  opacity: 0.30;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Cover page ────────────────────────────── */
 .cover-page {
   width: 210mm;
-  min-height: 297mm;
+  height: 297mm;
   background: #ffffff;
-  display: flex;
-  flex-direction: column;
   position: relative;
   page-break-after: always;
   overflow: hidden;
 }
-.cover-top-bar  { width: 100%; height: 14mm; background: #023663; }
-.cover-accent-bar { width: 100%; height: 5mm; background: #049e9e; }
-
-.cover-watermark {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: 'NotoNaskh', serif;
-  font-size: 68pt;
-  font-weight: bold;
-  color: rgba(2,54,99,0.07);
-  white-space: nowrap;
-  text-align: center;
-  line-height: 1.25;
-  pointer-events: none;
-}
 
 .cover-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 18mm 22mm;
+  position: absolute;
+  top: 18mm;
+  left: 20mm;
+  right: 20mm;
   text-align: center;
-  position: relative;
   z-index: 1;
+  direction: rtl;
 }
+
 .cover-label {
   font-family: 'NotoNaskh', serif;
   font-size: 13pt;
   color: #5e4360;
   font-weight: bold;
   margin-bottom: 8mm;
-}
-.cover-profession {
-  font-family: 'NotoNaskh', serif;
-  font-size: 44pt;
-  font-weight: bold;
-  color: #049e9e;
-  line-height: 1.15;
-  margin-bottom: 10mm;
-}
-.cover-divider {
-  width: 55mm; height: 2px;
-  background: linear-gradient(to left, transparent, #049e9e, transparent);
-  margin-bottom: 10mm;
-}
-.cover-brand {
-  font-family: 'NotoNaskh', serif;
-  font-size: 16pt;
-  font-weight: bold;
-  color: #023663;
-}
-.cover-brand-en {
-  font-size: 11pt;
-  color: #5e4360;
-  margin-top: 2mm;
+  letter-spacing: 0.04em;
+  width: 100%;
+  text-align: center;
 }
 
-/* ── Content page ──────────────────────── */
+.cover-profession {
+  font-family: 'NotoNaskh', serif;
+  font-size: 52pt;
+  font-weight: bold;
+  color: #049e9e;
+  line-height: 1.1;
+  width: 100%;
+  text-align: center;
+}
+
+/* ── Content page ──────────────────────────── */
 .content-page {
   width: 210mm;
   min-height: 297mm;
@@ -267,37 +231,33 @@ body {
 .page-header {
   width: 100%;
   background: #023663;
-  padding: 4mm 12mm;
+  padding: 3.5mm 10mm;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
 }
+
 .page-header-title {
   font-family: 'NotoNaskh', serif;
   font-size: 12pt;
   font-weight: bold;
   color: #ffffff;
 }
-.page-header-brand {
-  font-size: 9pt;
-  color: #049e9e;
-  font-family: 'NotoKufi', sans-serif;
-}
-.page-accent-bar { width: 100%; height: 3mm; background: #049e9e; }
 
-.page-watermark {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: 'NotoNaskh', serif;
-  font-size: 50pt;
-  font-weight: bold;
-  color: rgba(2,54,99,0.045);
-  white-space: nowrap;
-  text-align: center;
-  line-height: 1.25;
-  pointer-events: none;
-  z-index: 0;
+.page-header-logo {
+  height: 10mm;
+  opacity: 1;
+  filter: brightness(0) invert(1);
+}
+
+.page-accent-bar {
+  width: 100%;
+  height: 2.5mm;
+  background: #049e9e;
+  position: relative;
+  z-index: 1;
 }
 
 .page-body {
@@ -307,28 +267,27 @@ body {
   z-index: 1;
 }
 
-/* ── Section card ──────────────────────── */
+/* ── Section card ──────────────────────────── */
 .section-card {
   background: #f8fafc;
   border-radius: 5px;
   border-right: 4px solid #049e9e;
   margin-bottom: 5mm;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(2,54,99,0.08);
+  box-shadow: 0 1px 3px rgba(2,54,99,0.08);
 }
+
 .section-heading {
   background: #023663;
   color: #ffffff;
   font-family: 'NotoNaskh', serif;
-  font-size: 11.5pt;
+  font-size: 11pt;
   font-weight: bold;
   padding: 2.5mm 5mm;
+  color: #ffffff;
 }
-.section-body {
-  padding: 4mm 6mm;
-  color: #023663;
-  font-size: 10pt;
-}
+
+/* override: element name color as specified (#5e4360) via sub-heading */
 .section-body h3 {
   font-family: 'NotoNaskh', serif;
   font-size: 10.5pt;
@@ -338,6 +297,13 @@ body {
   padding-right: 3mm;
   border-right: 3px solid #5e4360;
 }
+
+.section-body {
+  padding: 4mm 6mm;
+  color: #023663;
+  font-size: 10pt;
+}
+
 .section-body ul, .section-body ol {
   padding-right: 5mm;
   margin-top: 1mm;
@@ -369,34 +335,39 @@ body {
 }
 .section-body tr:nth-child(even) td { background: #eef3f8; }
 
-/* ── Footer ───────────────────────────── */
+/* ── Footer (matches reference: solid dark bar, centered handles) ── */
 .page-footer {
   width: 100%;
-  background: #023663;
-  padding: 3mm 12mm;
+  background: #1a2e44;
+  padding: 3.5mm 10mm;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-.footer-brand {
-  font-family: 'NotoNaskh', serif;
-  font-size: 9pt;
-  color: #ffffff;
-  font-weight: bold;
-}
-.footer-links {
-  display: flex;
-  align-items: center;
-  gap: 6mm;
+  justify-content: center;
+  gap: 5mm;
+  flex-direction: row;
+  z-index: 2;
   direction: ltr;
 }
-.footer-link {
+/* On cover page footer is absolute-positioned at bottom */
+.cover-page .page-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer-handle {
+  font-family: 'NotoKufi', sans-serif;
   font-size: 8.5pt;
   color: #049e9e;
   text-decoration: none;
-  font-family: 'NotoKufi', sans-serif;
+  white-space: nowrap;
 }
-.footer-sep { color: rgba(255,255,255,0.3); font-size: 9pt; }
+
+.footer-dot {
+  color: rgba(255,255,255,0.25);
+  font-size: 5pt;
+}
 """
 
 full_html = f"""<!DOCTYPE html>
