@@ -191,7 +191,7 @@ p, li, td, th {{
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 15mm;
+  height: 12.5mm;
   background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
   border-radius: 0;
   box-sizing: border-box;
@@ -214,7 +214,7 @@ p, li, td, th {{
 /* شبكة من 5 أعمدة متساوية بفجوات ثابتة — كل حساب في عموده الخاص دون أي تداخل */
 .footer-inner {{
   position: relative;
-  height: 15mm;
+  height: 12.5mm;
   width: 100%;
   box-sizing: border-box;
   padding: 0 10mm;
@@ -230,8 +230,8 @@ p, li, td, th {{
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 2.6mm;
-  height: 12mm;
+  gap: 2mm;
+  height: 9.8mm;
   box-sizing: border-box;
   padding: 0 4mm;
   background: rgba(255, 255, 255, 0.24);
@@ -247,18 +247,18 @@ p, li, td, th {{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 8.6mm;
-  height: 8.6mm;
+  width: 7mm;
+  height: 7mm;
   flex-shrink: 0;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.26);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 5mm 5mm;
+  background-size: 4.2mm 4.2mm;
   border: 0.45mm solid rgba(255, 255, 255, 0.85);
   color: #ffffff;
   font-weight: 700;
-  font-size: 8pt;
+  font-size: 6.8pt;
   line-height: 1;
   box-shadow: inset 0 0.5mm 1mm rgba(255, 255, 255, 0.4),
               inset 0 -0.5mm 1mm rgba(0, 0, 0, 0.2);
@@ -276,15 +276,15 @@ p, li, td, th {{
 .footer-platform {{
   color: #ffffff;
   font-weight: 400;
-  font-size: 5.4pt;
-  letter-spacing: 0.5pt;
+  font-size: 4.8pt;
+  letter-spacing: 0.4pt;
   opacity: 0.82;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 8.4pt;
+  font-size: 7.2pt;
   font-weight: 700;
   text-decoration: none;
   text-shadow: 0 0.35mm 0.7mm rgba(0, 0, 0, 0.32);
