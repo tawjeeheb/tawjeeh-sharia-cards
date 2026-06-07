@@ -179,72 +179,33 @@ p, li, td, th {{
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  direction: rtl;
-}}
-
-.footer-brand-block {{
-  display: flex;
-  align-items: center;
-  gap: 2mm;
+  justify-content: center;
+  gap: 10mm;
   direction: ltr;
-  unicode-bidi: isolate;
-}}
-
-.footer-brand-accent {{
-  width: 0.6mm;
-  height: 5.5mm;
-  background: #049e9e;
-  display: inline-block;
-}}
-
-.footer-brand {{
-  color: #ffffff;
-  font-size: 7.6pt;
-  font-weight: 700;
-  letter-spacing: 0.3pt;
-  white-space: nowrap;
-}}
-
-.footer-links {{
-  display: flex;
-  align-items: center;
-  gap: 2.6mm;
-  direction: ltr;
-  white-space: nowrap;
 }}
 
 .footer-link {{
   display: inline-flex;
-  align-items: center;
-  gap: 1.2mm;
-  font-size: 5.8pt;
-  font-weight: 400;
+  align-items: baseline;
+  gap: 1.4mm;
   line-height: 1;
+  white-space: nowrap;
 }}
 
 .footer-platform {{
   color: #049e9e;
   font-weight: 700;
-  font-size: 5.4pt;
-  text-transform: uppercase;
-  letter-spacing: 0.2pt;
+  font-size: 5.6pt;
+  letter-spacing: 0.3pt;
 }}
 
 .footer-link a {{
   font-family: 'NotoKufi', sans-serif;
   color: #ffffff;
-  font-weight: 600;
+  font-size: 6.2pt;
+  font-weight: 400;
   text-decoration: none;
-  opacity: 0.97;
-}}
-
-.footer-divider {{
-  width: 0.3mm;
-  height: 3mm;
-  background: #049e9e;
-  opacity: 0.65;
-  display: inline-block;
+  opacity: 0.92;
 }}
 
 /* ── Main content ────────────────────────────────────── */
@@ -372,16 +333,10 @@ p, li, td, th {{
 footer_html = f"""<div class="footer">
   <div class="footer-teal-bar"></div>
   <div class="footer-inner">
-    <div class="footer-brand-block"><span class="footer-brand-accent"></span><span class="footer-brand">Tawjeeh HUB</span></div>
-    <div class="footer-links">
-      <span class="footer-link"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span>
-      <span class="footer-divider"></span>
-      <span class="footer-link"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
-      <span class="footer-divider"></span>
-      <span class="footer-link"><span class="footer-platform">Instagram</span><a href="https://instagram.com/{INSTA_USERNAME}">{INSTA_USERNAME}</a></span>
-      <span class="footer-divider"></span>
-      <span class="footer-link"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span>
-    </div>
+    <span class="footer-link"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-platform">Instagram</span><a href="https://instagram.com/{INSTA_USERNAME}">{INSTA_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span>
   </div>
 </div>"""
 
