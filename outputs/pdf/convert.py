@@ -155,10 +155,10 @@ p, li, td, th {{
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 12mm;
+  height: 11mm;
   background: #023663;
-  z-index: 999;
   box-sizing: border-box;
+  z-index: 999;
   overflow: hidden;
 }}
 
@@ -167,72 +167,65 @@ p, li, td, th {{
   top: 0;
   right: 0;
   left: 0;
-  height: 1.3mm;
+  height: 1.2mm;
   background: #049e9e;
 }}
 
 .footer-inner {{
   position: relative;
-  width: 196mm;
-  max-width: 196mm;
-  height: 12mm;
+  height: 11mm;
   margin: 0 7mm;
-  padding-top: 1.3mm;
+  padding: 1.2mm 8mm 0 8mm;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  direction: ltr;
+  direction: rtl;
 }}
 
 .footer-brand {{
   color: #ffffff;
-  text-align: right;
+  font-size: 7pt;
+  font-weight: 600;
   white-space: nowrap;
-}}
-
-.footer-brand .fb-en {{
-  display: block;
-  font-size: 6.6pt;
-  font-weight: 700;
   direction: ltr;
   unicode-bidi: isolate;
-  line-height: 1.5;
-}}
-
-.footer-brand .fb-ar {{
-  display: block;
-  font-size: 5.6pt;
-  font-weight: 400;
-  color: #9dbdd6;
-  direction: rtl;
-  unicode-bidi: isolate;
-  line-height: 1.3;
 }}
 
 .footer-links {{
   display: flex;
   align-items: center;
-  gap: 1.8mm;
+  gap: 2.2mm;
   direction: ltr;
-  font-size: 5.3pt;
-  font-weight: 400;
-  line-height: 1;
   white-space: nowrap;
 }}
 
-.footer-links a {{
+.footer-link {{
+  display: inline-flex;
+  align-items: center;
+  gap: 1mm;
+  font-size: 5.8pt;
+  font-weight: 400;
+  line-height: 1;
+}}
+
+.footer-platform {{
+  color: #049e9e;
+  font-weight: 500;
+}}
+
+.footer-link a {{
   font-family: 'NotoKufi', sans-serif;
   color: #ffffff;
   text-decoration: none;
-  opacity: 0.92;
+  opacity: 0.95;
 }}
 
-.footer-links span {{
-  width: 0.35mm;
+.footer-divider {{
+  width: 0.3mm;
   height: 3mm;
   background: #049e9e;
-  opacity: 0.7;
+  opacity: 0.65;
   display: inline-block;
 }}
 
@@ -361,16 +354,16 @@ p, li, td, th {{
 footer_html = f"""<div class="footer">
   <div class="footer-teal-bar"></div>
   <div class="footer-inner">
+    <div class="footer-brand">Tawjeeh HUB</div>
     <div class="footer-links">
-      <a href="{X_URL}">X: {X_USERNAME}</a>
-      <span></span>
-      <a href="{TIKTOK_URL}">TikTok: {TIKTOK_USERNAME}</a>
-      <span></span>
-      <a href="https://instagram.com/{INSTA_USERNAME}">Instagram: {INSTA_USERNAME}</a>
-      <span></span>
-      <a href="{WEBSITE_URL}">Web: {WEBSITE}</a>
+      <span class="footer-link"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span>
+      <span class="footer-divider"></span>
+      <span class="footer-link"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
+      <span class="footer-divider"></span>
+      <span class="footer-link"><span class="footer-platform">Instagram</span><a href="https://instagram.com/{INSTA_USERNAME}">{INSTA_USERNAME}</a></span>
+      <span class="footer-divider"></span>
+      <span class="footer-link"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span>
     </div>
-    <div class="footer-brand"><span class="fb-en">Tawjeeh HUB</span><span class="fb-ar">مركز توجيه</span></div>
   </div>
 </div>"""
 
