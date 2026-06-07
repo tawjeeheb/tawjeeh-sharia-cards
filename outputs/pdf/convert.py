@@ -34,11 +34,11 @@ with open(LOGO_FILE, "rb") as f:
 def _svg_data_uri(svg: str) -> str:
     return "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
 
-_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"'
+_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"'
 
 ICON_TIKTOK = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<circle cx="9" cy="17" r="3.1"/><path d="M12 17V4.5l5.5 1.6V9"/></svg>'
+    f'<circle cx="9.3" cy="16.5" r="3.3"/><path d="M12.6 16.5V4.2l5.6 1.7"/></svg>'
 )
 ICON_INSTAGRAM = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
@@ -53,9 +53,9 @@ ICON_YOUTUBE = _svg_data_uri(
 )
 ICON_WEB = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<circle cx="12" cy="12" r="8.5"/>'
-    f'<ellipse cx="12" cy="12" rx="3.7" ry="8.5"/>'
-    f'<path d="M3.7 9h16.6M3.7 15h16.6"/></svg>'
+    f'<circle cx="12" cy="12" r="8.2"/>'
+    f'<ellipse cx="12" cy="12" rx="3.8" ry="8.2"/>'
+    f'<path d="M3.8 12h16.4"/></svg>'
 )
 
 # ── Section heading sets ──────────────────────────────────────────────────────
@@ -217,7 +217,7 @@ p, li, td, th {{
   height: 12.5mm;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 10mm;
+  padding: 0 11mm;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   column-gap: 3.5mm;
@@ -234,8 +234,8 @@ p, li, td, th {{
   height: 9.8mm;
   box-sizing: border-box;
   padding: 0 4mm;
-  background: rgba(255, 255, 255, 0.24);
-  border: 0.5mm solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.30);
+  border: 0.5mm solid rgba(255, 255, 255, 0.82);
   border-radius: 6mm;
   box-shadow: inset 0 0.7mm 1.3mm rgba(255, 255, 255, 0.34),
               inset 0 -0.7mm 1.3mm rgba(0, 0, 0, 0.22),
@@ -251,11 +251,11 @@ p, li, td, th {{
   height: 7mm;
   flex-shrink: 0;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.26);
+  background-color: rgba(255, 255, 255, 0.34);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 4.2mm 4.2mm;
-  border: 0.45mm solid rgba(255, 255, 255, 0.85);
+  border: 0.45mm solid rgba(255, 255, 255, 0.95);
   color: #ffffff;
   font-weight: 700;
   font-size: 6.8pt;
@@ -276,9 +276,9 @@ p, li, td, th {{
 .footer-platform {{
   color: #ffffff;
   font-weight: 400;
-  font-size: 4.8pt;
+  font-size: 4.9pt;
   letter-spacing: 0.4pt;
-  opacity: 0.82;
+  opacity: 0.92;
 }}
 
 .footer-link a {{
@@ -287,7 +287,7 @@ p, li, td, th {{
   font-size: 7.2pt;
   font-weight: 700;
   text-decoration: none;
-  text-shadow: 0 0.35mm 0.7mm rgba(0, 0, 0, 0.32);
+  text-shadow: 0 0.2mm 0.35mm rgba(0, 0, 0, 0.30);
 }}
 
 /* ── Main content ────────────────────────────────────── */
