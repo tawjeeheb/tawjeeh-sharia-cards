@@ -115,6 +115,11 @@ CSS_STR = f"""
   src: url('file://{FONTS_DIR}/NotoNaskhArabic-Bold.ttf');
   font-weight: bold;
 }}
+@font-face {{
+  font-family: 'Aniq';
+  src: url('file://{FONTS_DIR}/aa-aniq-bold.otf');
+  font-weight: bold;
+}}
 
 /* ── Page layout ─────────────────────────────────────── */
 @page {{
@@ -220,7 +225,7 @@ p, li, td, th {{
 
 /* ── Profession title ────────────────────────────────── */
 .profession-title {{
-  font-family: 'Noto Naskh Arabic', serif;
+  font-family: 'Aniq', 'Noto Naskh Arabic', serif;
   font-size: 17pt;
   font-weight: bold;
   color: #049e9e;
