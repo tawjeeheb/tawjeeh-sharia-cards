@@ -118,8 +118,7 @@ CSS_STR = f"""
 /* ── Page layout ─────────────────────────────────────── */
 @page {{
   size: A4;
-  /* top | right | bottom (room for fixed footer) | left */
-  margin: 18mm 18mm 24mm 18mm;
+  margin: 0;
 }}
 
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -174,8 +173,9 @@ p, li, td, th {{
 
 .footer-content {{
   position: relative;
+  width: 100%;
   height: 14mm;
-  padding: 2.4mm 7mm 1.6mm 7mm;
+  padding: 2.2mm 14mm 1.6mm 14mm;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -215,8 +215,9 @@ p, li, td, th {{
 .content {{
   position: relative;
   z-index: 1;
-  /* مساحة كافية أسفل المحتوى حتى لا يغطيه الفوتر الثابت */
-  padding-bottom: 16mm;
+  box-sizing: border-box;
+  /* الهوامش انتقلت هنا بعد إلغاء هوامش @page لإتاحة Footer ممتد للحواف */
+  padding: 18mm 18mm 24mm 18mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
