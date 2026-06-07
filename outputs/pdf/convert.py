@@ -191,7 +191,7 @@ p, li, td, th {{
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 17mm;
+  height: 15mm;
   background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
   border-radius: 0;
   box-sizing: border-box;
@@ -214,31 +214,32 @@ p, li, td, th {{
 /* شبكة من 5 أعمدة متساوية بفجوات ثابتة — كل حساب في عموده الخاص دون أي تداخل */
 .footer-inner {{
   position: relative;
-  height: 17mm;
+  height: 15mm;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 12mm;
+  padding: 0 10mm;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  column-gap: 4mm;
+  column-gap: 3.5mm;
   align-items: center;
   direction: ltr;
 }}
 
-/* كبسولة مستقلة بذاتها — لا تلامس جاراتها بفضل الفجوة الثابتة بين أعمدة الشبكة */
+/* كبسولة كبيرة وواضحة، مستقلة بذاتها — بعمق زجاجي حقيقي */
 .footer-link {{
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 2.4mm;
-  height: 11mm;
+  gap: 2.6mm;
+  height: 12mm;
   box-sizing: border-box;
   padding: 0 4mm;
-  background: rgba(255, 255, 255, 0.16);
-  border: 0.4mm solid rgba(255, 255, 255, 0.55);
-  border-radius: 5.5mm;
-  box-shadow: inset 0 0.6mm 1.1mm rgba(255, 255, 255, 0.25),
-              0 0.8mm 1.8mm rgba(0, 0, 0, 0.22);
+  background: rgba(255, 255, 255, 0.24);
+  border: 0.5mm solid rgba(255, 255, 255, 0.7);
+  border-radius: 6mm;
+  box-shadow: inset 0 0.7mm 1.3mm rgba(255, 255, 255, 0.34),
+              inset 0 -0.7mm 1.3mm rgba(0, 0, 0, 0.22),
+              0 1mm 2.4mm rgba(0, 0, 0, 0.26);
   overflow: hidden;
 }}
 
@@ -246,41 +247,47 @@ p, li, td, th {{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 7mm;
-  height: 7mm;
+  width: 8.6mm;
+  height: 8.6mm;
   flex-shrink: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.20);
-  border: 0.35mm solid rgba(255, 255, 255, 0.65);
+  background-color: rgba(255, 255, 255, 0.26);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 5mm 5mm;
+  border: 0.45mm solid rgba(255, 255, 255, 0.85);
   color: #ffffff;
   font-weight: 700;
-  font-size: 7.5pt;
+  font-size: 8pt;
   line-height: 1;
+  box-shadow: inset 0 0.5mm 1mm rgba(255, 255, 255, 0.4),
+              inset 0 -0.5mm 1mm rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }}
 
 .footer-text {{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.6mm;
+  gap: 0.8mm;
   overflow: hidden;
 }}
 
 .footer-platform {{
-  color: #eaf6f7;
+  color: #ffffff;
   font-weight: 400;
-  font-size: 5pt;
-  letter-spacing: 0.4pt;
-  opacity: 0.85;
+  font-size: 5.4pt;
+  letter-spacing: 0.5pt;
+  opacity: 0.82;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 7.4pt;
+  font-size: 8.4pt;
   font-weight: 700;
   text-decoration: none;
-  text-shadow: 0 0.3mm 0.6mm rgba(0, 0, 0, 0.28);
+  text-shadow: 0 0.35mm 0.7mm rgba(0, 0, 0, 0.32);
 }}
 
 /* ── Main content ────────────────────────────────────── */
@@ -406,11 +413,11 @@ p, li, td, th {{
 # ── Footer HTML ───────────────────────────────────────────────────────────────
 footer_html = f"""<div class="footer">
   <div class="footer-inner">
-    <span class="footer-link"><span class="footer-icon">&#9834;</span><span class="footer-text"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_TIKTOK}')"></span><span class="footer-text"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span></span>
     <span class="footer-link"><span class="footer-icon">X</span><span class="footer-text"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span></span>
-    <span class="footer-link"><span class="footer-icon">&#9678;</span><span class="footer-text"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span></span>
-    <span class="footer-link"><span class="footer-icon">&#9654;</span><span class="footer-text"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span></span>
-    <span class="footer-link"><span class="footer-icon">&#8853;</span><span class="footer-text"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_INSTAGRAM}')"></span><span class="footer-text"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_YOUTUBE}')"></span><span class="footer-text"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_WEB}')"></span><span class="footer-text"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span></span>
   </div>
 </div>"""
 
