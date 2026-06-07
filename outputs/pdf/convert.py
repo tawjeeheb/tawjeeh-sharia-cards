@@ -13,6 +13,8 @@ YT_USERNAME     = "tawjeeh_hub"
 WEBSITE         = "www.tawjeeh.hub"
 X_URL           = f"https://x.com/{X_USERNAME}"
 TIKTOK_URL      = f"https://www.tiktok.com/@{TIKTOK_USERNAME}"
+INSTA_URL       = f"https://instagram.com/{INSTA_USERNAME}"
+YT_URL          = f"https://www.youtube.com/@{YT_USERNAME}"
 WEBSITE_URL     = f"https://{WEBSITE}"
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
@@ -154,7 +156,7 @@ p, li, td, th {{
   pointer-events: none;
 }}
 
-/* ── Fixed footer — identity bar, edge-to-edge on every page ── */
+/* ── Fixed footer — full-width gradient bar, edge-to-edge on every page ── */
 .footer {{
   position: fixed;
   left: 0;
@@ -162,31 +164,23 @@ p, li, td, th {{
   bottom: 0;
   width: 100%;
   height: 11mm;
-  background: #023663;
+  background: linear-gradient(90deg, #023663 0%, #049e9e 100%);
+  border-radius: 0;
   box-sizing: border-box;
   z-index: 999;
   overflow: hidden;
-}}
-
-.footer-teal-bar {{
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 1.2mm;
-  background: #049e9e;
 }}
 
 .footer-inner {{
   position: relative;
   height: 11mm;
   margin: 0 7mm;
-  padding: 1.2mm 8mm 0 8mm;
+  padding: 0 8mm;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10mm;
+  gap: 6mm;
   direction: ltr;
 }}
 
@@ -196,10 +190,14 @@ p, li, td, th {{
   gap: 1.4mm;
   line-height: 1;
   white-space: nowrap;
+  background: rgba(255, 255, 255, 0.14);
+  border: 0.3mm solid rgba(255, 255, 255, 0.32);
+  border-radius: 5mm;
+  padding: 1.1mm 3.2mm;
 }}
 
 .footer-platform {{
-  color: #049e9e;
+  color: #ffffff;
   font-weight: 700;
   font-size: 5.6pt;
   letter-spacing: 0.3pt;
@@ -336,11 +334,11 @@ p, li, td, th {{
 
 # ── Footer HTML ───────────────────────────────────────────────────────────────
 footer_html = f"""<div class="footer">
-  <div class="footer-teal-bar"></div>
   <div class="footer-inner">
-    <span class="footer-link"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span>
     <span class="footer-link"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
-    <span class="footer-link"><span class="footer-platform">Instagram</span><a href="https://instagram.com/{INSTA_USERNAME}">{INSTA_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span>
     <span class="footer-link"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span>
   </div>
 </div>"""
