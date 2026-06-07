@@ -297,7 +297,7 @@ p, li, td, th {{
   z-index: 1;
   box-sizing: border-box;
   /* الهوامش انتقلت هنا بعد إلغاء هوامش @page لإتاحة Footer ممتد للحواف */
-  padding: 18mm 18mm 24mm 18mm;
+  padding: 15mm 17mm 22mm 17mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
@@ -307,15 +307,17 @@ p, li, td, th {{
   font-weight: bold;
   color: #049e9e;
   text-align: right;
-  margin-bottom: 7mm;
+  margin-bottom: 5mm;
   line-height: 1.25;
 }}
 
 /* ── Section: تدفق ذكي — لا حبس للكتلة كاملة، العنوان يبقى مع بداية محتواه ── */
 .section {{
-  margin-bottom: 5mm;
+  margin-bottom: 4mm;
   break-inside: auto;
   page-break-inside: auto;
+  orphans: 3;
+  widows: 3;
 }}
 
 /* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
@@ -325,7 +327,7 @@ p, li, td, th {{
   font-weight: bold;
   color: #5e4360;
   text-align: right;
-  margin-bottom: 1.5mm;
+  margin-bottom: 2mm;
   line-height: 1.4;
   background: none;
   break-after: avoid;
@@ -338,9 +340,11 @@ p, li, td, th {{
   font-size: 10pt;
   color: #023663;
   text-align: right;
-  line-height: 1.85;
+  line-height: 1.72;
   break-inside: auto;
   page-break-inside: auto;
+  orphans: 3;
+  widows: 3;
 }}
 
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
@@ -349,14 +353,14 @@ p, li, td, th {{
   font-size: 10.5pt;
   font-weight: bold;
   color: #023663;
-  margin-top: 3mm;
+  margin-top: 2.6mm;
   margin-bottom: 1mm;
   break-after: avoid;
   page-break-after: avoid;
 }}
 
 .section-body p  {{
-  margin-bottom: 1.5mm;
+  margin-bottom: 1.4mm;
   break-inside: avoid-page;
 }}
 
@@ -367,8 +371,8 @@ p, li, td, th {{
   margin-bottom: 1mm;
 }}
 .section-body li {{
-  margin-bottom: 1mm;
-  line-height: 1.8;
+  margin-bottom: 0.9mm;
+  line-height: 1.68;
   break-inside: avoid-page;
 }}
 
@@ -380,8 +384,8 @@ p, li, td, th {{
   width: 100%;
   border-collapse: collapse;
   font-size: 8.5pt;
-  line-height: 1.55;
-  margin-top: 2mm;
+  line-height: 1.4;
+  margin-top: 1.6mm;
   color: #023663;
   break-inside: auto;
   page-break-inside: auto;
@@ -396,14 +400,14 @@ p, li, td, th {{
 .section-body th {{
   background: #023663;
   color: #ffffff;
-  padding: 1.6mm 2.2mm;
+  padding: 1.3mm 2.2mm;
   text-align: center;
   font-weight: bold;
   font-size: 8.5pt;
   vertical-align: middle;
 }}
 .section-body td {{
-  padding: 1.6mm 2.2mm;
+  padding: 1.3mm 2.2mm;
   border: 1px solid #c8d8e8;
   text-align: center;
   vertical-align: top;
