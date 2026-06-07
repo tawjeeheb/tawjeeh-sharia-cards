@@ -119,7 +119,7 @@ CSS_STR = f"""
 @page {{
   size: A4;
   /* top | right | bottom (room for fixed footer) | left */
-  margin: 18mm 18mm 27mm 18mm;
+  margin: 18mm 18mm 24mm 18mm;
 }}
 
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -156,9 +156,11 @@ p, li, td, th {{
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 17mm;
+  height: 14mm;
   background: #023663;
   z-index: 999;
+  box-sizing: border-box;
+  overflow: hidden;
 }}
 
 .footer-teal-bar {{
@@ -166,22 +168,23 @@ p, li, td, th {{
   top: 0;
   right: 0;
   left: 0;
-  height: 2mm;
+  height: 1.6mm;
   background: #049e9e;
 }}
 
 .footer-content {{
   position: relative;
-  height: 17mm;
-  padding-top: 2mm;
+  height: 14mm;
+  padding: 2.4mm 7mm 1.6mm 7mm;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6mm;
+  justify-content: space-between;
+  gap: 2.5mm;
   direction: ltr;
   color: #ffffff;
-  font-size: 8pt;
+  font-size: 6.8pt;
+  font-weight: 500;
   line-height: 1;
   white-space: nowrap;
 }}
@@ -190,20 +193,22 @@ p, li, td, th {{
   font-family: 'NotoKufi', sans-serif;
   color: #ffffff;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
 }}
 
 .footer-item {{
   display: inline-flex;
   align-items: center;
-  gap: 2mm;
+  gap: 1.2mm;
+  min-width: 0;
 }}
 
 .footer-icon {{
   color: #049e9e;
-  font-size: 8.5pt;
-  font-weight: bold;
+  font-size: 6.8pt;
+  font-weight: 600;
   line-height: 1;
+  flex: 0 0 auto;
 }}
 
 /* ── Main content ────────────────────────────────────── */
@@ -211,7 +216,7 @@ p, li, td, th {{
   position: relative;
   z-index: 1;
   /* مساحة كافية أسفل المحتوى حتى لا يغطيه الفوتر الثابت */
-  padding-bottom: 19mm;
+  padding-bottom: 16mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
