@@ -6,7 +6,7 @@ from weasyprint import HTML
 
 # ── Social handles ────────────────────────────────────────────────────────────
 X_USERNAME      = "tawjeeh_hub"
-TIKTOK_USERNAME = "tawjeeh.hub"
+TIKTOK_USERNAME = "tawjeeh_hub"
 INSTA_USERNAME  = "tawjeeh.hub"
 SNAP_USERNAME   = "tawjeeh.hub"
 YT_USERNAME     = "tawjeeh_hub"
@@ -119,7 +119,7 @@ CSS_STR = f"""
 @page {{
   size: A4;
   /* top | right | bottom (room for fixed footer) | left */
-  margin: 16mm 18mm 20mm 18mm;
+  margin: 18mm 18mm 24mm 18mm;
 }}
 
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -149,56 +149,69 @@ p, li, td, th {{
   pointer-events: none;
 }}
 
-/* ── Fixed footer — edge-to-edge bar on every page ───── */
-.page-footer {{
+/* ── Fixed footer — identity bar, edge-to-edge on every page ── */
+.footer {{
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100%;
-  z-index: 10;
+  height: 13mm;
+  background: #023663;
+  z-index: 999;
 }}
 
 .footer-teal-bar {{
-  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
   height: 1.4mm;
   background: #049e9e;
 }}
 
-.footer-inner {{
+.footer-content {{
   position: relative;
-  width: 100%;
-  background: #023663;
-  padding: 2.2mm 8mm;
+  height: 13mm;
+  padding-top: 1.4mm;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8mm;
   direction: ltr;
-}}
-
-.footer-handles {{
-  display: flex;
-  align-items: center;
-  gap: 4mm;
-}}
-
-.fh {{
-  font-family: 'NotoKufi', sans-serif;
-  font-size: 7pt;
-  color: #9dbdd6;
-  text-decoration: none;
+  color: #ffffff;
+  font-size: 7.5pt;
+  line-height: 1;
   white-space: nowrap;
 }}
 
-.fi {{ color: #049e9e; margin-left: 0.5mm; }}
+.footer-content a {{
+  font-family: 'NotoKufi', sans-serif;
+  color: #ffffff;
+  text-decoration: none;
+}}
+
+.footer-item {{
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5mm;
+}}
+
+.footer-icon {{
+  color: #049e9e;
+  font-size: 8pt;
+  font-weight: bold;
+  line-height: 1;
+}}
 
 .footer-arrow {{
   position: absolute;
-  right: 4mm;
+  right: 8mm;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-40%);
   color: #049e9e;
-  font-size: 12pt;
+  font-size: 16pt;
   font-weight: bold;
   line-height: 1;
 }}
@@ -208,7 +221,7 @@ p, li, td, th {{
   position: relative;
   z-index: 1;
   /* مساحة كافية أسفل المحتوى حتى لا يغطيه الفوتر الثابت */
-  padding-bottom: 12mm;
+  padding-bottom: 16mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
@@ -324,17 +337,15 @@ p, li, td, th {{
 """
 
 # ── Footer HTML ───────────────────────────────────────────────────────────────
-footer_html = f"""<div class="page-footer">
+footer_html = f"""<div class="footer">
   <div class="footer-teal-bar"></div>
-  <div class="footer-inner">
-    <div class="footer-handles">
-      <a class="fh" href="{TIKTOK_URL}"><span class="fi">&#9654;</span>{TIKTOK_USERNAME}</a>
-      <a class="fh" href="https://instagram.com/{INSTA_USERNAME}"><span class="fi">&#9678;</span>{INSTA_USERNAME}</a>
-      <a class="fh" href="https://snapchat.com/add/{SNAP_USERNAME}"><span class="fi">&#9673;</span>{SNAP_USERNAME}</a>
-      <a class="fh" href="{X_URL}"><span class="fi">&#x1D54F;</span>{X_USERNAME}</a>
-      <a class="fh" href="https://youtube.com/@{YT_USERNAME}"><span class="fi">&#9654;</span>{YT_USERNAME}</a>
-      <a class="fh" href="{WEBSITE_URL}"><span class="fi">&#9678;</span>{WEBSITE}</a>
-    </div>
+  <div class="footer-content">
+    <a class="footer-item" href="{TIKTOK_URL}"><span class="footer-icon">&#9654;</span>{TIKTOK_USERNAME}</a>
+    <a class="footer-item" href="https://instagram.com/{INSTA_USERNAME}"><span class="footer-icon">&#9678;</span>{INSTA_USERNAME}</a>
+    <a class="footer-item" href="https://snapchat.com/add/{SNAP_USERNAME}"><span class="footer-icon">&#9673;</span>{SNAP_USERNAME}</a>
+    <a class="footer-item" href="{X_URL}"><span class="footer-icon">&#x1D54F;</span>{X_USERNAME}</a>
+    <a class="footer-item" href="https://youtube.com/@{YT_USERNAME}"><span class="footer-icon">&#9654;</span>{YT_USERNAME}</a>
+    <a class="footer-item" href="{WEBSITE_URL}"><span class="footer-icon">&#9678;</span>{WEBSITE}</a>
     <div class="footer-arrow">&#10095;</div>
   </div>
 </div>"""
