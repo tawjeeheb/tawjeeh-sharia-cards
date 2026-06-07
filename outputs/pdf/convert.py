@@ -34,28 +34,30 @@ with open(LOGO_FILE, "rb") as f:
 def _svg_data_uri(svg: str) -> str:
     return "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
 
-_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"'
+_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"'
 
+# نوتة موسيقية مبسطة وواضحة — رمز عالمي مفهوم لتيك توك دون تعقيد
 ICON_TIKTOK = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<circle cx="9.3" cy="16.5" r="3.3"/><path d="M12.6 16.5V4.2l5.6 1.7"/></svg>'
+    f'<circle cx="8.5" cy="17" r="3"/><path d="M11.5 17V4.5h2.2c.5 2.6 2.4 4.4 5 4.7"/></svg>'
 )
+# مربع بزوايا دائرية + عدسة دائرية — شكل إنستغرام التقليدي دون تفاصيل دقيقة تختفي بالتصغير
 ICON_INSTAGRAM = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<rect x="3.5" y="3.5" width="17" height="17" rx="5"/>'
-    f'<circle cx="12" cy="12" r="4.2"/>'
-    f'<circle cx="17" cy="7" r="0.6" fill="#ffffff" stroke="none"/></svg>'
+    f'<rect x="3.5" y="3.5" width="17" height="17" rx="5.5"/>'
+    f'<circle cx="12" cy="12" r="4.6"/></svg>'
 )
+# مستطيل + مثلث تشغيل ممتلئ — رمز يوتيوب الكلاسيكي بنسب أوضح
 ICON_YOUTUBE = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<rect x="3" y="6" width="18" height="12" rx="3.5"/>'
-    f'<path d="M10.2 9.3l5 2.7-5 2.7z" fill="#ffffff" stroke="none"/></svg>'
+    f'<rect x="3" y="5.5" width="18" height="13" rx="3.5"/>'
+    f'<path d="M10 9.2l5.5 2.8-5.5 2.8z" fill="#ffffff" stroke="none"/></svg>'
 )
+# كرة أرضية مبسطة: دائرة + خط استواء + خط طول واحد فقط — وضوح أعلى من الشكل المعقد سابقًا
 ICON_WEB = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
     f'<circle cx="12" cy="12" r="8.2"/>'
-    f'<ellipse cx="12" cy="12" rx="3.8" ry="8.2"/>'
-    f'<path d="M3.8 12h16.4"/></svg>'
+    f'<path d="M3.8 12h16.4M12 3.8c2.6 2.2 2.6 14.2 0 16.4"/></svg>'
 )
 
 # ── Section heading sets ──────────────────────────────────────────────────────
@@ -211,57 +213,67 @@ p, li, td, th {{
   pointer-events: none;
 }}
 
-/* شبكة من 5 أعمدة متساوية بفجوات ثابتة — كل حساب في عموده الخاص دون أي تداخل */
+/* صف مرن واحد: كبسولات + فواصل عمودية بينها — بلا أي تداخل */
 .footer-inner {{
   position: relative;
   height: 12.5mm;
   width: 100%;
   box-sizing: border-box;
   padding: 0 11mm;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  column-gap: 3.5mm;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 3mm;
   direction: ltr;
 }}
 
-/* كبسولة كبيرة وواضحة، مستقلة بذاتها — بعمق زجاجي حقيقي */
+/* كبسولة مدمجة وأنيقة — بعمق زجاجي خفيف دون ثِقل بصري */
 .footer-link {{
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 2mm;
-  height: 9.8mm;
+  flex: 1 1 0;
+  gap: 1.7mm;
+  height: 8.4mm;
   box-sizing: border-box;
-  padding: 0 4mm;
-  background: rgba(255, 255, 255, 0.30);
-  border: 0.5mm solid rgba(255, 255, 255, 0.82);
-  border-radius: 6mm;
-  box-shadow: inset 0 0.7mm 1.3mm rgba(255, 255, 255, 0.34),
-              inset 0 -0.7mm 1.3mm rgba(0, 0, 0, 0.22),
-              0 1mm 2.4mm rgba(0, 0, 0, 0.26);
+  padding: 0 3.2mm;
+  background: rgba(255, 255, 255, 0.26);
+  border: 0.4mm solid rgba(255, 255, 255, 0.78);
+  border-radius: 5mm;
+  box-shadow: inset 0 0.6mm 1.1mm rgba(255, 255, 255, 0.32),
+              inset 0 -0.6mm 1.1mm rgba(0, 0, 0, 0.20),
+              0 0.8mm 2mm rgba(0, 0, 0, 0.22);
   overflow: hidden;
+}}
+
+/* فاصل عمودي رفيع وأنيق بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
+.footer-divider {{
+  flex: 0 0 auto;
+  width: 0.35mm;
+  height: 5.4mm;
+  background: rgba(115, 235, 210, 0.55);
+  border-radius: 0.2mm;
 }}
 
 .footer-icon {{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 7mm;
-  height: 7mm;
+  width: 5.8mm;
+  height: 5.8mm;
   flex-shrink: 0;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.34);
+  background-color: rgba(255, 255, 255, 0.32);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 4.2mm 4.2mm;
-  border: 0.45mm solid rgba(255, 255, 255, 0.95);
+  background-size: 3.5mm 3.5mm;
+  border: 0.4mm solid rgba(255, 255, 255, 0.92);
   color: #ffffff;
   font-weight: 700;
-  font-size: 6.8pt;
+  font-size: 6pt;
   line-height: 1;
-  box-shadow: inset 0 0.5mm 1mm rgba(255, 255, 255, 0.4),
-              inset 0 -0.5mm 1mm rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0.45mm 0.9mm rgba(255, 255, 255, 0.38),
+              inset 0 -0.45mm 0.9mm rgba(0, 0, 0, 0.18);
   overflow: hidden;
 }}
 
@@ -269,25 +281,25 @@ p, li, td, th {{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.8mm;
+  gap: 0.6mm;
   overflow: hidden;
 }}
 
 .footer-platform {{
   color: #ffffff;
   font-weight: 400;
-  font-size: 4.9pt;
-  letter-spacing: 0.4pt;
-  opacity: 0.92;
+  font-size: 4.4pt;
+  letter-spacing: 0.35pt;
+  opacity: 0.88;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 7.2pt;
+  font-size: 6.8pt;
   font-weight: 700;
   text-decoration: none;
-  text-shadow: 0 0.2mm 0.35mm rgba(0, 0, 0, 0.30);
+  text-shadow: 0 0.2mm 0.35mm rgba(0, 0, 0, 0.28);
 }}
 
 /* ── Main content ────────────────────────────────────── */
@@ -414,9 +426,13 @@ p, li, td, th {{
 footer_html = f"""<div class="footer">
   <div class="footer-inner">
     <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_TIKTOK}')"></span><span class="footer-text"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span></span>
+    <span class="footer-divider"></span>
     <span class="footer-link"><span class="footer-icon">X</span><span class="footer-text"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span></span>
+    <span class="footer-divider"></span>
     <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_INSTAGRAM}')"></span><span class="footer-text"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span></span>
+    <span class="footer-divider"></span>
     <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_YOUTUBE}')"></span><span class="footer-text"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span></span>
+    <span class="footer-divider"></span>
     <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_WEB}')"></span><span class="footer-text"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span></span>
   </div>
 </div>"""
