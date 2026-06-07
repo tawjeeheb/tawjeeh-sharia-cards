@@ -20,6 +20,7 @@ BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR  = os.path.dirname(os.path.dirname(BASE_DIR))
 MD_FILE   = os.path.join(REPO_DIR, "outputs", "test_card_001_qadi.md")
 LOGO_FILE = os.path.join(REPO_DIR, "design_reference", "tawjeeh_logo.jpeg")
+FONTS_DIR = os.path.join(REPO_DIR, "design_reference", "fonts")
 HTML_OUT  = os.path.join(BASE_DIR, "test_card_001_qadi.html")
 PDF_OUT   = os.path.join(BASE_DIR, "test_card_001_qadi.pdf")
 
@@ -93,25 +94,25 @@ sections_html = transform_sections(html_body)
 
 # ── CSS ────────────────────────────────────────────────────────────────────────
 CSS_STR = f"""
-/* ── Fonts ──────────────────────────────────────────── */
+/* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
 @font-face {{
-  font-family: 'NotoKufi';
-  src: url('/usr/share/fonts/truetype/noto/NotoKufiArabic-Regular.ttf');
+  font-family: 'Noto Kufi Arabic';
+  src: url('file://{FONTS_DIR}/NotoKufiArabic-Regular.ttf');
   font-weight: normal;
 }}
 @font-face {{
-  font-family: 'NotoKufi';
-  src: url('/usr/share/fonts/truetype/noto/NotoKufiArabic-Bold.ttf');
+  font-family: 'Noto Kufi Arabic';
+  src: url('file://{FONTS_DIR}/NotoKufiArabic-Bold.ttf');
   font-weight: bold;
 }}
 @font-face {{
-  font-family: 'NotoNaskh';
-  src: url('/usr/share/fonts/truetype/noto/NotoNaskhArabic-Regular.ttf');
+  font-family: 'Noto Naskh Arabic';
+  src: url('file://{FONTS_DIR}/NotoNaskhArabic-Regular.ttf');
   font-weight: normal;
 }}
 @font-face {{
-  font-family: 'NotoNaskh';
-  src: url('/usr/share/fonts/truetype/noto/NotoNaskhArabic-Bold.ttf');
+  font-family: 'Noto Naskh Arabic';
+  src: url('file://{FONTS_DIR}/NotoNaskhArabic-Bold.ttf');
   font-weight: bold;
 }}
 
@@ -125,7 +126,7 @@ CSS_STR = f"""
 
 html, body {{
   direction: rtl;
-  font-family: 'NotoKufi', sans-serif;
+  font-family: 'Noto Kufi Arabic', sans-serif;
   background: #ffffff;
   color: #023663;
 }}
@@ -200,7 +201,7 @@ p, li, td, th {{
 }}
 
 .footer-link a {{
-  font-family: 'NotoKufi', sans-serif;
+  font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
   font-size: 6.2pt;
   font-weight: 400;
@@ -219,7 +220,7 @@ p, li, td, th {{
 
 /* ── Profession title ────────────────────────────────── */
 .profession-title {{
-  font-family: 'Aniq', 'Noto Naskh Arabic', 'NotoNaskh', serif;
+  font-family: 'Noto Naskh Arabic', serif;
   font-size: 17pt;
   font-weight: bold;
   color: #049e9e;
@@ -237,7 +238,7 @@ p, li, td, th {{
 
 /* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
 .section-heading {{
-  font-family: 'Droid Arabic Kufi', 'Noto Kufi Arabic', 'NotoKufi', sans-serif;
+  font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 12pt;
   font-weight: bold;
   color: #5e4360;
@@ -251,7 +252,7 @@ p, li, td, th {{
 
 /* محتوى العنصر — يتدفق بحرية بين الصفحات */
 .section-body {{
-  font-family: 'Droid Arabic Kufi', 'Noto Kufi Arabic', 'NotoKufi', sans-serif;
+  font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 10pt;
   color: #023663;
   text-align: right;
@@ -262,7 +263,7 @@ p, li, td, th {{
 
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
 .section-body h3 {{
-  font-family: 'Droid Arabic Kufi', 'Noto Kufi Arabic', 'NotoKufi', sans-serif;
+  font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 10.5pt;
   font-weight: bold;
   color: #023663;
