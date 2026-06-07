@@ -164,7 +164,7 @@ p, li, td, th {{
   bottom: 0;
   width: 100%;
   height: 14mm;
-  background: linear-gradient(90deg, #012647 0%, #023663 45%, #038a8a 100%);
+  background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
   border-radius: 0;
   box-sizing: border-box;
   z-index: 999;
