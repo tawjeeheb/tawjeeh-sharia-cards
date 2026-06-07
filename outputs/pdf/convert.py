@@ -218,15 +218,14 @@ p, li, td, th {{
 }}
 
 /* ── Profession title ────────────────────────────────── */
-/* اسم المهنة: NotoNaskh (Aniq بديل) — 13+5=18pt لكن كعنوان صفحة 26pt */
 .profession-title {{
-  font-family: 'NotoNaskh', serif;
-  font-size: 26pt;
+  font-family: 'Aniq', 'Noto Naskh Arabic', 'NotoNaskh', serif;
+  font-size: 17pt;
   font-weight: bold;
   color: #049e9e;
   text-align: right;
   margin-bottom: 7mm;
-  line-height: 1.15;
+  line-height: 1.25;
 }}
 
 /* ── Section: تدفق ذكي — لا حبس للكتلة كاملة، العنوان يبقى مع بداية محتواه ── */
@@ -236,24 +235,24 @@ p, li, td, th {{
   page-break-inside: auto;
 }}
 
-/* عنوان العنصر: NotoKufi (Droid Arabic Kufi) — 13pt = 11pt + 2 */
 /* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
 .section-heading {{
-  font-family: 'NotoKufi', sans-serif;
-  font-size: 13pt;
+  font-family: 'Droid Arabic Kufi', 'Noto Kufi Arabic', 'NotoKufi', sans-serif;
+  font-size: 12pt;
   font-weight: bold;
   color: #5e4360;
   text-align: right;
   margin-bottom: 1.5mm;
   line-height: 1.4;
+  background: none;
   break-after: avoid;
   page-break-after: avoid;
 }}
 
-/* محتوى العنصر: NotoKufi — 11pt — يتدفق بحرية بين الصفحات */
+/* محتوى العنصر — يتدفق بحرية بين الصفحات */
 .section-body {{
-  font-family: 'NotoKufi', sans-serif;
-  font-size: 11pt;
+  font-family: 'Droid Arabic Kufi', 'Noto Kufi Arabic', 'NotoKufi', sans-serif;
+  font-size: 10pt;
   color: #023663;
   text-align: right;
   line-height: 1.85;
@@ -263,8 +262,8 @@ p, li, td, th {{
 
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
 .section-body h3 {{
-  font-family: 'NotoKufi', sans-serif;
-  font-size: 11.5pt;
+  font-family: 'Droid Arabic Kufi', 'Noto Kufi Arabic', 'NotoKufi', sans-serif;
+  font-size: 10.5pt;
   font-weight: bold;
   color: #023663;
   margin-top: 3mm;
