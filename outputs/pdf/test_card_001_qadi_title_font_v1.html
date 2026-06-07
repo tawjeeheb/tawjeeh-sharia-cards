@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <style>
+/* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoKufiArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoKufiArabic-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoNaskhArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoNaskhArabic-Bold.ttf');
+  font-weight: bold;
+}
+
+/* ── Page layout ─────────────────────────────────────── */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  direction: rtl;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  background: #ffffff;
+  color: #023663;
+}
+
+/* عدم ترك عنوان أو سطر معزول عند تقسيم الصفحات */
+p, li, td, th {
+  orphans: 2;
+  widows: 2;
+}
+
+/* ── Fixed watermark — appears on every page ─────────── */
+.page-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 105mm;
+  opacity: 0.30;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Fixed footer — identity bar, edge-to-edge on every page ── */
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 11mm;
+  background: #023663;
+  box-sizing: border-box;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.footer-teal-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1.2mm;
+  background: #049e9e;
+}
+
+.footer-inner {
+  position: relative;
+  height: 11mm;
+  margin: 0 7mm;
+  padding: 1.2mm 8mm 0 8mm;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10mm;
+  direction: ltr;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1.4mm;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.footer-platform {
+  color: #049e9e;
+  font-weight: 700;
+  font-size: 5.6pt;
+  letter-spacing: 0.3pt;
+}
+
+.footer-link a {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  color: #ffffff;
+  font-size: 6.2pt;
+  font-weight: 400;
+  text-decoration: none;
+  opacity: 0.92;
+}
+
+/* ── Main content ────────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  /* الهوامش انتقلت هنا بعد إلغاء هوامش @page لإتاحة Footer ممتد للحواف */
+  padding: 18mm 18mm 24mm 18mm;
+}
+
+/* ── Profession title ────────────────────────────────── */
+.profession-title {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 17pt;
+  font-weight: bold;
+  color: #049e9e;
+  text-align: right;
+  margin-bottom: 7mm;
+  line-height: 1.25;
+}
+
+/* ── Section: تدفق ذكي — لا حبس للكتلة كاملة، العنوان يبقى مع بداية محتواه ── */
+.section {
+  margin-bottom: 5mm;
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+/* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
+.section-heading {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 12pt;
+  font-weight: bold;
+  color: #5e4360;
+  text-align: right;
+  margin-bottom: 1.5mm;
+  line-height: 1.4;
+  background: none;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* محتوى العنصر — يتدفق بحرية بين الصفحات */
+.section-body {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10pt;
+  color: #023663;
+  text-align: right;
+  line-height: 1.85;
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+/* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
+.section-body h3 {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10.5pt;
+  font-weight: bold;
+  color: #023663;
+  margin-top: 3mm;
+  margin-bottom: 1mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body p  {
+  margin-bottom: 1.5mm;
+  break-inside: avoid-page;
+}
+
+.section-body ul,
+.section-body ol {
+  padding-right: 6mm;
+  margin-top: 1mm;
+  margin-bottom: 1mm;
+}
+.section-body li {
+  margin-bottom: 1mm;
+  line-height: 1.8;
+  break-inside: avoid-page;
+}
+
+.section-body a { color: #049e9e; text-decoration: none; }
+.section-body strong { font-weight: bold; color: #023663; }
+
+/* ── Tables: تنقسم بشكل نظيف، رأس الجدول يتكرر ───────── */
+.section-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  line-height: 1.55;
+  margin-top: 2mm;
+  color: #023663;
+  break-inside: auto;
+  page-break-inside: auto;
+}
+.section-body thead {
+  display: table-header-group;
+}
+.section-body tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.section-body th {
+  background: #023663;
+  color: #ffffff;
+  padding: 1.6mm 2.2mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 8.5pt;
+  vertical-align: middle;
+}
+.section-body td {
+  padding: 1.6mm 2.2mm;
+  border: 1px solid #c8d8e8;
+  text-align: center;
+  vertical-align: top;
+}
+.section-body tr:nth-child(even) td { background: #f0f5fa; }
+</style>
+</head>
+<body>
+<img class="page-watermark" src="data:image/jpeg;base64,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" alt="">
+<div class="footer">
+  <div class="footer-teal-bar"></div>
+  <div class="footer-inner">
+    <span class="footer-link"><span class="footer-platform">X</span><a href="https://x.com/tawjeeh_hub">tawjeeh_hub</a></span>
+    <span class="footer-link"><span class="footer-platform">TikTok</span><a href="https://www.tiktok.com/@tawjeeh_hub">tawjeeh_hub</a></span>
+    <span class="footer-link"><span class="footer-platform">Instagram</span><a href="https://instagram.com/tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-link"><span class="footer-platform">Web</span><a href="https://www.tawjeeh.hub">www.tawjeeh.hub</a></span>
+  </div>
+</div>
+<div class="content">
+  <div class="profession-title">قاضي</div>
+  <div class="section"><div class="section-heading">المسميات المكافئة</div><div class="section-body">
+<p>لا يوجد</p>
+</div></div>
+<div class="section"><div class="section-heading">التصنيف الوطني SSC</div><div class="section-body">
+<p>المجموعة الرئيسية: 2 - الاختصاصيون<br />
+المجموعة الفرعية: 26 - الاختصاصيون في القانون والاجتماع والثقافة<br />
+المجموعة الرئيسية الدقيقة: 261 - الاختصاصيون في القانون<br />
+الوحدة/المهنة: 261209 - قاضي</p>
+</div></div>
+<div class="section"><div class="section-heading">طبيعة العمل</div><div class="section-body">
+<p>القاضي مسؤول قضائي سيادي يباشر الفصل في المنازعات والخصومات داخل المحاكم المختصة ضمن منظومة القضاء السعودي، ويحوّل الوقائع والدفوع والمستندات إلى أحكام ملزمة وفق الشريعة الإسلامية والأنظمة المرعية، بما يحفظ الحقوق ويضبط إجراءات التقاضي.</p>
+</div></div>
+<div class="section"><div class="section-heading">المهام الرئيسية</div><div class="section-body">
+<p>النظر في الدعاوى القضائية المرفوعة وتمحيص وقائعها وأدلتها والدفوع المقدمة من أطراف النزاع<br />
+إصدار الأحكام القضائية المبنية على الشريعة الإسلامية والأنظمة المرعية مع تسبيبها تسبيبًا واضحًا<br />
+ضبط إجراءات الجلسات والتحقق من استيفاء الشروط الشكلية والموضوعية للتقاضي<br />
+مراجعة المستندات والوثائق وتقييم صحتها وأثرها في مسار الدعوى<br />
+الفصل في الطلبات والإشكالات القضائية المرتبطة بالحكم ضمن حدود الاختصاص</p>
+<p>المرتبة والراتب</p>
+<h3>الجهات الحكومية</h3>
+<p>المهنة تُمارس وفق سلم رواتب أعضاء السلك القضائي الخاص بهم، وهو سلم مستقل عن سلم الخدمة المدنية وفق نظام القضاء.<br />
+النطاقات التالية إرشادية غير رسمية، مأخوذة من مصادر ثانوية متطابقة وليست بديلًا عن الجدول الرسمي عند توفره.<br />
+ملازم قضائي: نحو 10,000 – 11,000 ريال راتبًا أساسيًا.<br />
+قاضي ج: نحو 11,000 – 12,000 ريال راتبًا أساسيًا.<br />
+قاضي ب: نحو 13,000 – 14,000 ريال راتبًا أساسيًا.<br />
+قاضي أ: نحو 15,000 – 16,000 ريال راتبًا أساسيًا.<br />
+رئيس محكمة وما فوقها: يبدأ غالبًا من 21,000 ريال فأعلى راتبًا أساسيًا.<br />
+نوع العقد: وظيفة ثابتة.<br />
+مدى ثبات الممارسة: ممارسة دائمة.</p>
+<p>الجهات شبه الحكومية<br />
+الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<h3>القطاع الخاص</h3>
+<p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<h3>القطاع غير الربحي</h3>
+<p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<h3>العمل الحر</h3>
+<p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<p>المزايا الوظيفية</p>
+<h3>الجهات الحكومية</h3>
+<p>الوظيفة تُمارس بشكل دائم.<br />
+ممارسة الصلاحية القضائية المباشرة في إصدار أحكام ملزمة وفق الشريعة الإسلامية والأنظمة المرعية.<br />
+التعامل مع ملفات قضائية حقيقية تشمل حقوق الأفراد والمنازعات المدنية والجزائية والأحوال الشخصية.<br />
+اكتساب خبرة تطبيقية عميقة في التسبيب القضائي وتمحيص الأدلة لا تتاح خارج الممارسة الميدانية.<br />
+التدرج ضمن السلك القضائي من ملازم قضائي حتى رئيس محكمة وما فوقها، بما يرسّخ الأهلية المهنية القضائية.<br />
+المشاركة في مسارات التخصص القضائي كالدوائر التجارية أو الجزائية أو الأحوال الشخصية عند التخصيص.</p>
+<p>الجهات شبه الحكومية<br />
+الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<h3>القطاع الخاص</h3>
+<p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<h3>القطاع غير الربحي</h3>
+<p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<h3>العمل الحر</h3>
+<p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+</div></div>
+<div class="section"><div class="section-heading">الشروط والمؤهلات</div><div class="section-body">
+<h3>القطاع الحكومي</h3>
+<p>الشروط العامة: الجنسية السعودية، حسن السيرة والسلوك، الأهلية الكاملة للقضاء، وألا يكون المتقدم محكومًا بجريمة مخلة بالدين أو الشرف أو صدر في حقه قرار تأديبي بالفصل من وظيفة عامة.<br />
+المؤهل العلمي: بكالوريوس من إحدى كليات الشريعة في المملكة، أو شهادة أخرى معادلة لها وفق ما يقرره المجلس الأعلى للقضاء، مع تقدير عام لا يقل عن جيد، وتقدير لا يقل عن جيد جدًا في مادة الفقه وأصوله.<br />
+شروط قبول التخصصات الدقيقة: الشريعة، الفقه وأصوله، والسياسات الشرعية والأنظمة مقبولة مباشرة إذا كانت الشهادة صادرة من كلية شريعة مستوفية لشرط النظام؛ الدراسات الإسلامية وأصول الدين والعقيدة مقبولة بشرط المعادلة والنجاح في الامتحان الخاص إذا لم تكن الشهادة صادرة من كلية شريعة؛ الثقافة الإسلامية ضعيفة القبول ولا تُعامل كمؤهل مباشر للسلك القضائي إلا إذا ثبتت معادلتها رسميًا.<br />
+التفضيلات: لا توجد تفضيلات إضافية مثبتة في نص المادة 31، ويُترك الترجيح لما تقرره الجهة المختصة في إجراءات الاختيار.<br />
+العمر: ألا يقل عن اثنتين وعشرين سنة عند التعيين في درجة ملازم قضائي وفق نظام القضاء.<br />
+شروط إضافية: النجاح في اختبارات التعيين القضائي التي تعدها الجهة المختصة، ونجاح حملة الشهادات المعادلة في الامتحان الخاص الذي يعده المجلس الأعلى للقضاء قبل قبول معادلة شهاداتهم.</p>
+<p>القطاع شبه الحكومي<br />
+الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<h3>القطاع الخاص</h3>
+<p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<h3>القطاع غير الربحي</h3>
+<p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<p>القطاع المستقل<br />
+الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<p>متطلبات التقييم والتهيئة المهنية</p>
+<p>السلك القضائي — وزارة العدل وديوان المظالم<br />
+قبل التعيين: تقديم ثلاث تزكيات على الأقل من علماء أو قضاة أو أساتذة أكاديميين درسوا المتقدم — اجتياز اختبار قياس القدرات الذي تجريه اللجنة الفرعية المختصة — مقابلة شخصية أمام اللجنة التحضيرية لمن اجتاز اختبار القياس فقط — امتحان المعادلة الخاص الذي يعده المجلس الأعلى للقضاء لحملة الشهادات المعادلة.<br />
+بعد التعيين: التعيين يبدأ بدرجة ملازم قضائي وهي المرحلة الأولى في السلك القضائي — الخدمة الفعلية في درجة ملازم قضائي شرط للترقي إلى قاضي ج وفق آلية العمل التنفيذية لنظام القضاء.</p>
+<p>الخبرات المطلوبة</p>
+<p>الجهات الحكومية: لا تشترط خبرة وظيفية سابقة للدخول على درجة ملازم قضائي، إذ المدخل مباشر من حاملي شهادة كليات الشريعة المستوفين لشروط النظام؛ أما للترقي إلى قاضي ج فتُشترط الخدمة الفعلية داخل السلك القضائي في مهام الفصل في الدعاوى وتسبيب الأحكام ومراجعة الوثائق القضائية، وهي خبرة داخلية نظامية لا تُكتسب خارج المحاكم؛ ولا تعوض الخبرة النقص الأكاديمي لأن المؤهل من كليات الشريعة شرط نظامي مباشر.<br />
+الجهات شبه الحكومية: الوظيفة لا تُمارس فعليًا في هذا القطاع.<br />
+القطاع الخاص: الوظيفة لا تُمارس فعليًا في هذا القطاع.<br />
+القطاع غير الربحي: الوظيفة لا تُمارس فعليًا في هذا القطاع.<br />
+القطاع المستقل: الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
+<p>برامج التأهيل المعتمدة</p>
+<p><a href="https://iu.edu.sa/%D8%A8%D8%B1%D9%86%D8%A7%D9%85%D8%AC-%D8%A7%D9%84%D8%AF%D8%B1%D8%A7%D8%B3%D8%A7%D8%AA-%D8%A7%D9%84%D9%82%D8%B6%D8%A7%D9%8A%D9%8A%D8%A9-%D9%85%D8%A7%D8%AC%D8%B3%D8%AA%D9%8A%D8%B1--1">الدبلوم العالي في القضاء والسياسة الشرعية</a> - الجامعة الإسلامية بالمدينة المنورة: يعزز الجاهزية التطبيقية لدى التخصصات الشرعية الدقيقة من خلال تحويل المعرفة النظرية إلى ممارسة إجرائية تشمل المرافعات والإثبات وصيغ الدعاوى والأحكام دون أن يُغني عن شرط المؤهل الشرعي النظامي المحدد في نظام القضاء، ويرفع من مستوى الاستعداد التطبيقي لدى التخصص الرئيسي من خلال تدريب ميداني في القضاء الإداري والتجاري والجزائي ضمن فصلين دراسيين بواقع ست ساعات تطبيقية.<br />
+<a href="https://islp.kku.edu.sa/ar/node/670">الدبلوم العالي في الفقه</a> - كلية الشريعة وأصول الدين، جامعة الملك خالد: يعزز القوة الأكاديمية لدى التخصصات الشرعية الدقيقة من خلال تعميق الفقه وأصوله لرفع مستوى التحصيل في المجال الذي يُشترط فيه تقدير جيد جدًا بعد استيفاء المؤهل الشرعي النظامي، ويرفع من مستوى الاستعداد لدى التخصص الرئيسي من خلال دراسة الفقه التطبيقي والمقارن المرتبط بالاجتهاد القضائي وتسبيب الأحكام.<br />
+<a href="https://www.ipa.edu.sa/ar/training/law-diploma">الدبلوم العالي للعلوم القانونية</a> - معهد الإدارة العامة: يعوض النقص الإجرائي لدى التخصصات الشرعية الدقيقة من خلال تأهيلهم في الأنظمة والإجراءات القانونية المدنية والجزائية والإدارية مع بقاء اشتراط المؤهل الشرعي النظامي لدخول السلك القضائي قائمًا، ويرفع من جاهزية التخصص الرئيسي من خلال التعامل مع ملفات نظامية عبر مسارات متخصصة في القانون الإداري والجزائي ضمن برنامج مدته ثلاث سنوات.</p>
+<p>الشهادات المهنية الاحترافية</p>
+<p><a href="https://www.acams.org/en/certifications/cams-certification">شهادة أخصائي مكافحة غسل الأموال المعتمد (CAMS)</a>: تعزز الكفاءة في تحليل أدلة القضايا المالية الجزائية والجرائم المالية المنظمة (غير مدعومة)<br />
+<a href="https://www.ciarb.org/membership/routes-to-membership/">عضوية معهد التحكيم الملكي (MCIArb)</a>: تدعم الكفاءة في تقييم طلبات تنفيذ أحكام التحكيم أمام المحاكم (غير مدعومة)<br />
+<a href="https://aaoifi.com/%D8%B4%D9%87%D8%A7%D8%AF%D8%A9-%D8%A7%D9%84%D9%85%D8%B1%D8%A7%D9%82%D8%A8-%D9%88%D8%A7%D9%84%D9%85%D8%AF%D9%82%D9%82-%D8%A7%D9%84%D8%B4%D8%B1%D8%B9%D9%8A/">شهادة المراقب والمدقق الشرعي (CSAA)</a>: تعمق الخبرة الشرعية التطبيقية لتقييم الدفوع في قضايا التمويل الإسلامي (غير مدعومة)<br />
+<a href="https://www.acfe.com/cfe-credential">شهادة محترف فحص الاحتيال المعتمد (CFE)</a>: تعزز التحليل الميداني لأدلة الاحتيال التجاري وجرائم الغش المالي (غير مدعومة)</p>
+</div></div>
+<div class="section"><div class="section-heading">المهارات المطلوبة</div><div class="section-body">
+<p>تكييف الوقائع قضائيًا: لتحويل الوقائع لحكم<br />
+تسبيب الأحكام القضائية: لضبط منطق الحكم<br />
+تقدير حجية الأدلة: لبناء القناعة القضائية<br />
+تحرير منطوق الحكم: لضبط آثاره النظامية<br />
+إدارة إجراءات الجلسات: لضمان سلامة التقاضي</p>
+</div></div>
+<div class="section"><div class="section-heading">الدورات الداعمة</div><div class="section-body">
+<p>دورة <a href="https://ethrai.sa/course-details/%D9%86%D8%B8%D8%A7%D9%85-%D8%A7%D9%84%D8%A3%D8%AD%D9%88%D8%A7%D9%84-%D8%A7%D9%84%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9">نظام الأحوال الشخصية</a>: تدعم مهارة تكييف الوقائع قضائيًا<br />
+دورة <a href="https://www.coursera.org/learn/law-student">A Law Student's Toolkit</a>: تدعم مهارة تسبيب الأحكام القضائية<br />
+دورة <a href="https://ethrai.sa/course-details/eb5b9ea5-3261-ea11-80d7-0050568c1fee">قضاء التنفيذ</a>: تدعم مهارة إدارة إجراءات الجلسات<br />
+دورة <a href="https://www.coursera.org/learn/american-law">An Introduction to American Law</a>: تدعم مهارة تحرير منطوق الحكم<br />
+دورة <a href="https://www.coursera.org/learn/challenging-forensic-science">Challenging Forensic Science: How Science Should Speak to Court</a>: تدعم مهارة تقدير حجية الأدلة</p>
+</div></div>
+<div class="section"><div class="section-heading">جهات التوظيف وطريقة التقديم</div><div class="section-body">
+<h3>القطاع الحكومي</h3>
+<p>جهات سبق وأعلنت<br />
+القضاء العام عبر المجلس الأعلى للقضاء والمحاكم التابعة لمنظومة وزارة العدل، وديوان المظالم للقضاء الإداري: يكون الدخول عبر مسار القبول أو الترشيح القضائي الرسمي لملازم قضائي متى فعّلته الجهة المختصة عبر القناة الرسمية المخصصة، ثم تمر الطلبات بمراحل الفحص، واختبار قياس القدرات، والمقابلة الشخصية أمام اللجنة المختصة وفق قواعد اختيار القضاة.</p>
+</div></div>
+<div class="section"><div class="section-heading">المسار الوظيفي والتطور المهني</div><div class="section-body">
+<p>مسار الترقي: يبدأ كـ «ملازم قضائي»، ثم «قاضٍ ج»، ثم «قاضٍ ب»، ثم «قاضٍ أ»، وقد يصل إلى «وكيل محكمة» أو «رئيس محكمة»، ثم «قاضٍ في محكمة الاستئناف»، وصولًا إلى «رئيس محكمة استئناف» أو «عضو في المحكمة العليا» وفق التدرج النظامي وآليات التقييم والترقية المعتمدة.<br />
+مسار الانتقال: يتحرك القاضي داخل المنظومة القضائية الرسمية عبر الانتقال بين الدوائر أو المحاكم أو الاختصاصات القضائية المتاحة، أو عبر المشاركة في اللجان والأعمال القضائية المساندة والبحث القضائي داخل الجهات القضائية المختصة، دون اعتباره انتقالًا مفتوحًا إلى المحاماة أو الاستشارات أو العمل الحر.<br />
+مسار التخصص: يمكن التخصص في مجالات قضائية دقيقة مثل «القضاء التجاري»، «القضاء الجزائي»، «قضاء الأحوال الشخصية»، «قضاء التنفيذ»، و«القضاء الإداري» بحسب الدوائر والاختصاصات التي تتيحها الأنظمة والقرارات القضائية المعتمدة.</p>
+</div></div>
+<div class="section"><div class="section-heading">الملاحظات المهنية المتقدمة</div><div class="section-body">
+<ul>
+<li>الدخول إلى السلك القضائي لا يتم عبر التقديم الحر في أي وقت كما هو الحال في كثير من الوظائف الحكومية، بل يُفتح بإعلان دوري تصدره اللجنة المختصة، ويمر المتقدم بثلاث مراحل انتقائية متسلسلة: تزكيات علمية ممن درّسوا المتقدم أو عرفوه، ثم اختبار قياس القدرات، ثم مقابلة شخصية لمن اجتازه فقط — ويستند ذلك إلى قواعد اختيار القضاة المنشورة عبر ديوان المظالم.</li>
+<li>حملة تخصصات الدراسات الإسلامية وأصول الدين والعقيدة لا يُعاملون معاملة حاملي شهادات كليات الشريعة تلقائيًا عند التقديم — دخولهم مشروط بنجاح في امتحان خاص يعده المجلس الأعلى للقضاء قبل قبول معادلة شهاداتهم، وهو شرط لا يظهر في اسم المهنة ولا في وصفها العام، ويستند ذلك إلى المادة 31 من نظام القضاء الصادر بالمرسوم الملكي م/78.</li>
+<li>مسمى «قاضي» يظهر في التصنيف السعودي الموحد للمهن كوحدة مهنية مستقلة برمز 261209، لكن مسار الدخول العملي يبدأ غالبًا من «ملازم قضائي» وفق قواعد الاختيار، مما يجعل البحث الوظيفي بالمسمى النهائي وحده غير كافٍ لفهم بوابة الدخول الفعلية إلى السلك القضائي، ويستند ذلك إلى دليل التصنيف السعودي الموحد للمهن وقواعد اختيار القضاة.</li>
+<li>الدبلومات التأهيلية والشهادات المهنية في مجال القضاء والفقه لا تُعوّض النقص في شرط المؤهل الشرعي النظامي — فرصة الدخول تبقى مغلقة أمام من لا يحمل شهادة كلية شريعة أو معادلتها المعتمدة بصرف النظر عما يحمله من برامج تأهيلية إضافية، ويستند ذلك إلى المادة 31 من نظام القضاء م/78.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">النصائح العملية الإضافية</div><div class="section-body">
+<ol>
+<li>جهّز ملفك لمسار القبول أو الترشيح القضائي الرسمي قبل بدء إجراءات المفاضلة، بتجميع شهادة البكالوريوس وكشف الدرجات التفصيلي الذي يُظهر تقدير مادة الفقه وأصوله منفصلًا، لأن الجهة المختصة تتحقق من شرط المؤهل والتقدير قبل الانتقال إلى مراحل التزكيات والاختبار والمقابلة. للتخصصات الدقيقة من الدراسات الإسلامية وأصول الدين والعقيدة: وثّق وضع مؤهلك مبكرًا وفق مسار المعادلة والامتحان الخاص قبل الدخول في إجراءات الاختيار.</li>
+<li>ابدأ بتوثيق علاقاتك الأكاديمية مع الأساتذة والمشايخ الذين يعرفونك معرفة مباشرة، لأن آلية الاختيار تشترط ثلاث تزكيات علمية من أشخاص درّسوك أو عرفوك، وهي شرط انتقائي يُقيَّم قبل اختبار القياس ولا يمكن تعويضه بأي مستند آخر.</li>
+<li>التحق بالدبلوم العالي في الفقه في جامعة الملك خالد إذا كنت مستوفيًا شرط المؤهل والتقدير وتحتاج إلى رفع جاهزيتك العلمية في الفقه وأصوله، لأن البرنامج يعمّق الجانب الذي يظهر أثره في الاختيار والمقابلة دون أن يغيّر تقدير البكالوريوس أو يعوض أي شرط نظامي. للتخصصات الدقيقة: يفيد فقط بعد تحقق مسار المعادلة أو قبول المؤهل رسميًا، ولا يفتح القبول بمفرده.</li>
+<li>وثّق نماذج تدريبية من عملك في تسبيب الأحكام وتكييف الوقائع — كتحليل قضايا فقهية وإعداد تقييمات نظامية مكتوبة — واحتفظ بها في ملف تعرضه في المقابلة الشخصية، لأن اللجنة تقيس القدرة على الربط بين الوقائع والحكم الشرعي النظامي، وهذا لا يُقدَّم كخبرة قضائية رسمية بل كدليل كفاءة علمية تطبيقية.</li>
+<li>استعد لاختبار قياس القدرات بمراجعة المفاهيم الإجرائية في الأحوال الشخصية والتنفيذ، مستفيدًا من دورتَي نظام الأحوال الشخصية وقضاء التنفيذ على منصة إثرائي، لأن الاختبار يقيس الفهم التطبيقي للأنظمة لا الحفظ النظري.</li>
+<li>التحق بالدبلوم العالي في القضاء والسياسة الشرعية في الجامعة الإسلامية بالمدينة المنورة إذا أردت تحويل معرفتك الشرعية النظرية إلى مهارة إجرائية قابلة للعرض في المقابلة، لأن البرنامج يتضمن تدريبًا ميدانيًا في القضاء الإداري والتجاري والجزائي. للتخصصات الدقيقة: يرفع مستوى الجاهزية الإجرائية بما يتجاوز ضعف الاسم الأكاديمي في أعين اللجنة، مع استمرار اشتراط اجتياز امتحان المعادلة الرسمي أولًا.</li>
+</ol>
+</div></div>
+<div class="section"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
+<table>
+<thead>
+<tr>
+<th>التخصص</th>
+<th>مستوى القبول</th>
+<th>سبب التقييم</th>
+<th>البرامج أو الشهادات اللازمة لرفع القبول</th>
+<th>ملاحظات دقيقة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الشريعة</td>
+<td>عالي</td>
+<td>المؤهل الأصلي المنصوص عليه في المادة 31 من نظام القضاء — شهادة صادرة من كليات الشريعة في المملكة دون حاجة إلى معادلة</td>
+<td>لا يحتاج برنامجًا تعويضيًا — الدبلوم العالي في القضاء والسياسة الشرعية أو الدبلوم العالي في الفقه داعمان للجاهزية</td>
+<td>يُشترط تقدير لا يقل عن جيد جدًا في مادة الفقه وأصوله بصرف النظر عن التقدير العام للشهادة</td>
+</tr>
+<tr>
+<td>الفقه وأصوله</td>
+<td>عالي</td>
+<td>يندرج ضمن كليات الشريعة في الجامعات السعودية ويمثل المادة المشترطة تحديدًا بتقدير جيد جدًا في المادة 31</td>
+<td>لا يحتاج برنامجًا تعويضيًا — الدبلوم العالي في الفقه داعم ويعمّق التحصيل في محور الاختيار</td>
+<td>تقدير جيد جدًا في هذا التخصص يتوافق مباشرة مع الشرط النظامي الأكثر أثرًا في الفرز</td>
+</tr>
+<tr>
+<td>السياسات الشرعية والأنظمة</td>
+<td>عالي</td>
+<td>يرتفع قبوله إذا كان صادرًا من كلية شريعة أو مسار شرعي نظامي مستوفٍ لشرط المادة 31، ويقوى لارتباطه بالأنظمة والإجراءات القضائية المطبقة في المحاكم السعودية</td>
+<td>لا يحتاج برنامجًا تعويضيًا إذا كان مستوفيًا لشرط المؤهل، والدبلوم العالي في القضاء والسياسة الشرعية يعزز التطبيق الإجرائي</td>
+<td>قوته مرتبطة بمصدر الشهادة وتصنيفها الأكاديمي، ولا يُعامل تلقائيًا كبديل عن شهادة كلية الشريعة إذا لم يثبت استيفاؤه للشرط النظامي</td>
+</tr>
+<tr>
+<td>الدراسات الإسلامية</td>
+<td>متوسط</td>
+<td>لا يصدر عادةً من كلية شريعة — يقبل بشرط اجتياز امتحان المعادلة الخاص الذي يعده المجلس الأعلى للقضاء وفق المادة 31</td>
+<td>الدبلوم العالي في القضاء والسياسة الشرعية لرفع الجاهزية الإجرائية بعد تحقق المعادلة</td>
+<td>اجتياز امتحان المعادلة شرط نظامي لا يعوضه أي برنامج تأهيلي — يجب تحقيقه قبل الدخول في إجراءات الاختيار</td>
+</tr>
+<tr>
+<td>أصول الدين</td>
+<td>متوسط</td>
+<td>لا يصدر من كلية شريعة — يقبل بشرط اجتياز امتحان المعادلة الخاص وفق المادة 31 من نظام القضاء</td>
+<td>الدبلوم العالي في الفقه بعد تحقق المعادلة لتعميق التحصيل في المجال المشترط نظاميًا</td>
+<td>محتوى التخصص قريب من العلوم الشرعية الأصولية لكن مسار الدخول القضائي يبقى مشروطًا بالمعادلة الرسمية</td>
+</tr>
+<tr>
+<td>العقيدة</td>
+<td>متوسط</td>
+<td>لا يصدر من كلية شريعة — يقبل بشرط اجتياز امتحان المعادلة الخاص وفق المادة 31 من نظام القضاء</td>
+<td>الدبلوم العالي في القضاء والسياسة الشرعية لرفع الجاهزية الإجرائية بعد تحقق المعادلة</td>
+<td>محتوى التخصص أبعد عن الإجراءات القضائية التطبيقية مقارنةً بأصول الدين والدراسات الإسلامية — الفجوة الإجرائية أوسع</td>
+</tr>
+<tr>
+<td>الثقافة الإسلامية</td>
+<td>ضعيف</td>
+<td>لا يُعامل كمؤهل شرعي مباشر وفق المادة 31 — ليس من كليات الشريعة ولم يثبت له مسار معادلة رسمية معتمد في الاختيار القضائي</td>
+<td>لا يوجد في البطاقة برنامج يعوض غياب المؤهل الشرعي النظامي — الشرط الجوهري غير مستوفى</td>
+<td>الشرط النظامي مغلق أمام هذا التخصص إلا في حال صدور قرار رسمي من المجلس الأعلى للقضاء بقبول المعادلة وهو غير مثبت</td>
+</tr>
+</tbody>
+</table></div></div>
+</div>
+</body>
+</html>
