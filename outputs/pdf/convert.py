@@ -171,6 +171,18 @@ p, li, td, th {{
   overflow: hidden;
 }}
 
+/* إضاءة ناعمة جدًا أعلى الشريط لإعطائه عمقًا خفيفًا دون مسّ التدرج الأساسي */
+.footer::before {{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}}
+
 .footer-inner {{
   position: relative;
   height: 14mm;
@@ -180,41 +192,41 @@ p, li, td, th {{
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5mm;
+  gap: 4.2mm;
   direction: ltr;
 }}
 
 .footer-link {{
   display: inline-flex;
   align-items: center;
-  gap: 1.6mm;
+  gap: 1.8mm;
   line-height: 1;
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.16);
-  border: 0.35mm solid rgba(255, 255, 255, 0.45);
-  border-radius: 4.5mm;
-  padding: 1.6mm 3.6mm;
-  box-shadow: inset 0 0.4mm 0.9mm rgba(255, 255, 255, 0.18),
-              inset 0 -0.5mm 1mm rgba(0, 0, 0, 0.22),
-              0 0.5mm 1.2mm rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.20);
+  border: 0.35mm solid rgba(214, 247, 244, 0.6);
+  border-radius: 4mm;
+  padding: 1.9mm 4.2mm;
+  box-shadow: inset 0 0.5mm 1mm rgba(255, 255, 255, 0.28),
+              inset 0 -0.6mm 1.1mm rgba(0, 0, 0, 0.16),
+              0 0.6mm 1.4mm rgba(0, 0, 0, 0.16);
 }}
 
 .footer-platform {{
   color: #ffffff;
   font-weight: 700;
-  font-size: 6pt;
-  letter-spacing: 0.3pt;
-  text-shadow: 0 0.3mm 0.6mm rgba(0, 0, 0, 0.35);
+  font-size: 6.2pt;
+  letter-spacing: 0.4pt;
+  text-shadow: 0 0.3mm 0.5mm rgba(0, 0, 0, 0.30);
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
-  color: #eef6fb;
-  font-size: 6.6pt;
+  color: #f4fbff;
+  font-size: 6.8pt;
   font-weight: 400;
   text-decoration: none;
-  opacity: 0.97;
-  text-shadow: 0 0.3mm 0.6mm rgba(0, 0, 0, 0.30);
+  opacity: 1;
+  text-shadow: 0 0.25mm 0.5mm rgba(0, 0, 0, 0.25);
 }}
 
 /* ── Main content ────────────────────────────────────── */
