@@ -190,43 +190,68 @@ p, li, td, th {{
   padding: 0 8mm;
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: 4.2mm;
   direction: ltr;
 }}
 
+/* كل حساب = شارة دائرية + سطرين نصيين، مفصولة بخطوط رفيعة — أسلوب الصورة المرجعية */
 .footer-link {{
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 1.8mm;
+  gap: 2.2mm;
   line-height: 1;
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.20);
-  border: 0.35mm solid rgba(214, 247, 244, 0.6);
-  border-radius: 4mm;
-  padding: 1.9mm 4.2mm;
-  box-shadow: inset 0 0.5mm 1mm rgba(255, 255, 255, 0.28),
-              inset 0 -0.6mm 1.1mm rgba(0, 0, 0, 0.16),
-              0 0.6mm 1.4mm rgba(0, 0, 0, 0.16);
+  padding: 0 6mm;
+  border-right: 0.3mm solid rgba(255, 255, 255, 0.28);
+}}
+.footer-link:first-child {{
+  padding-left: 0;
+}}
+.footer-link:last-child {{
+  border-right: none;
+  padding-right: 0;
+}}
+
+.footer-icon {{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 6.4mm;
+  height: 6.4mm;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 0.3mm solid rgba(255, 255, 255, 0.55);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 5.4pt;
+  letter-spacing: 0;
+  box-shadow: inset 0 0.4mm 0.8mm rgba(255, 255, 255, 0.25);
+}}
+
+.footer-text {{
+  display: flex;
+  flex-direction: column;
+  gap: 0.4mm;
 }}
 
 .footer-platform {{
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 6.2pt;
-  letter-spacing: 0.4pt;
-  text-shadow: 0 0.3mm 0.5mm rgba(0, 0, 0, 0.30);
+  color: #eaf7f5;
+  font-weight: 400;
+  font-size: 5pt;
+  letter-spacing: 0.3pt;
+  opacity: 0.85;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
-  color: #f4fbff;
-  font-size: 6.8pt;
-  font-weight: 400;
+  color: #ffffff;
+  font-size: 6.6pt;
+  font-weight: 700;
   text-decoration: none;
   opacity: 1;
-  text-shadow: 0 0.25mm 0.5mm rgba(0, 0, 0, 0.25);
+  text-shadow: 0 0.25mm 0.5mm rgba(0, 0, 0, 0.22);
 }}
 
 /* ── Main content ────────────────────────────────────── */
@@ -352,11 +377,11 @@ p, li, td, th {{
 # ── Footer HTML ───────────────────────────────────────────────────────────────
 footer_html = f"""<div class="footer">
   <div class="footer-inner">
-    <span class="footer-link"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
-    <span class="footer-link"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span>
-    <span class="footer-link"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span>
-    <span class="footer-link"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span>
-    <span class="footer-link"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span>
+    <span class="footer-link"><span class="footer-icon">TT</span><span class="footer-text"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon">X</span><span class="footer-text"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon">IG</span><span class="footer-text"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon">YT</span><span class="footer-text"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon">W</span><span class="footer-text"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span></span>
   </div>
 </div>"""
 
