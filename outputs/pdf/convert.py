@@ -214,67 +214,52 @@ p, li, td, th {{
   pointer-events: none;
 }}
 
-/* صف مرن واحد: كبسولات + فواصل عمودية بينها — بلا أي تداخل */
+/* صف مرن واحد موزّع على كامل العرض — عناصر بسيطة (أيقونة + نص) دون كبسولات ثقيلة */
 .footer-inner {{
   position: relative;
-  height: 12.5mm;
+  height: 12mm;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 11mm;
+  padding: 0 14mm;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 3mm;
+  justify-content: space-between;
   direction: ltr;
 }}
 
-/* كبسولة مدمجة وأنيقة — بعمق زجاجي خفيف دون ثِقل بصري */
+/* عنصر بسيط: أيقونة دائرية خفيفة + نص — بلا خلفية كبسولة ثقيلة */
 .footer-link {{
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  flex: 1 1 0;
-  gap: 1.7mm;
-  height: 8.1mm;
-  box-sizing: border-box;
-  padding: 0 3.2mm;
-  background: rgba(255, 255, 255, 0.26);
-  border: 0.4mm solid rgba(255, 255, 255, 0.78);
-  border-radius: 5mm;
-  box-shadow: inset 0 0.6mm 1.1mm rgba(255, 255, 255, 0.32),
-              inset 0 -0.6mm 1.1mm rgba(0, 0, 0, 0.20),
-              0 0.8mm 2mm rgba(0, 0, 0, 0.22);
-  overflow: hidden;
+  gap: 1.8mm;
+  flex: 0 0 auto;
 }}
 
-/* فاصل عمودي رفيع وأنيق بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
+/* فاصل عمودي رفيع جدًا وهادئ بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
 .footer-divider {{
   flex: 0 0 auto;
-  width: 0.3mm;
-  height: 4.6mm;
-  background: rgba(130, 235, 213, 0.32);
-  border-radius: 0.2mm;
+  width: 0.25mm;
+  height: 3.6mm;
+  background: rgba(150, 235, 218, 0.22);
 }}
 
 .footer-icon {{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 5.8mm;
-  height: 5.8mm;
+  width: 5.6mm;
+  height: 5.6mm;
   flex-shrink: 0;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.32);
+  background-color: rgba(255, 255, 255, 0.16);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 3.5mm 3.5mm;
-  border: 0.4mm solid rgba(255, 255, 255, 0.92);
+  background-size: 3.4mm 3.4mm;
+  border: 0.32mm solid rgba(255, 255, 255, 0.7);
   color: #ffffff;
   font-weight: 700;
-  font-size: 6pt;
+  font-size: 5.8pt;
   line-height: 1;
-  box-shadow: inset 0 0.45mm 0.9mm rgba(255, 255, 255, 0.38),
-              inset 0 -0.45mm 0.9mm rgba(0, 0, 0, 0.18);
   overflow: hidden;
 }}
 
@@ -282,25 +267,24 @@ p, li, td, th {{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.6mm;
+  gap: 0.4mm;
   overflow: hidden;
 }}
 
 .footer-platform {{
   color: #ffffff;
   font-weight: 400;
-  font-size: 4.5pt;
-  letter-spacing: 0.35pt;
-  opacity: 0.94;
+  font-size: 4.2pt;
+  letter-spacing: 0.3pt;
+  opacity: 0.8;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 7pt;
+  font-size: 6.8pt;
   font-weight: 700;
   text-decoration: none;
-  text-shadow: 0 0.25mm 0.4mm rgba(0, 0, 0, 0.34);
 }}
 
 /* ── Main content ────────────────────────────────────── */
