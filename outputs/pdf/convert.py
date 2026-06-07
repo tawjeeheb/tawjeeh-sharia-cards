@@ -30,6 +30,34 @@ PDF_OUT   = os.path.join(BASE_DIR, "test_card_001_qadi.pdf")
 with open(LOGO_FILE, "rb") as f:
     LOGO_B64 = "data:image/jpeg;base64," + base64.b64encode(f.read()).decode()
 
+# ── Footer platform icons (minimal inline SVGs, white strokes) ───────────────
+def _svg_data_uri(svg: str) -> str:
+    return "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
+
+_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"'
+
+ICON_TIKTOK = _svg_data_uri(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
+    f'<circle cx="9" cy="17" r="3.1"/><path d="M12 17V4.5l5.5 1.6V9"/></svg>'
+)
+ICON_INSTAGRAM = _svg_data_uri(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
+    f'<rect x="3.5" y="3.5" width="17" height="17" rx="5"/>'
+    f'<circle cx="12" cy="12" r="4.2"/>'
+    f'<circle cx="17" cy="7" r="0.6" fill="#ffffff" stroke="none"/></svg>'
+)
+ICON_YOUTUBE = _svg_data_uri(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
+    f'<rect x="3" y="6" width="18" height="12" rx="3.5"/>'
+    f'<path d="M10.2 9.3l5 2.7-5 2.7z" fill="#ffffff" stroke="none"/></svg>'
+)
+ICON_WEB = _svg_data_uri(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
+    f'<circle cx="12" cy="12" r="8.5"/>'
+    f'<ellipse cx="12" cy="12" rx="3.7" ry="8.5"/>'
+    f'<path d="M3.7 9h16.6M3.7 15h16.6"/></svg>'
+)
+
 # ── Section heading sets ──────────────────────────────────────────────────────
 H2_HEADINGS = {
     'المسميات المكافئة', 'التصنيف الوطني SSC', 'طبيعة العمل',
@@ -186,74 +214,84 @@ p, li, td, th {{
 .footer-inner {{
   position: relative;
   height: 17mm;
+  width: 100%;
   margin: 0 7mm;
   padding: 0 8mm;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 3mm;
+  justify-content: space-between;
   direction: ltr;
 }}
 
-/* كل حساب = كبسولة بارزة قائمة بذاتها: دائرة أيقونة + سطرين نصيين — أقرب لشكل المرجع */
+/* كل حساب = كبسولة بارزة قائمة بذاتها: دائرة أيقونة SVG + سطرين نصيين، بعمق وتباين أعلى */
 .footer-link {{
   display: flex;
   align-items: center;
-  gap: 2.4mm;
+  gap: 2.6mm;
   line-height: 1;
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.22);
-  border: 0.45mm solid rgba(255, 255, 255, 0.6);
+  background: rgba(8, 35, 64, 0.32);
+  border: 0.45mm solid rgba(255, 255, 255, 0.65);
   border-radius: 6.5mm;
-  padding: 2.2mm 5mm 2.2mm 3mm;
+  padding: 2.4mm 5.4mm;
   height: 11.5mm;
+  flex: 1 1 0;
+  justify-content: center;
   box-sizing: border-box;
-  box-shadow: inset 0 0.6mm 1.2mm rgba(255, 255, 255, 0.32),
-              inset 0 -0.7mm 1.3mm rgba(0, 0, 0, 0.20),
-              0 0.9mm 2mm rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 0.7mm 1.3mm rgba(255, 255, 255, 0.30),
+              inset 0 -0.8mm 1.4mm rgba(0, 0, 0, 0.30),
+              0 1mm 2.2mm rgba(0, 0, 0, 0.28);
 }}
 
 .footer-icon {{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 7.6mm;
-  height: 7.6mm;
+  width: 7.8mm;
+  height: 7.8mm;
   flex-shrink: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.24);
-  border: 0.4mm solid rgba(255, 255, 255, 0.75);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 6.4pt;
-  letter-spacing: 0;
+  background-color: rgba(255, 255, 255, 0.22);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 4.4mm 4.4mm;
+  border: 0.4mm solid rgba(255, 255, 255, 0.8);
   box-shadow: inset 0 0.5mm 1mm rgba(255, 255, 255, 0.35),
-              inset 0 -0.5mm 1mm rgba(0, 0, 0, 0.18);
+              inset 0 -0.5mm 1mm rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}}
+
+.footer-icon-x {{
+  color: #ffffff;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 7pt;
+  line-height: 1;
 }}
 
 .footer-text {{
   display: flex;
   flex-direction: column;
-  gap: 0.7mm;
+  gap: 0.8mm;
 }}
 
 .footer-platform {{
-  color: #eaf7f5;
+  color: #ffffff;
   font-weight: 400;
-  font-size: 5.2pt;
-  letter-spacing: 0.4pt;
-  opacity: 0.88;
+  font-size: 5.4pt;
+  letter-spacing: 0.5pt;
+  opacity: 0.78;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 7.6pt;
+  font-size: 8.2pt;
   font-weight: 700;
   text-decoration: none;
   opacity: 1;
-  text-shadow: 0 0.3mm 0.6mm rgba(0, 0, 0, 0.28);
+  text-shadow: 0 0.35mm 0.7mm rgba(0, 0, 0, 0.32);
 }}
 
 /* ── Main content ────────────────────────────────────── */
@@ -379,11 +417,11 @@ p, li, td, th {{
 # ── Footer HTML ───────────────────────────────────────────────────────────────
 footer_html = f"""<div class="footer">
   <div class="footer-inner">
-    <span class="footer-link"><span class="footer-icon">TT</span><span class="footer-text"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span></span>
-    <span class="footer-link"><span class="footer-icon">X</span><span class="footer-text"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span></span>
-    <span class="footer-link"><span class="footer-icon">IG</span><span class="footer-text"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span></span>
-    <span class="footer-link"><span class="footer-icon">YT</span><span class="footer-text"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span></span>
-    <span class="footer-link"><span class="footer-icon">W</span><span class="footer-text"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_TIKTOK}')"></span><span class="footer-text"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon"><span class="footer-icon-x">X</span></span><span class="footer-text"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_INSTAGRAM}')"></span><span class="footer-text"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_YOUTUBE}')"></span><span class="footer-text"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_WEB}')"></span><span class="footer-text"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span></span>
   </div>
 </div>"""
 
