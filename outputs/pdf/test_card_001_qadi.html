@@ -28,8 +28,8 @@
 /* ── Page layout ─────────────────────────────────────── */
 @page {
   size: A4;
-  /* top | right | bottom (footer ~14mm) | left */
-  margin: 14mm 18mm 20mm 16mm;
+  /* top | right | bottom (room for fixed footer) | left */
+  margin: 16mm 18mm 20mm 18mm;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,6 +39,12 @@ html, body {
   font-family: 'NotoKufi', sans-serif;
   background: #ffffff;
   color: #023663;
+}
+
+/* عدم ترك عنوان أو سطر معزول عند تقسيم الصفحات */
+p, li, td, th {
+  orphans: 2;
+  widows: 2;
 }
 
 /* ── Fixed watermark — appears on every page ─────────── */
@@ -53,26 +59,30 @@ html, body {
   pointer-events: none;
 }
 
-/* ── Fixed footer — appears on every page ────────────── */
+/* ── Fixed footer — edge-to-edge bar on every page ───── */
 .page-footer {
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
+  bottom: 0;
+  width: 100%;
   z-index: 10;
 }
 
 .footer-teal-bar {
-  height: 2.5mm;
+  width: 100%;
+  height: 1.4mm;
   background: #049e9e;
 }
 
 .footer-inner {
-  background: #12263a;
-  padding: 2.5mm 5mm;
+  position: relative;
+  width: 100%;
+  background: #023663;
+  padding: 2.2mm 8mm;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   direction: ltr;
 }
 
@@ -93,8 +103,12 @@ html, body {
 .fi { color: #049e9e; margin-left: 0.5mm; }
 
 .footer-arrow {
-  font-size: 13pt;
+  position: absolute;
+  right: 4mm;
+  top: 50%;
+  transform: translateY(-50%);
   color: #049e9e;
+  font-size: 12pt;
   font-weight: bold;
   line-height: 1;
 }
@@ -103,6 +117,8 @@ html, body {
 .content {
   position: relative;
   z-index: 1;
+  /* مساحة كافية أسفل المحتوى حتى لا يغطيه الفوتر الثابت */
+  padding-bottom: 12mm;
 }
 
 /* ── Profession title ────────────────────────────────── */
@@ -117,12 +133,15 @@ html, body {
   line-height: 1.15;
 }
 
-/* ── Section ─────────────────────────────────────────── */
+/* ── Section: تدفق ذكي — لا حبس للكتلة كاملة، العنوان يبقى مع بداية محتواه ── */
 .section {
   margin-bottom: 5mm;
+  break-inside: auto;
+  page-break-inside: auto;
 }
 
 /* عنوان العنصر: NotoKufi (Droid Arabic Kufi) — 13pt = 11pt + 2 */
+/* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
 .section-heading {
   font-family: 'NotoKufi', sans-serif;
   font-size: 13pt;
@@ -131,18 +150,22 @@ html, body {
   text-align: right;
   margin-bottom: 1.5mm;
   line-height: 1.4;
+  break-after: avoid;
+  page-break-after: avoid;
 }
 
-/* محتوى العنصر: NotoKufi — 11pt */
+/* محتوى العنصر: NotoKufi — 11pt — يتدفق بحرية بين الصفحات */
 .section-body {
   font-family: 'NotoKufi', sans-serif;
   font-size: 11pt;
   color: #023663;
   text-align: right;
   line-height: 1.85;
+  break-inside: auto;
+  page-break-inside: auto;
 }
 
-/* عنوان فرعي h3 */
+/* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
 .section-body h3 {
   font-family: 'NotoKufi', sans-serif;
   font-size: 11.5pt;
@@ -150,9 +173,14 @@ html, body {
   color: #023663;
   margin-top: 3mm;
   margin-bottom: 1mm;
+  break-after: avoid;
+  page-break-after: avoid;
 }
 
-.section-body p  { margin-bottom: 1.5mm; }
+.section-body p  {
+  margin-bottom: 1.5mm;
+  break-inside: avoid-page;
+}
 
 .section-body ul,
 .section-body ol {
@@ -160,32 +188,47 @@ html, body {
   margin-top: 1mm;
   margin-bottom: 1mm;
 }
-.section-body li { margin-bottom: 1mm; line-height: 1.8; }
+.section-body li {
+  margin-bottom: 1mm;
+  line-height: 1.8;
+  break-inside: avoid-page;
+}
 
 .section-body a { color: #049e9e; text-decoration: none; }
 .section-body strong { font-weight: bold; color: #023663; }
 
-/* ── Tables ──────────────────────────────────────────── */
+/* ── Tables: تنقسم بشكل نظيف، رأس الجدول يتكرر ───────── */
 .section-body table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 9.5pt;
+  font-size: 8.5pt;
+  line-height: 1.55;
   margin-top: 2mm;
   color: #023663;
+  break-inside: auto;
+  page-break-inside: auto;
+}
+.section-body thead {
+  display: table-header-group;
+}
+.section-body tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 .section-body th {
   background: #023663;
   color: #ffffff;
-  padding: 2mm 3mm;
+  padding: 1.6mm 2.2mm;
   text-align: center;
   font-weight: bold;
-  font-size: 9pt;
+  font-size: 8.5pt;
+  vertical-align: middle;
 }
 .section-body td {
-  padding: 1.8mm 3mm;
+  padding: 1.6mm 2.2mm;
   border: 1px solid #c8d8e8;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: top;
 }
 .section-body tr:nth-child(even) td { background: #f0f5fa; }
 </style>
@@ -208,19 +251,19 @@ html, body {
 </div>
 <div class="content">
   <div class="profession-title">قاضي</div>
-  <div class="section" style="break-inside: avoid;"><div class="section-heading">المسميات المكافئة</div><div class="section-body">
+  <div class="section"><div class="section-heading">المسميات المكافئة</div><div class="section-body">
 <p>لا يوجد</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">التصنيف الوطني SSC</div><div class="section-body">
+<div class="section"><div class="section-heading">التصنيف الوطني SSC</div><div class="section-body">
 <p>المجموعة الرئيسية: 2 - الاختصاصيون<br />
 المجموعة الفرعية: 26 - الاختصاصيون في القانون والاجتماع والثقافة<br />
 المجموعة الرئيسية الدقيقة: 261 - الاختصاصيون في القانون<br />
 الوحدة/المهنة: 261209 - قاضي</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">طبيعة العمل</div><div class="section-body">
+<div class="section"><div class="section-heading">طبيعة العمل</div><div class="section-body">
 <p>القاضي مسؤول قضائي سيادي يباشر الفصل في المنازعات والخصومات داخل المحاكم المختصة ضمن منظومة القضاء السعودي، ويحوّل الوقائع والدفوع والمستندات إلى أحكام ملزمة وفق الشريعة الإسلامية والأنظمة المرعية، بما يحفظ الحقوق ويضبط إجراءات التقاضي.</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">المهام الرئيسية</div><div class="section-body">
+<div class="section"><div class="section-heading">المهام الرئيسية</div><div class="section-body">
 <p>النظر في الدعاوى القضائية المرفوعة وتمحيص وقائعها وأدلتها والدفوع المقدمة من أطراف النزاع<br />
 إصدار الأحكام القضائية المبنية على الشريعة الإسلامية والأنظمة المرعية مع تسبيبها تسبيبًا واضحًا<br />
 ضبط إجراءات الجلسات والتحقق من استيفاء الشروط الشكلية والموضوعية للتقاضي<br />
@@ -262,7 +305,7 @@ html, body {
 <h3>العمل الحر</h3>
 <p>الوظيفة لا تُمارس فعليًا في هذا القطاع.</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">الشروط والمؤهلات</div><div class="section-body">
+<div class="section"><div class="section-heading">الشروط والمؤهلات</div><div class="section-body">
 <h3>القطاع الحكومي</h3>
 <p>الشروط العامة: الجنسية السعودية، حسن السيرة والسلوك، الأهلية الكاملة للقضاء، وألا يكون المتقدم محكومًا بجريمة مخلة بالدين أو الشرف أو صدر في حقه قرار تأديبي بالفصل من وظيفة عامة.<br />
 المؤهل العلمي: بكالوريوس من إحدى كليات الشريعة في المملكة، أو شهادة أخرى معادلة لها وفق ما يقرره المجلس الأعلى للقضاء، مع تقدير عام لا يقل عن جيد، وتقدير لا يقل عن جيد جدًا في مادة الفقه وأصوله.<br />
@@ -298,31 +341,31 @@ html, body {
 <a href="https://aaoifi.com/%D8%B4%D9%87%D8%A7%D8%AF%D8%A9-%D8%A7%D9%84%D9%85%D8%B1%D8%A7%D9%82%D8%A8-%D9%88%D8%A7%D9%84%D9%85%D8%AF%D9%82%D9%82-%D8%A7%D9%84%D8%B4%D8%B1%D8%B9%D9%8A/">شهادة المراقب والمدقق الشرعي (CSAA)</a>: تعمق الخبرة الشرعية التطبيقية لتقييم الدفوع في قضايا التمويل الإسلامي (غير مدعومة)<br />
 <a href="https://www.acfe.com/cfe-credential">شهادة محترف فحص الاحتيال المعتمد (CFE)</a>: تعزز التحليل الميداني لأدلة الاحتيال التجاري وجرائم الغش المالي (غير مدعومة)</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">المهارات المطلوبة</div><div class="section-body">
+<div class="section"><div class="section-heading">المهارات المطلوبة</div><div class="section-body">
 <p>تكييف الوقائع قضائيًا: لتحويل الوقائع لحكم<br />
 تسبيب الأحكام القضائية: لضبط منطق الحكم<br />
 تقدير حجية الأدلة: لبناء القناعة القضائية<br />
 تحرير منطوق الحكم: لضبط آثاره النظامية<br />
 إدارة إجراءات الجلسات: لضمان سلامة التقاضي</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">الدورات الداعمة</div><div class="section-body">
+<div class="section"><div class="section-heading">الدورات الداعمة</div><div class="section-body">
 <p>دورة <a href="https://ethrai.sa/course-details/%D9%86%D8%B8%D8%A7%D9%85-%D8%A7%D9%84%D8%A3%D8%AD%D9%88%D8%A7%D9%84-%D8%A7%D9%84%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9">نظام الأحوال الشخصية</a>: تدعم مهارة تكييف الوقائع قضائيًا<br />
 دورة <a href="https://www.coursera.org/learn/law-student">A Law Student's Toolkit</a>: تدعم مهارة تسبيب الأحكام القضائية<br />
 دورة <a href="https://ethrai.sa/course-details/eb5b9ea5-3261-ea11-80d7-0050568c1fee">قضاء التنفيذ</a>: تدعم مهارة إدارة إجراءات الجلسات<br />
 دورة <a href="https://www.coursera.org/learn/american-law">An Introduction to American Law</a>: تدعم مهارة تحرير منطوق الحكم<br />
 دورة <a href="https://www.coursera.org/learn/challenging-forensic-science">Challenging Forensic Science: How Science Should Speak to Court</a>: تدعم مهارة تقدير حجية الأدلة</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">جهات التوظيف وطريقة التقديم</div><div class="section-body">
+<div class="section"><div class="section-heading">جهات التوظيف وطريقة التقديم</div><div class="section-body">
 <h3>القطاع الحكومي</h3>
 <p>جهات سبق وأعلنت<br />
 القضاء العام عبر المجلس الأعلى للقضاء والمحاكم التابعة لمنظومة وزارة العدل، وديوان المظالم للقضاء الإداري: يكون الدخول عبر مسار القبول أو الترشيح القضائي الرسمي لملازم قضائي متى فعّلته الجهة المختصة عبر القناة الرسمية المخصصة، ثم تمر الطلبات بمراحل الفحص، واختبار قياس القدرات، والمقابلة الشخصية أمام اللجنة المختصة وفق قواعد اختيار القضاة.</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">المسار الوظيفي والتطور المهني</div><div class="section-body">
+<div class="section"><div class="section-heading">المسار الوظيفي والتطور المهني</div><div class="section-body">
 <p>مسار الترقي: يبدأ كـ «ملازم قضائي»، ثم «قاضٍ ج»، ثم «قاضٍ ب»، ثم «قاضٍ أ»، وقد يصل إلى «وكيل محكمة» أو «رئيس محكمة»، ثم «قاضٍ في محكمة الاستئناف»، وصولًا إلى «رئيس محكمة استئناف» أو «عضو في المحكمة العليا» وفق التدرج النظامي وآليات التقييم والترقية المعتمدة.<br />
 مسار الانتقال: يتحرك القاضي داخل المنظومة القضائية الرسمية عبر الانتقال بين الدوائر أو المحاكم أو الاختصاصات القضائية المتاحة، أو عبر المشاركة في اللجان والأعمال القضائية المساندة والبحث القضائي داخل الجهات القضائية المختصة، دون اعتباره انتقالًا مفتوحًا إلى المحاماة أو الاستشارات أو العمل الحر.<br />
 مسار التخصص: يمكن التخصص في مجالات قضائية دقيقة مثل «القضاء التجاري»، «القضاء الجزائي»، «قضاء الأحوال الشخصية»، «قضاء التنفيذ»، و«القضاء الإداري» بحسب الدوائر والاختصاصات التي تتيحها الأنظمة والقرارات القضائية المعتمدة.</p>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">الملاحظات المهنية المتقدمة</div><div class="section-body">
+<div class="section"><div class="section-heading">الملاحظات المهنية المتقدمة</div><div class="section-body">
 <ul>
 <li>الدخول إلى السلك القضائي لا يتم عبر التقديم الحر في أي وقت كما هو الحال في كثير من الوظائف الحكومية، بل يُفتح بإعلان دوري تصدره اللجنة المختصة، ويمر المتقدم بثلاث مراحل انتقائية متسلسلة: تزكيات علمية ممن درّسوا المتقدم أو عرفوه، ثم اختبار قياس القدرات، ثم مقابلة شخصية لمن اجتازه فقط — ويستند ذلك إلى قواعد اختيار القضاة المنشورة عبر ديوان المظالم.</li>
 <li>حملة تخصصات الدراسات الإسلامية وأصول الدين والعقيدة لا يُعاملون معاملة حاملي شهادات كليات الشريعة تلقائيًا عند التقديم — دخولهم مشروط بنجاح في امتحان خاص يعده المجلس الأعلى للقضاء قبل قبول معادلة شهاداتهم، وهو شرط لا يظهر في اسم المهنة ولا في وصفها العام، ويستند ذلك إلى المادة 31 من نظام القضاء الصادر بالمرسوم الملكي م/78.</li>
@@ -330,7 +373,7 @@ html, body {
 <li>الدبلومات التأهيلية والشهادات المهنية في مجال القضاء والفقه لا تُعوّض النقص في شرط المؤهل الشرعي النظامي — فرصة الدخول تبقى مغلقة أمام من لا يحمل شهادة كلية شريعة أو معادلتها المعتمدة بصرف النظر عما يحمله من برامج تأهيلية إضافية، ويستند ذلك إلى المادة 31 من نظام القضاء م/78.</li>
 </ul>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">النصائح العملية الإضافية</div><div class="section-body">
+<div class="section"><div class="section-heading">النصائح العملية الإضافية</div><div class="section-body">
 <ol>
 <li>جهّز ملفك لمسار القبول أو الترشيح القضائي الرسمي قبل بدء إجراءات المفاضلة، بتجميع شهادة البكالوريوس وكشف الدرجات التفصيلي الذي يُظهر تقدير مادة الفقه وأصوله منفصلًا، لأن الجهة المختصة تتحقق من شرط المؤهل والتقدير قبل الانتقال إلى مراحل التزكيات والاختبار والمقابلة. للتخصصات الدقيقة من الدراسات الإسلامية وأصول الدين والعقيدة: وثّق وضع مؤهلك مبكرًا وفق مسار المعادلة والامتحان الخاص قبل الدخول في إجراءات الاختيار.</li>
 <li>ابدأ بتوثيق علاقاتك الأكاديمية مع الأساتذة والمشايخ الذين يعرفونك معرفة مباشرة، لأن آلية الاختيار تشترط ثلاث تزكيات علمية من أشخاص درّسوك أو عرفوك، وهي شرط انتقائي يُقيَّم قبل اختبار القياس ولا يمكن تعويضه بأي مستند آخر.</li>
@@ -340,7 +383,7 @@ html, body {
 <li>التحق بالدبلوم العالي في القضاء والسياسة الشرعية في الجامعة الإسلامية بالمدينة المنورة إذا أردت تحويل معرفتك الشرعية النظرية إلى مهارة إجرائية قابلة للعرض في المقابلة، لأن البرنامج يتضمن تدريبًا ميدانيًا في القضاء الإداري والتجاري والجزائي. للتخصصات الدقيقة: يرفع مستوى الجاهزية الإجرائية بما يتجاوز ضعف الاسم الأكاديمي في أعين اللجنة، مع استمرار اشتراط اجتياز امتحان المعادلة الرسمي أولًا.</li>
 </ol>
 </div></div>
-<div class="section" style="break-inside: avoid;"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
+<div class="section"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
 <table>
 <thead>
 <tr>

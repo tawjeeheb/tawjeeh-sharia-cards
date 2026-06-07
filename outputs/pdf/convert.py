@@ -81,7 +81,7 @@ def transform_sections(html):
                 heading = hm.group(1)
                 body = part[hm.end():]
                 out.append(
-                    f'<div class="section" style="break-inside: avoid;">'
+                    f'<div class="section">'
                     f'<div class="section-heading">{heading}</div>'
                     f'<div class="section-body">{body}</div>'
                     f'</div>'
@@ -118,8 +118,8 @@ CSS_STR = f"""
 /* ── Page layout ─────────────────────────────────────── */
 @page {{
   size: A4;
-  /* top | right | bottom (footer ~14mm) | left */
-  margin: 14mm 18mm 20mm 16mm;
+  /* top | right | bottom (room for fixed footer) | left */
+  margin: 16mm 18mm 20mm 18mm;
 }}
 
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -129,6 +129,12 @@ html, body {{
   font-family: 'NotoKufi', sans-serif;
   background: #ffffff;
   color: #023663;
+}}
+
+/* عدم ترك عنوان أو سطر معزول عند تقسيم الصفحات */
+p, li, td, th {{
+  orphans: 2;
+  widows: 2;
 }}
 
 /* ── Fixed watermark — appears on every page ─────────── */
@@ -143,26 +149,30 @@ html, body {{
   pointer-events: none;
 }}
 
-/* ── Fixed footer — appears on every page ────────────── */
+/* ── Fixed footer — edge-to-edge bar on every page ───── */
 .page-footer {{
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
+  bottom: 0;
+  width: 100%;
   z-index: 10;
 }}
 
 .footer-teal-bar {{
-  height: 2.5mm;
+  width: 100%;
+  height: 1.4mm;
   background: #049e9e;
 }}
 
 .footer-inner {{
-  background: #12263a;
-  padding: 2.5mm 5mm;
+  position: relative;
+  width: 100%;
+  background: #023663;
+  padding: 2.2mm 8mm;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   direction: ltr;
 }}
 
@@ -183,8 +193,12 @@ html, body {{
 .fi {{ color: #049e9e; margin-left: 0.5mm; }}
 
 .footer-arrow {{
-  font-size: 13pt;
+  position: absolute;
+  right: 4mm;
+  top: 50%;
+  transform: translateY(-50%);
   color: #049e9e;
+  font-size: 12pt;
   font-weight: bold;
   line-height: 1;
 }}
@@ -193,6 +207,8 @@ html, body {{
 .content {{
   position: relative;
   z-index: 1;
+  /* مساحة كافية أسفل المحتوى حتى لا يغطيه الفوتر الثابت */
+  padding-bottom: 12mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
@@ -207,12 +223,15 @@ html, body {{
   line-height: 1.15;
 }}
 
-/* ── Section ─────────────────────────────────────────── */
+/* ── Section: تدفق ذكي — لا حبس للكتلة كاملة، العنوان يبقى مع بداية محتواه ── */
 .section {{
   margin-bottom: 5mm;
+  break-inside: auto;
+  page-break-inside: auto;
 }}
 
 /* عنوان العنصر: NotoKufi (Droid Arabic Kufi) — 13pt = 11pt + 2 */
+/* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
 .section-heading {{
   font-family: 'NotoKufi', sans-serif;
   font-size: 13pt;
@@ -221,18 +240,22 @@ html, body {{
   text-align: right;
   margin-bottom: 1.5mm;
   line-height: 1.4;
+  break-after: avoid;
+  page-break-after: avoid;
 }}
 
-/* محتوى العنصر: NotoKufi — 11pt */
+/* محتوى العنصر: NotoKufi — 11pt — يتدفق بحرية بين الصفحات */
 .section-body {{
   font-family: 'NotoKufi', sans-serif;
   font-size: 11pt;
   color: #023663;
   text-align: right;
   line-height: 1.85;
+  break-inside: auto;
+  page-break-inside: auto;
 }}
 
-/* عنوان فرعي h3 */
+/* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
 .section-body h3 {{
   font-family: 'NotoKufi', sans-serif;
   font-size: 11.5pt;
@@ -240,9 +263,14 @@ html, body {{
   color: #023663;
   margin-top: 3mm;
   margin-bottom: 1mm;
+  break-after: avoid;
+  page-break-after: avoid;
 }}
 
-.section-body p  {{ margin-bottom: 1.5mm; }}
+.section-body p  {{
+  margin-bottom: 1.5mm;
+  break-inside: avoid-page;
+}}
 
 .section-body ul,
 .section-body ol {{
@@ -250,32 +278,47 @@ html, body {{
   margin-top: 1mm;
   margin-bottom: 1mm;
 }}
-.section-body li {{ margin-bottom: 1mm; line-height: 1.8; }}
+.section-body li {{
+  margin-bottom: 1mm;
+  line-height: 1.8;
+  break-inside: avoid-page;
+}}
 
 .section-body a {{ color: #049e9e; text-decoration: none; }}
 .section-body strong {{ font-weight: bold; color: #023663; }}
 
-/* ── Tables ──────────────────────────────────────────── */
+/* ── Tables: تنقسم بشكل نظيف، رأس الجدول يتكرر ───────── */
 .section-body table {{
   width: 100%;
   border-collapse: collapse;
-  font-size: 9.5pt;
+  font-size: 8.5pt;
+  line-height: 1.55;
   margin-top: 2mm;
   color: #023663;
+  break-inside: auto;
+  page-break-inside: auto;
+}}
+.section-body thead {{
+  display: table-header-group;
+}}
+.section-body tr {{
+  break-inside: avoid;
+  page-break-inside: avoid;
 }}
 .section-body th {{
   background: #023663;
   color: #ffffff;
-  padding: 2mm 3mm;
+  padding: 1.6mm 2.2mm;
   text-align: center;
   font-weight: bold;
-  font-size: 9pt;
+  font-size: 8.5pt;
+  vertical-align: middle;
 }}
 .section-body td {{
-  padding: 1.8mm 3mm;
+  padding: 1.6mm 2.2mm;
   border: 1px solid #c8d8e8;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: top;
 }}
 .section-body tr:nth-child(even) td {{ background: #f0f5fa; }}
 """
