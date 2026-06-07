@@ -37,9 +37,9 @@ def _svg_data_uri(svg: str) -> str:
 
 _SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"'
 
-# شعار TikTok الفعلي المبسّط (نوتة بثلاث فصوص) — يحاكي الشكل المرجعي مباشرة
+# شعار TikTok بلونه الأصلي الأسود — يحاكي هوية التطبيق الحقيقية
 ICON_TIKTOK = _svg_data_uri(
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" stroke="none">'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000" stroke="none">'
     '<path d="M16.6 8.2c-1.6-.1-3-1-3.7-2.4-.2-.4-.3-.9-.3-1.4h-2.7v11.3c0 1.3-1 2.4-2.4 2.4'
     's-2.4-1-2.4-2.4 1-2.4 2.4-2.4c.3 0 .5 0 .8.1V10.6c-.3 0-.5-.1-.8-.1-2.8 0-5.1 2.3-5.1 5.1'
     's2.3 5.1 5.1 5.1 5.1-2.3 5.1-5.1V9.5c1.1.8 2.4 1.2 3.9 1.2V8.2z"/></svg>'
@@ -59,9 +59,9 @@ ICON_SNAPCHAT = _svg_data_uri(
     f's-1.1-.9-2.1-.9c-.7 0-1.3.3-1.7.3-.3 0-.5-.6-.6-1.2-.9-.2-2-.6-2.3-1.3'
     f'.8-.3 1.5-.7 1.9-1.5.4-.8.5-2 .5-3.4 0-2.6 1.8-4.6 4.3-4.6z"/></svg>'
 )
-# حرف X غامق وواضح — كما في المرجع
+# حرف X بلونه الأصلي الأسود — كما في هوية التطبيق
 ICON_X = _svg_data_uri(
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" stroke="none">'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000" stroke="none">'
     '<path d="M5 4.5h3.3l3.8 5.1 4.2-5.1H19l-6 7.3 6.4 8.2h-3.3l-4.2-5.5-4.6 5.5H4.2l6.4-7.7z"/></svg>'
 )
 # مستطيل مدوّر + مثلث تشغيل ممتلئ — رمز يوتيوب كما في المرجع
@@ -263,13 +263,34 @@ p, li, td, th {{
   background-size: contain;
 }}
 
+/* دائرة صغيرة وناعمة جدًا خلف الأيقونات السوداء (TikTok / X) فقط، لإبراز اللون الأصلي فوق التدرج */
+.footer-icon-on-light {{
+  width: 2.6mm;
+  height: 2.6mm;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.78);
+  background-size: 1.9mm 1.9mm;
+  padding: 0.45mm;
+  box-sizing: content-box;
+}}
+
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 7.5pt;
+  font-size: 7.8pt;
   font-weight: 700;
-  letter-spacing: 0.15pt;
+  letter-spacing: 0.2pt;
   text-decoration: none;
+  text-shadow: 0 0.2mm 0.3mm rgba(0, 0, 0, 0.22);
+}}
+
+/* فاصل عمودي رفيع بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
+.footer-divider {{
+  flex: 0 0 auto;
+  width: 0.3mm;
+  height: 6mm;
+  background: rgba(120, 235, 210, 0.45);
+  border-radius: 0.2mm;
 }}
 
 /* ── Main content ────────────────────────────────────── */
@@ -395,11 +416,16 @@ p, li, td, th {{
 # ── Footer HTML ───────────────────────────────────────────────────────────────
 footer_html = f"""<div class="footer">
   <div class="footer-inner">
-    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_TIKTOK}')"></span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('{ICON_TIKTOK}')"></span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
+    <span class="footer-divider"></span>
     <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_INSTAGRAM}')"></span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span>
+    <span class="footer-divider"></span>
     <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_SNAPCHAT}')"></span><a href="{SNAP_URL}">{SNAP_USERNAME}</a></span>
-    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_X}')"></span><a href="{X_URL}">{X_USERNAME}</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('{ICON_X}')"></span><a href="{X_URL}">{X_USERNAME}</a></span>
+    <span class="footer-divider"></span>
     <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_YOUTUBE}')"></span><a href="{YT_URL}">{YT_USERNAME}</a></span>
+    <span class="footer-divider"></span>
     <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_WEB}')"></span><a href="{WEBSITE_URL}">{WEBSITE}</a></span>
   </div>
 </div>"""
