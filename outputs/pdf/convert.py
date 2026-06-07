@@ -6,7 +6,7 @@ from weasyprint import HTML
 
 # ── Social handles ────────────────────────────────────────────────────────────
 X_USERNAME      = "tawjeeh_hub"
-TIKTOK_USERNAME = "tawjeeh_hub"
+TIKTOK_USERNAME = "tawjeeh.hub"
 INSTA_USERNAME  = "tawjeeh.hub"
 SNAP_USERNAME   = "tawjeeh.hub"
 YT_USERNAME     = "tawjeeh_hub"
@@ -14,6 +14,7 @@ WEBSITE         = "www.tawjeeh.hub"
 X_URL           = f"https://x.com/{X_USERNAME}"
 TIKTOK_URL      = f"https://www.tiktok.com/@{TIKTOK_USERNAME}"
 INSTA_URL       = f"https://instagram.com/{INSTA_USERNAME}"
+SNAP_URL        = f"https://www.snapchat.com/add/{SNAP_USERNAME}"
 YT_URL          = f"https://www.youtube.com/@{YT_USERNAME}"
 WEBSITE_URL     = f"https://{WEBSITE}"
 
@@ -34,31 +35,47 @@ with open(LOGO_FILE, "rb") as f:
 def _svg_data_uri(svg: str) -> str:
     return "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
 
-_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"'
+_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"'
 
-# نوتة موسيقية مفردة بخط أعرض — تبقى مفهومة بوضوح حتى عند التصغير
+# شعار TikTok الفعلي المبسّط (نوتة بثلاث فصوص) — يحاكي الشكل المرجعي مباشرة
 ICON_TIKTOK = _svg_data_uri(
-    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<circle cx="8.5" cy="17" r="3.1"/><path d="M11.6 17V4.5h2.4c.4 2.4 2.1 4 4.6 4.4"/></svg>'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" stroke="none">'
+    '<path d="M16.6 8.2c-1.6-.1-3-1-3.7-2.4-.2-.4-.3-.9-.3-1.4h-2.7v11.3c0 1.3-1 2.4-2.4 2.4'
+    's-2.4-1-2.4-2.4 1-2.4 2.4-2.4c.3 0 .5 0 .8.1V10.6c-.3 0-.5-.1-.8-.1-2.8 0-5.1 2.3-5.1 5.1'
+    's2.3 5.1 5.1 5.1 5.1-2.3 5.1-5.1V9.5c1.1.8 2.4 1.2 3.9 1.2V8.2z"/></svg>'
 )
-# كاميرا مبسطة: جسم + عدسة دائرية فقط — أوضح بكثير عند الحجم الصغير
+# كاميرا إنستغرام الكلاسيكية: مربع بزوايا دائرية + عدسة دائرية + نقطة فلاش — كما في المرجع
 ICON_INSTAGRAM = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<rect x="3" y="6" width="18" height="13" rx="3"/>'
-    f'<circle cx="12" cy="12.5" r="3.6"/>'
-    f'<circle cx="16.6" cy="9.3" r="0.35" fill="#ffffff" stroke="none"/></svg>'
+    f'<rect x="3.3" y="3.3" width="17.4" height="17.4" rx="5"/>'
+    f'<circle cx="12" cy="12" r="4.1"/>'
+    f'<circle cx="16.6" cy="7.4" r="0.5" fill="#ffffff" stroke="none"/></svg>'
 )
-# مستطيل + مثلث تشغيل ممتلئ بنسب أكبر وأوضح — رمز يوتيوب الكلاسيكي
+# شبح سناب شات مبسّط بخطوط نظيفة — رمز مفهوم بصريًا بسرعة
+ICON_SNAPCHAT = _svg_data_uri(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
+    f'<path d="M12 3.6c2.5 0 4.3 2 4.3 4.6 0 1.4.1 2.6.5 3.4.4.8 1.1 1.2 1.9 1.5'
+    f'-.3.7-1.4 1.1-2.3 1.3-.1.6-.3 1.2-.6 1.2-.4 0-1-.3-1.7-.3-1 0-1.6.9-2.1.9'
+    f's-1.1-.9-2.1-.9c-.7 0-1.3.3-1.7.3-.3 0-.5-.6-.6-1.2-.9-.2-2-.6-2.3-1.3'
+    f'.8-.3 1.5-.7 1.9-1.5.4-.8.5-2 .5-3.4 0-2.6 1.8-4.6 4.3-4.6z"/></svg>'
+)
+# حرف X غامق وواضح — كما في المرجع
+ICON_X = _svg_data_uri(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" stroke="none">'
+    '<path d="M5 4.5h3.3l3.8 5.1 4.2-5.1H19l-6 7.3 6.4 8.2h-3.3l-4.2-5.5-4.6 5.5H4.2l6.4-7.7z"/></svg>'
+)
+# مستطيل مدوّر + مثلث تشغيل ممتلئ — رمز يوتيوب كما في المرجع
 ICON_YOUTUBE = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
     f'<rect x="2.6" y="5.3" width="18.8" height="13.4" rx="3.6"/>'
     f'<path d="M9.8 9l6 3-6 3z" fill="#ffffff" stroke="none"/></svg>'
 )
-# كرة أرضية مبسطة: دائرة + خط استواء + خط طول واحد فقط — وضوح أعلى من الشكل المعقد سابقًا
+# كرة أرضية مع عدسة بحث صغيرة — كما يظهر في المرجع لشعار الموقع
 ICON_WEB = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<circle cx="12" cy="12" r="8.2"/>'
-    f'<path d="M3.8 12h16.4M12 3.8c2.6 2.2 2.6 14.2 0 16.4"/></svg>'
+    f'<circle cx="10.6" cy="10.6" r="6.6"/>'
+    f'<path d="M4.4 10.6h12.4M10.6 4c2 1.7 2 13.5 0 13.2"/>'
+    f'<path d="M15.2 15.2L20 20"/></svg>'
 )
 
 # ── Section heading sets ──────────────────────────────────────────────────────
@@ -227,57 +244,32 @@ p, li, td, th {{
   direction: ltr;
 }}
 
-/* عنصر بسيط: أيقونة دائرية خفيفة + نص — بلا خلفية كبسولة ثقيلة */
+/* عنصر بسيط: شارة مربعة الزوايا + يوزر في سطر واحد — يحاكي مرجع الفوتر مباشرة */
 .footer-link {{
   display: flex;
   align-items: center;
-  gap: 1.8mm;
+  gap: 1.6mm;
   flex: 0 0 auto;
-}}
-
-/* فاصل عمودي رفيع جدًا وهادئ بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
-.footer-divider {{
-  flex: 0 0 auto;
-  width: 0.25mm;
-  height: 3.6mm;
-  background: rgba(150, 235, 218, 0.22);
 }}
 
 .footer-icon {{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 4.7mm;
-  height: 4.7mm;
+  width: 4.6mm;
+  height: 4.6mm;
   flex-shrink: 0;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.16);
+  border-radius: 1.3mm;
+  background-color: rgba(255, 255, 255, 0.20);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 2.7mm 2.7mm;
-  border: 0.3mm solid rgba(255, 255, 255, 0.7);
+  background-size: 2.9mm 2.9mm;
+  border: 0.28mm solid rgba(255, 255, 255, 0.55);
   color: #ffffff;
   font-weight: 700;
   font-size: 5pt;
   line-height: 1;
   overflow: hidden;
-}}
-
-.footer-text {{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.4mm;
-  overflow: hidden;
-}}
-
-.footer-platform {{
-  font-family: 'Noto Kufi Arabic', sans-serif;
-  color: #ffffff;
-  font-weight: 400;
-  font-size: 4.3pt;
-  letter-spacing: 0.3pt;
-  opacity: 0.82;
 }}
 
 .footer-link a {{
@@ -412,15 +404,12 @@ p, li, td, th {{
 # ── Footer HTML ───────────────────────────────────────────────────────────────
 footer_html = f"""<div class="footer">
   <div class="footer-inner">
-    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_TIKTOK}')"></span><span class="footer-text"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span></span>
-    <span class="footer-divider"></span>
-    <span class="footer-link"><span class="footer-icon">X</span><span class="footer-text"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span></span>
-    <span class="footer-divider"></span>
-    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_INSTAGRAM}')"></span><span class="footer-text"><span class="footer-platform">Instagram</span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span></span>
-    <span class="footer-divider"></span>
-    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_YOUTUBE}')"></span><span class="footer-text"><span class="footer-platform">YouTube</span><a href="{YT_URL}">{YT_USERNAME}</a></span></span>
-    <span class="footer-divider"></span>
-    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_WEB}')"></span><span class="footer-text"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_TIKTOK}')"></span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_INSTAGRAM}')"></span><a href="{INSTA_URL}">{INSTA_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_SNAPCHAT}')"></span><a href="{SNAP_URL}">{SNAP_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_X}')"></span><a href="{X_URL}">{X_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_YOUTUBE}')"></span><a href="{YT_URL}">{YT_USERNAME}</a></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('{ICON_WEB}')"></span><a href="{WEBSITE_URL}">{WEBSITE}</a></span>
   </div>
 </div>"""
 
