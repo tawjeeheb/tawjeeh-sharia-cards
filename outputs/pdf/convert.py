@@ -163,8 +163,8 @@ p, li, td, th {{
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 11mm;
-  background: linear-gradient(90deg, #023663 0%, #049e9e 100%);
+  height: 14mm;
+  background: linear-gradient(90deg, #012647 0%, #023663 45%, #038a8a 100%);
   border-radius: 0;
   box-sizing: border-box;
   z-index: 999;
@@ -173,43 +173,48 @@ p, li, td, th {{
 
 .footer-inner {{
   position: relative;
-  height: 11mm;
+  height: 14mm;
   margin: 0 7mm;
   padding: 0 8mm;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6mm;
+  gap: 5mm;
   direction: ltr;
 }}
 
 .footer-link {{
   display: inline-flex;
-  align-items: baseline;
-  gap: 1.4mm;
+  align-items: center;
+  gap: 1.6mm;
   line-height: 1;
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.14);
-  border: 0.3mm solid rgba(255, 255, 255, 0.32);
-  border-radius: 5mm;
-  padding: 1.1mm 3.2mm;
+  background: rgba(255, 255, 255, 0.16);
+  border: 0.35mm solid rgba(255, 255, 255, 0.45);
+  border-radius: 4.5mm;
+  padding: 1.6mm 3.6mm;
+  box-shadow: inset 0 0.4mm 0.9mm rgba(255, 255, 255, 0.18),
+              inset 0 -0.5mm 1mm rgba(0, 0, 0, 0.22),
+              0 0.5mm 1.2mm rgba(0, 0, 0, 0.18);
 }}
 
 .footer-platform {{
   color: #ffffff;
   font-weight: 700;
-  font-size: 5.6pt;
+  font-size: 6pt;
   letter-spacing: 0.3pt;
+  text-shadow: 0 0.3mm 0.6mm rgba(0, 0, 0, 0.35);
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
-  color: #ffffff;
-  font-size: 6.2pt;
+  color: #eef6fb;
+  font-size: 6.6pt;
   font-weight: 400;
   text-decoration: none;
-  opacity: 0.92;
+  opacity: 0.97;
+  text-shadow: 0 0.3mm 0.6mm rgba(0, 0, 0, 0.30);
 }}
 
 /* ── Main content ────────────────────────────────────── */
