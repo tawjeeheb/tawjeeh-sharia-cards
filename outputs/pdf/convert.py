@@ -163,7 +163,7 @@ p, li, td, th {{
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 14mm;
+  height: 17mm;
   background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
   border-radius: 0;
   box-sizing: border-box;
@@ -185,73 +185,75 @@ p, li, td, th {{
 
 .footer-inner {{
   position: relative;
-  height: 14mm;
+  height: 17mm;
   margin: 0 7mm;
   padding: 0 8mm;
   box-sizing: border-box;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
+  gap: 3mm;
   direction: ltr;
 }}
 
-/* كل حساب = شارة دائرية + سطرين نصيين، مفصولة بخطوط رفيعة — أسلوب الصورة المرجعية */
+/* كل حساب = كبسولة بارزة قائمة بذاتها: دائرة أيقونة + سطرين نصيين — أقرب لشكل المرجع */
 .footer-link {{
   display: flex;
   align-items: center;
-  gap: 2.2mm;
+  gap: 2.4mm;
   line-height: 1;
   white-space: nowrap;
-  padding: 0 6mm;
-  border-right: 0.3mm solid rgba(255, 255, 255, 0.28);
-}}
-.footer-link:first-child {{
-  padding-left: 0;
-}}
-.footer-link:last-child {{
-  border-right: none;
-  padding-right: 0;
+  background: rgba(255, 255, 255, 0.22);
+  border: 0.45mm solid rgba(255, 255, 255, 0.6);
+  border-radius: 6.5mm;
+  padding: 2.2mm 5mm 2.2mm 3mm;
+  height: 11.5mm;
+  box-sizing: border-box;
+  box-shadow: inset 0 0.6mm 1.2mm rgba(255, 255, 255, 0.32),
+              inset 0 -0.7mm 1.3mm rgba(0, 0, 0, 0.20),
+              0 0.9mm 2mm rgba(0, 0, 0, 0.22);
 }}
 
 .footer-icon {{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 6.4mm;
-  height: 6.4mm;
+  width: 7.6mm;
+  height: 7.6mm;
   flex-shrink: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
-  border: 0.3mm solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.24);
+  border: 0.4mm solid rgba(255, 255, 255, 0.75);
   color: #ffffff;
   font-weight: 700;
-  font-size: 5.4pt;
+  font-size: 6.4pt;
   letter-spacing: 0;
-  box-shadow: inset 0 0.4mm 0.8mm rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 0.5mm 1mm rgba(255, 255, 255, 0.35),
+              inset 0 -0.5mm 1mm rgba(0, 0, 0, 0.18);
 }}
 
 .footer-text {{
   display: flex;
   flex-direction: column;
-  gap: 0.4mm;
+  gap: 0.7mm;
 }}
 
 .footer-platform {{
   color: #eaf7f5;
   font-weight: 400;
-  font-size: 5pt;
-  letter-spacing: 0.3pt;
-  opacity: 0.85;
+  font-size: 5.2pt;
+  letter-spacing: 0.4pt;
+  opacity: 0.88;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 6.6pt;
+  font-size: 7.6pt;
   font-weight: 700;
   text-decoration: none;
   opacity: 1;
-  text-shadow: 0 0.25mm 0.5mm rgba(0, 0, 0, 0.22);
+  text-shadow: 0 0.3mm 0.6mm rgba(0, 0, 0, 0.28);
 }}
 
 /* ── Main content ────────────────────────────────────── */
