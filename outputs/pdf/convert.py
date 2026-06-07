@@ -119,7 +119,7 @@ CSS_STR = f"""
 @page {{
   size: A4;
   /* top | right | bottom (room for fixed footer) | left */
-  margin: 18mm 18mm 24mm 18mm;
+  margin: 18mm 18mm 27mm 18mm;
 }}
 
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -156,7 +156,7 @@ p, li, td, th {{
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 13mm;
+  height: 17mm;
   background: #023663;
   z-index: 999;
 }}
@@ -166,22 +166,22 @@ p, li, td, th {{
   top: 0;
   right: 0;
   left: 0;
-  height: 1.4mm;
+  height: 2mm;
   background: #049e9e;
 }}
 
 .footer-content {{
   position: relative;
-  height: 13mm;
-  padding-top: 1.4mm;
+  height: 17mm;
+  padding-top: 2mm;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8mm;
+  gap: 6mm;
   direction: ltr;
   color: #ffffff;
-  font-size: 7.5pt;
+  font-size: 8pt;
   line-height: 1;
   white-space: nowrap;
 }}
@@ -190,28 +190,18 @@ p, li, td, th {{
   font-family: 'NotoKufi', sans-serif;
   color: #ffffff;
   text-decoration: none;
+  font-weight: bold;
 }}
 
 .footer-item {{
   display: inline-flex;
   align-items: center;
-  gap: 1.5mm;
+  gap: 2mm;
 }}
 
 .footer-icon {{
   color: #049e9e;
-  font-size: 8pt;
-  font-weight: bold;
-  line-height: 1;
-}}
-
-.footer-arrow {{
-  position: absolute;
-  right: 8mm;
-  top: 50%;
-  transform: translateY(-40%);
-  color: #049e9e;
-  font-size: 16pt;
+  font-size: 8.5pt;
   font-weight: bold;
   line-height: 1;
 }}
@@ -221,7 +211,7 @@ p, li, td, th {{
   position: relative;
   z-index: 1;
   /* مساحة كافية أسفل المحتوى حتى لا يغطيه الفوتر الثابت */
-  padding-bottom: 16mm;
+  padding-bottom: 19mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
@@ -346,7 +336,6 @@ footer_html = f"""<div class="footer">
     <a class="footer-item" href="{X_URL}"><span class="footer-icon">&#x1D54F;</span>{X_USERNAME}</a>
     <a class="footer-item" href="https://youtube.com/@{YT_USERNAME}"><span class="footer-icon">&#9654;</span>{YT_USERNAME}</a>
     <a class="footer-item" href="{WEBSITE_URL}"><span class="footer-icon">&#9678;</span>{WEBSITE}</a>
-    <div class="footer-arrow">&#10095;</div>
   </div>
 </div>"""
 
