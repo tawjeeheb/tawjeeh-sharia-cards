@@ -41,11 +41,12 @@ ICON_TIKTOK = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
     f'<circle cx="8.5" cy="17" r="3"/><path d="M11.5 17V4.5h2.2c.5 2.6 2.4 4.4 5 4.7"/></svg>'
 )
-# مربع بزوايا دائرية + عدسة دائرية — شكل إنستغرام التقليدي دون تفاصيل دقيقة تختفي بالتصغير
+# كاميرا بسيطة وواضحة (جسم + عدسة دائرية + زر صغير) بدلًا من شكل إنستغرام المعقد
 ICON_INSTAGRAM = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<rect x="3.5" y="3.5" width="17" height="17" rx="5.5"/>'
-    f'<circle cx="12" cy="12" r="4.6"/></svg>'
+    f'<rect x="3" y="6.5" width="18" height="13" rx="3"/>'
+    f'<path d="M8.5 6.5l1.6-2.4h3.8l1.6 2.4"/>'
+    f'<circle cx="12" cy="13" r="3.6"/></svg>'
 )
 # مستطيل + مثلث تشغيل ممتلئ — رمز يوتيوب الكلاسيكي بنسب أوضح
 ICON_YOUTUBE = _svg_data_uri(
@@ -234,7 +235,7 @@ p, li, td, th {{
   justify-content: flex-start;
   flex: 1 1 0;
   gap: 1.7mm;
-  height: 8.4mm;
+  height: 8.1mm;
   box-sizing: border-box;
   padding: 0 3.2mm;
   background: rgba(255, 255, 255, 0.26);
@@ -249,9 +250,9 @@ p, li, td, th {{
 /* فاصل عمودي رفيع وأنيق بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
 .footer-divider {{
   flex: 0 0 auto;
-  width: 0.35mm;
-  height: 5.4mm;
-  background: rgba(115, 235, 210, 0.55);
+  width: 0.3mm;
+  height: 4.6mm;
+  background: rgba(130, 235, 213, 0.32);
   border-radius: 0.2mm;
 }}
 
@@ -288,18 +289,18 @@ p, li, td, th {{
 .footer-platform {{
   color: #ffffff;
   font-weight: 400;
-  font-size: 4.4pt;
+  font-size: 4.5pt;
   letter-spacing: 0.35pt;
-  opacity: 0.88;
+  opacity: 0.94;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 6.8pt;
+  font-size: 7pt;
   font-weight: 700;
   text-decoration: none;
-  text-shadow: 0 0.2mm 0.35mm rgba(0, 0, 0, 0.28);
+  text-shadow: 0 0.25mm 0.4mm rgba(0, 0, 0, 0.34);
 }}
 
 /* ── Main content ────────────────────────────────────── */
