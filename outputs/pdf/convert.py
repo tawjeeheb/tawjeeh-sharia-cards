@@ -34,25 +34,25 @@ with open(LOGO_FILE, "rb") as f:
 def _svg_data_uri(svg: str) -> str:
     return "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
 
-_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"'
+_SVG_STROKE = 'fill="none" stroke="#ffffff" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"'
 
-# نوتة موسيقية مبسطة وواضحة — رمز عالمي مفهوم لتيك توك دون تعقيد
+# نوتة موسيقية مفردة بخط أعرض — تبقى مفهومة بوضوح حتى عند التصغير
 ICON_TIKTOK = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<circle cx="8.5" cy="17" r="3"/><path d="M11.5 17V4.5h2.2c.5 2.6 2.4 4.4 5 4.7"/></svg>'
+    f'<circle cx="8.5" cy="17" r="3.1"/><path d="M11.6 17V4.5h2.4c.4 2.4 2.1 4 4.6 4.4"/></svg>'
 )
-# كاميرا بسيطة وواضحة (جسم + عدسة دائرية + زر صغير) بدلًا من شكل إنستغرام المعقد
+# كاميرا مبسطة: جسم + عدسة دائرية فقط — أوضح بكثير عند الحجم الصغير
 ICON_INSTAGRAM = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<rect x="3" y="6.5" width="18" height="13" rx="3"/>'
-    f'<path d="M8.5 6.5l1.6-2.4h3.8l1.6 2.4"/>'
-    f'<circle cx="12" cy="13" r="3.6"/></svg>'
+    f'<rect x="3" y="6" width="18" height="13" rx="3"/>'
+    f'<circle cx="12" cy="12.5" r="3.6"/>'
+    f'<circle cx="16.6" cy="9.3" r="0.35" fill="#ffffff" stroke="none"/></svg>'
 )
-# مستطيل + مثلث تشغيل ممتلئ — رمز يوتيوب الكلاسيكي بنسب أوضح
+# مستطيل + مثلث تشغيل ممتلئ بنسب أكبر وأوضح — رمز يوتيوب الكلاسيكي
 ICON_YOUTUBE = _svg_data_uri(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {_SVG_STROKE}>'
-    f'<rect x="3" y="5.5" width="18" height="13" rx="3.5"/>'
-    f'<path d="M10 9.2l5.5 2.8-5.5 2.8z" fill="#ffffff" stroke="none"/></svg>'
+    f'<rect x="2.6" y="5.3" width="18.8" height="13.4" rx="3.6"/>'
+    f'<path d="M9.8 9l6 3-6 3z" fill="#ffffff" stroke="none"/></svg>'
 )
 # كرة أرضية مبسطة: دائرة + خط استواء + خط طول واحد فقط — وضوح أعلى من الشكل المعقد سابقًا
 ICON_WEB = _svg_data_uri(
@@ -247,18 +247,18 @@ p, li, td, th {{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 5.6mm;
-  height: 5.6mm;
+  width: 4.7mm;
+  height: 4.7mm;
   flex-shrink: 0;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.16);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 3.4mm 3.4mm;
-  border: 0.32mm solid rgba(255, 255, 255, 0.7);
+  background-size: 2.7mm 2.7mm;
+  border: 0.3mm solid rgba(255, 255, 255, 0.7);
   color: #ffffff;
   font-weight: 700;
-  font-size: 5.8pt;
+  font-size: 5pt;
   line-height: 1;
   overflow: hidden;
 }}
@@ -272,18 +272,20 @@ p, li, td, th {{
 }}
 
 .footer-platform {{
+  font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
   font-weight: 400;
-  font-size: 4.2pt;
+  font-size: 4.3pt;
   letter-spacing: 0.3pt;
-  opacity: 0.8;
+  opacity: 0.82;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 6.8pt;
+  font-size: 7.4pt;
   font-weight: 700;
+  letter-spacing: 0.15pt;
   text-decoration: none;
 }}
 
