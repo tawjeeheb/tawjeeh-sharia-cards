@@ -155,7 +155,7 @@ p, li, td, th {{
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 14mm;
+  height: 12mm;
   background: #023663;
   z-index: 999;
   box-sizing: border-box;
@@ -167,24 +167,26 @@ p, li, td, th {{
   top: 0;
   right: 0;
   left: 0;
-  height: 1.6mm;
+  height: 1.3mm;
   background: #049e9e;
 }}
 
 .footer-content {{
   position: relative;
-  width: 100%;
-  height: 14mm;
-  padding: 2.2mm 14mm 1.6mm 14mm;
+  width: 192mm;
+  max-width: 192mm;
+  height: 12mm;
+  margin: 0 auto;
+  padding-top: 1.3mm;
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2.5mm;
+  justify-content: center;
+  gap: 2.4mm;
   direction: ltr;
   color: #ffffff;
-  font-size: 6.8pt;
-  font-weight: 500;
+  font-size: 5.6pt;
+  font-weight: 400;
   line-height: 1;
   white-space: nowrap;
 }}
@@ -193,22 +195,25 @@ p, li, td, th {{
   font-family: 'NotoKufi', sans-serif;
   color: #ffffff;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 400;
 }}
 
 .footer-item {{
   display: inline-flex;
   align-items: center;
   gap: 1.2mm;
-  min-width: 0;
 }}
 
-.footer-icon {{
+.footer-platform {{
   color: #049e9e;
-  font-size: 6.8pt;
-  font-weight: 600;
-  line-height: 1;
-  flex: 0 0 auto;
+  font-weight: 500;
+  font-size: 5.4pt;
+}}
+
+.footer-separator {{
+  color: #049e9e;
+  opacity: 0.85;
+  font-size: 5pt;
 }}
 
 /* ── Main content ────────────────────────────────────── */
@@ -336,12 +341,17 @@ p, li, td, th {{
 footer_html = f"""<div class="footer">
   <div class="footer-teal-bar"></div>
   <div class="footer-content">
-    <a class="footer-item" href="{TIKTOK_URL}"><span class="footer-icon">&#9654;</span>{TIKTOK_USERNAME}</a>
-    <a class="footer-item" href="https://instagram.com/{INSTA_USERNAME}"><span class="footer-icon">&#9678;</span>{INSTA_USERNAME}</a>
-    <a class="footer-item" href="https://snapchat.com/add/{SNAP_USERNAME}"><span class="footer-icon">&#9673;</span>{SNAP_USERNAME}</a>
-    <a class="footer-item" href="{X_URL}"><span class="footer-icon">&#x1D54F;</span>{X_USERNAME}</a>
-    <a class="footer-item" href="https://youtube.com/@{YT_USERNAME}"><span class="footer-icon">&#9654;</span>{YT_USERNAME}</a>
-    <a class="footer-item" href="{WEBSITE_URL}"><span class="footer-icon">&#9678;</span>{WEBSITE}</a>
+    <span class="footer-item"><span class="footer-platform">TikTok</span><a href="{TIKTOK_URL}">{TIKTOK_USERNAME}</a></span>
+    <span class="footer-separator">&#8226;</span>
+    <span class="footer-item"><span class="footer-platform">Instagram</span><a href="https://instagram.com/{INSTA_USERNAME}">{INSTA_USERNAME}</a></span>
+    <span class="footer-separator">&#8226;</span>
+    <span class="footer-item"><span class="footer-platform">Snapchat</span><a href="https://snapchat.com/add/{SNAP_USERNAME}">{SNAP_USERNAME}</a></span>
+    <span class="footer-separator">&#8226;</span>
+    <span class="footer-item"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span>
+    <span class="footer-separator">&#8226;</span>
+    <span class="footer-item"><span class="footer-platform">YouTube</span><a href="https://youtube.com/@{YT_USERNAME}">{YT_USERNAME}</a></span>
+    <span class="footer-separator">&#8226;</span>
+    <span class="footer-item"><span class="footer-platform">Web</span><a href="{WEBSITE_URL}">{WEBSITE}</a></span>
   </div>
 </div>"""
 
