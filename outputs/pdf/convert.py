@@ -183,19 +183,33 @@ p, li, td, th {{
   direction: rtl;
 }}
 
-.footer-brand {{
-  color: #ffffff;
-  font-size: 7pt;
-  font-weight: 600;
-  white-space: nowrap;
+.footer-brand-block {{
+  display: flex;
+  align-items: center;
+  gap: 2mm;
   direction: ltr;
   unicode-bidi: isolate;
+}}
+
+.footer-brand-accent {{
+  width: 0.6mm;
+  height: 5.5mm;
+  background: #049e9e;
+  display: inline-block;
+}}
+
+.footer-brand {{
+  color: #ffffff;
+  font-size: 7.6pt;
+  font-weight: 700;
+  letter-spacing: 0.3pt;
+  white-space: nowrap;
 }}
 
 .footer-links {{
   display: flex;
   align-items: center;
-  gap: 2.2mm;
+  gap: 2.6mm;
   direction: ltr;
   white-space: nowrap;
 }}
@@ -203,7 +217,7 @@ p, li, td, th {{
 .footer-link {{
   display: inline-flex;
   align-items: center;
-  gap: 1mm;
+  gap: 1.2mm;
   font-size: 5.8pt;
   font-weight: 400;
   line-height: 1;
@@ -211,14 +225,18 @@ p, li, td, th {{
 
 .footer-platform {{
   color: #049e9e;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 5.4pt;
+  text-transform: uppercase;
+  letter-spacing: 0.2pt;
 }}
 
 .footer-link a {{
   font-family: 'NotoKufi', sans-serif;
   color: #ffffff;
+  font-weight: 600;
   text-decoration: none;
-  opacity: 0.95;
+  opacity: 0.97;
 }}
 
 .footer-divider {{
@@ -354,7 +372,7 @@ p, li, td, th {{
 footer_html = f"""<div class="footer">
   <div class="footer-teal-bar"></div>
   <div class="footer-inner">
-    <div class="footer-brand">Tawjeeh HUB</div>
+    <div class="footer-brand-block"><span class="footer-brand-accent"></span><span class="footer-brand">Tawjeeh HUB</span></div>
     <div class="footer-links">
       <span class="footer-link"><span class="footer-platform">X</span><a href="{X_URL}">{X_USERNAME}</a></span>
       <span class="footer-divider"></span>
