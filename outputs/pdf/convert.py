@@ -244,38 +244,29 @@ p, li, td, th {{
   direction: ltr;
 }}
 
-/* عنصر بسيط: شارة مربعة الزوايا + يوزر في سطر واحد — يحاكي مرجع الفوتر مباشرة */
+/* عنصر بسيط: أيقونة عارية بلا أي حاوية + يوزر بجانبها في سطر واحد */
 .footer-link {{
   display: flex;
   align-items: center;
-  gap: 1.6mm;
+  gap: 1.5mm;
   flex: 0 0 auto;
 }}
 
+/* أيقونة صِرفة بلا خلفية ولا حدود ولا إطار — مجرد رمز SVG معروض مباشرة */
 .footer-icon {{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 4.6mm;
-  height: 4.6mm;
+  display: inline-block;
+  width: 3.5mm;
+  height: 3.5mm;
   flex-shrink: 0;
-  border-radius: 1.3mm;
-  background-color: rgba(255, 255, 255, 0.20);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 2.9mm 2.9mm;
-  border: 0.28mm solid rgba(255, 255, 255, 0.55);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 5pt;
-  line-height: 1;
-  overflow: hidden;
+  background-size: contain;
 }}
 
 .footer-link a {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   color: #ffffff;
-  font-size: 7.4pt;
+  font-size: 7.5pt;
   font-weight: 700;
   letter-spacing: 0.15pt;
   text-decoration: none;
