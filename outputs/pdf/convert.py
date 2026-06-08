@@ -370,14 +370,20 @@ p, li, td, th {{
 
 .section-body ul,
 .section-body ol {{
-  padding-right: 6mm;
-  margin-top: 1mm;
-  margin-bottom: 1mm;
+  padding-right: 5mm;
+  padding-left: 0;
+  margin-top: 1.4mm;
+  margin-bottom: 2.2mm;
+  list-style-position: outside;
 }}
 .section-body li {{
-  margin-bottom: 0.9mm;
+  margin-bottom: 1.2mm;
   line-height: 1.68;
   break-inside: avoid-page;
+}}
+.section-body li::marker {{
+  color: #049e9e;
+  font-size: 1.25em;
 }}
 
 .section-body a {{ color: #049e9e; text-decoration: none; }}
