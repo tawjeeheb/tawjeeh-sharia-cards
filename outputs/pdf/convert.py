@@ -199,7 +199,7 @@ p, li, td, th {{
   top: calc(50% - 6.25mm);
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 148mm;
+  width: 165mm;
   opacity: 0.30;
   z-index: 0;
   pointer-events: none;
