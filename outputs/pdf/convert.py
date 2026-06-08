@@ -421,16 +421,12 @@ p, li, td, th {{
 }}
 
 .section-body a {{
-  color: #049e9e;
+  color: #023663;
   text-decoration: underline;
-  text-decoration-thickness: 0.35mm;
-  text-underline-offset: 0.7mm;
+  text-decoration-thickness: 0.25mm;
+  text-underline-offset: 0.6mm;
   font-weight: 700;
-}}
-.section-body a::after {{
-  content: " ↗";
-  font-size: 0.82em;
-  color: #049e9e;
+  font-size: inherit;
 }}
 .section-body strong {{ font-weight: bold; color: #023663; }}
 
