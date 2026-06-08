@@ -385,6 +385,13 @@ p, li, td, th {{
   color: #496379;
 }}
 
+.section-body .experience-entity {{
+  color: #023663;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 10.8pt;
+}}
+
 .section-body .assessment-entity {{
   color: #023663;
   font-family: 'Noto Kufi Arabic', sans-serif;
