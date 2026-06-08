@@ -118,7 +118,26 @@ md_content = re.sub(r'---\s*\n## سجل المصادر.*', '', md_content, flags
 
 html_body = markdown.markdown(md_content, extensions=['tables', 'nl2br'])
 
-# ── Extract cover title & section HTML ───────────────────────────────────────
+# Post-process: wrap "program link - institution:" so dotted underline + arrow
+# covers the full label (program + institution) up to but not including the colon.
+# Pattern: <a href="url">program</a> - institution:
+def enhance_program_links(html):
+    return re.sub(
+        r'(<a href="[^"]+">)([^<]+)(</a>)([^:<\n]*?)(:)',
+        lambda m: (
+            m.group(1).replace('<a ', '<a class="linked-inline-label" ')
+            + m.group(2)
+            + m.group(4).rstrip()
+            + ' <span class="linked-inline-arrow">↗</span>'
+            + '</a>'
+            + ':'
+        ),
+        html
+    )
+
+html_body = enhance_program_links(html_body)
+
+
 cover_match = re.search(r'<h1>(.*?)</h1>', html_body, re.DOTALL)
 cover_title = cover_match.group(1) if cover_match else ''
 
@@ -422,11 +441,23 @@ p, li, td, th {{
 
 .section-body a {{
   color: #023663;
-  text-decoration: underline;
-  text-decoration-thickness: 0.25mm;
-  text-underline-offset: 0.6mm;
-  font-weight: 700;
+  text-decoration: none;
   font-size: inherit;
+}}
+.section-body a.linked-inline-label {{
+  color: #023663;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #023663;
+  text-decoration-thickness: 0.3mm;
+  text-underline-offset: 0.65mm;
+  font-weight: inherit;
+  font-size: inherit;
+}}
+.section-body .linked-inline-arrow {{
+  font-size: 0.88em;
+  color: #023663;
+  font-weight: 400;
 }}
 .section-body strong {{ font-weight: bold; color: #023663; }}
 
