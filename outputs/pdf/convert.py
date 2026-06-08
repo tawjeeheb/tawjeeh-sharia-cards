@@ -382,8 +382,8 @@ p, li, td, th {{
   break-inside: avoid-page;
 }}
 .section-body li::marker {{
-  color: #049e9e;
-  font-size: 1.25em;
+  color: #023663;
+  font-size: 1.35em;
 }}
 
 .section-body a {{ color: #049e9e; text-decoration: none; }}
