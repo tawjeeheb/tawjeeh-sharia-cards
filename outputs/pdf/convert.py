@@ -447,7 +447,7 @@ p, li, td, th {{
 .section-body a.linked-inline-label {{
   color: #023663;
   text-decoration-line: underline;
-  text-decoration-style: solid;
+  text-decoration-style: dotted;
   text-decoration-color: #023663;
   text-decoration-thickness: 0.3mm;
   text-underline-offset: 0.65mm;
