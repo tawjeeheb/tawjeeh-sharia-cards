@@ -93,6 +93,7 @@ H3_HEADINGS = {
     'القطاع غير الربحي', 'القطاع المستقل', 'العمل الحر',
     'الجهات الموصى بها', 'ملاحظة مهمة', 'جهات سبق وأعلنت',
     'السلك القضائي — وزارة العدل وديوان المظالم',
+    'قبل التعيين', 'بعد التعيين',
 }
 
 # ── Load & pre-process markdown ───────────────────────────────────────────────
@@ -354,9 +355,9 @@ p, li, td, th {{
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
 .section-body h3 {{
   font-family: 'Noto Kufi Arabic', sans-serif;
-  font-size: 10.5pt;
+  font-size: 11.5pt;
   font-weight: bold;
-  color: #023663;
+  color: #496379;
   margin-top: 2.6mm;
   margin-bottom: 1mm;
   break-after: avoid;
@@ -374,6 +375,7 @@ p, li, td, th {{
   padding-left: 0;
   margin-top: 1.4mm;
   margin-bottom: 2.2mm;
+  list-style-type: disc;
   list-style-position: outside;
 }}
 .section-body li {{
