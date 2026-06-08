@@ -385,6 +385,15 @@ p, li, td, th {{
   color: #496379;
 }}
 
+.section-body .assessment-entity {{
+  color: #023663;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 10.8pt;
+  display: block;
+  margin: 1.8mm 0 1mm 0;
+}}
+
 .section-body ul,
 .section-body ol {{
   padding-right: 5mm;
