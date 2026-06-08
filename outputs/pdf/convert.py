@@ -369,6 +369,22 @@ p, li, td, th {{
   break-inside: avoid-page;
 }}
 
+.section-body .sector-label {{
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #023663;
+  margin-top: 2.6mm;
+  margin-bottom: 1mm;
+}}
+
+.section-body .condition-label {{
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 1.08em;
+  font-weight: 700;
+  color: #496379;
+}}
+
 .section-body ul,
 .section-body ol {{
   padding-right: 5mm;
