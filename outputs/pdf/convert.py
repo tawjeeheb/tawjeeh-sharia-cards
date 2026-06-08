@@ -196,10 +196,10 @@ p, li, td, th {{
 /* ── Fixed watermark — appears on every page ─────────── */
 .page-watermark {{
   position: fixed;
-  top: 50%;
+  top: calc(50% - 6.25mm);
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 140mm;
+  width: 148mm;
   opacity: 0.30;
   z-index: 0;
   pointer-events: none;
