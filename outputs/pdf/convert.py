@@ -420,7 +420,18 @@ p, li, td, th {{
   font-size: 1.35em;
 }}
 
-.section-body a {{ color: #049e9e; text-decoration: none; }}
+.section-body a {{
+  color: #049e9e;
+  text-decoration: underline;
+  text-decoration-thickness: 0.35mm;
+  text-underline-offset: 0.7mm;
+  font-weight: 700;
+}}
+.section-body a::after {{
+  content: " ↗";
+  font-size: 0.82em;
+  color: #049e9e;
+}}
 .section-body strong {{ font-weight: bold; color: #023663; }}
 
 /* ── Tables: تنقسم بشكل نظيف، رأس الجدول يتكرر ───────── */
