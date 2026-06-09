@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """
 check_links.py — فحص الروابط قبل توليد أي بطاقة مهنية
-الاستخدام: python3 outputs/check_links.py outputs/test_card_XXX.md
+الاستخدام:
+  python3 outputs/check_links.py outputs/test_card_XXX.md
+  python3 outputs/check_links.py outputs/test_card_XXX.md --final
 """
 
 import re
 import sys
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 
 # ─── أنماط الروابط الضعيفة أو الممنوعة ──────────────────────────────────────
 
@@ -56,8 +58,9 @@ def extract_links(text: str):
 
 # ─── تقييم رابط واحد ──────────────────────────────────────────────────────────
 
-def evaluate_link(text: str, url: str):
+def evaluate_link(text: str, url: str, final: bool = False):
     issues = []
+    blocked = []
 
     for pattern, label in WEAK_PATTERNS:
         if re.search(pattern, url, re.IGNORECASE):
@@ -66,11 +69,16 @@ def evaluate_link(text: str, url: str):
     if is_likely_homepage(url) and 'صفحة رئيسية' not in ' '.join(issues):
         issues.append("يبدو صفحة رئيسية أو قائمة عامة — مسار قصير جدًا")
 
-    return issues
+    if final:
+        parsed = urlparse(url)
+        if parsed.query:
+            blocked.append(f"BLOCKED_QUERY_PARAMS: يحتوي على query parameters ({parsed.query[:60]})")
+
+    return issues, blocked
 
 # ─── التقرير الرئيسي ──────────────────────────────────────────────────────────
 
-def run(md_path: str):
+def run(md_path: str, final: bool = False):
     with open(md_path, encoding='utf-8') as f:
         content = f.read()
 
@@ -83,27 +91,44 @@ def run(md_path: str):
     total = len(links)
     clean = 0
     flagged = []
+    hard_blocked = []
 
+    mode_label = "وضع --final (LINK_VALIDATION_LOCK)" if final else "الفحص الأساسي"
     print(f"\n{'='*70}")
     print(f"  فحص الروابط: {md_path}")
+    print(f"  الوضع: {mode_label}")
     print(f"{'='*70}")
     print(f"  إجمالي الروابط: {total}\n")
 
     for text, url in links:
-        issues = evaluate_link(text, url)
-        if issues:
+        issues, blocked = evaluate_link(text, url, final=final)
+        if blocked:
+            hard_blocked.append((text, url, blocked))
+        elif issues:
             flagged.append((text, url, issues))
         else:
             clean += 1
 
-    # ─── النتائج النظيفة ──────────────────────────────────────────────────────
-    print(f"  ✅ مقبول ظاهريًا: {clean}")
+    # ─── النتائج ──────────────────────────────────────────────────────────────
+    print(f"  ✅ مقبول: {clean}")
     print(f"  ⚠️  يحتاج مراجعة: {len(flagged)}")
+    if final:
+        print(f"  ❌ BLOCKED (رفض نهائي): {len(hard_blocked)}")
     print()
+
+    if hard_blocked:
+        print("─" * 70)
+        print("  ❌ BLOCKED — روابط مرفوضة نهائيًا (--final):")
+        print("─" * 70)
+        for text, url, blocked in hard_blocked:
+            print(f"\n  النص   : {text[:60]}")
+            print(f"  الرابط : {url[:80]}")
+            for b in blocked:
+                print(f"  ❌  {b}")
 
     if flagged:
         print("─" * 70)
-        print("  الروابط التي تحتاج مراجعة:")
+        print("  ⚠️  الروابط التي تحتاج مراجعة:")
         print("─" * 70)
         for text, url, issues in flagged:
             print(f"\n  النص   : {text[:60]}")
@@ -113,15 +138,27 @@ def run(md_path: str):
 
     print()
     print("─" * 70)
-    print("  تذكير: هذا الفحص يكتشف الأنماط الضعيفة الواضحة فقط.")
-    print("  التحقق الفعلي من صحة الرابط يتطلب فتحه يدويًا خارج بيئة التشغيل.")
+    if final:
+        print("  وضع --final: يرفض أي رابط يحتوي على query parameters.")
+        if hard_blocked:
+            print("  ❌ الملف لا يجتاز LINK_VALIDATION_LOCK — يجب إصلاح الروابط المرفوضة.")
+        else:
+            print("  ✅ الملف اجتاز LINK_VALIDATION_LOCK — لا توجد روابط مرفوضة نهائيًا.")
+    else:
+        print("  تذكير: هذا الفحص يكتشف الأنماط الضعيفة الواضحة فقط.")
+        print("  التحقق الفعلي من صحة الرابط يتطلب فتحه يدويًا خارج بيئة التشغيل.")
     print("─" * 70)
 
-    if flagged:
-        sys.exit(1)  # exit code غير صفري لتسهيل التكامل مع CI
+    if hard_blocked:
+        sys.exit(2)  # BLOCKED
+    elif flagged:
+        sys.exit(1)  # يحتاج مراجعة
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("الاستخدام: python3 check_links.py <مسار_ملف_md>")
+    args = sys.argv[1:]
+    if not args:
+        print("الاستخدام: python3 check_links.py <مسار_ملف_md> [--final]")
         sys.exit(1)
-    run(sys.argv[1])
+    md_path = args[0]
+    final_mode = '--final' in args
+    run(md_path, final=final_mode)
