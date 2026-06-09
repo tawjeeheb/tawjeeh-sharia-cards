@@ -1,6 +1,7 @@
 import markdown
 import re
 import os
+import sys
 import base64
 from weasyprint import HTML
 
@@ -21,11 +22,20 @@ WEBSITE_URL     = f"https://{WEBSITE}"
 # ── Paths ─────────────────────────────────────────────────────────────────────
 BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR  = os.path.dirname(os.path.dirname(BASE_DIR))
-MD_FILE   = os.path.join(REPO_DIR, "outputs", "test_card_001_qadi.md")
 LOGO_FILE = os.path.join(REPO_DIR, "design_reference", "tawjeeh_logo.jpeg")
 FONTS_DIR = os.path.join(REPO_DIR, "design_reference", "fonts")
-HTML_OUT  = os.path.join(BASE_DIR, "test_card_001_qadi.html")
-PDF_OUT   = os.path.join(BASE_DIR, "test_card_001_qadi.pdf")
+
+# sys.argv[1] يتيح تمرير ملف MD مختلف لإنتاج بطاقات متعددة
+if len(sys.argv) > 1:
+    _arg = sys.argv[1]
+    MD_FILE = os.path.abspath(_arg) if not os.path.isabs(_arg) else _arg
+    _stem   = os.path.splitext(os.path.basename(MD_FILE))[0]
+    HTML_OUT = os.path.join(BASE_DIR, f"{_stem}.html")
+    PDF_OUT  = os.path.join(BASE_DIR, f"{_stem}.pdf")
+else:
+    MD_FILE  = os.path.join(REPO_DIR, "outputs", "test_card_001_qadi.md")
+    HTML_OUT = os.path.join(BASE_DIR, "test_card_001_qadi.html")
+    PDF_OUT  = os.path.join(BASE_DIR, "test_card_001_qadi.pdf")
 
 # ── Embed logo as base64 ──────────────────────────────────────────────────────
 with open(LOGO_FILE, "rb") as f:
