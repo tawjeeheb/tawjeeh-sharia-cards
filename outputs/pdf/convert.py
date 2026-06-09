@@ -539,6 +539,28 @@ p, li, td, th {{
   margin-bottom: 1mm;
 }}
 
+.section-body .employment-sector {{
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: #023663;
+  margin-top: 3mm;
+  margin-bottom: 1.2mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}}
+
+.section-body .employment-subcategory {{
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #496379;
+  margin-top: 2mm;
+  margin-bottom: 0.8mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}}
+
 .section-body .condition-label {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 1.08em;
