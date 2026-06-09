@@ -35,8 +35,15 @@
   size: A4;
   margin-top: 17mm;
   margin-right: 0;
-  margin-bottom: 0;
+  margin-bottom: 12.5mm;
   margin-left: 0;
+  @bottom-center {
+    content: element(footer);
+    height: 12.5mm;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 :root {
@@ -73,18 +80,14 @@ p, li, td, th {
   pointer-events: none;
 }
 
-/* ── Fixed footer — full-width gradient bar, edge-to-edge on every page ── */
+/* ── Running footer — حجز مساحة حقيقية في @page margin-bottom ── */
 .footer {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: running(footer);
   width: 100%;
   height: 12.5mm;
   background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
   border-radius: 0;
   box-sizing: border-box;
-  z-index: 999;
   overflow: hidden;
 }
 
@@ -168,7 +171,8 @@ p, li, td, th {
   z-index: 1;
   box-sizing: border-box;
   /* padding-top: 0 — الهامش العلوي كله من @page margin-top: 17mm */
-  padding: 0 17mm 32mm 17mm;
+  /* padding-bottom: 2mm — الفوتر الآن في @page margin-bottom: 12.5mm */
+  padding: 0 17mm 2mm 17mm;
 }
 
 /* ── Profession title ────────────────────────────────── */
