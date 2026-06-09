@@ -216,66 +216,6 @@ def tag_large_tables(html):
 
 sections_html = tag_large_tables(sections_html)
 
-
-def wrap_section_starts(html):
-    """
-    Visual Clean Page Lock — Python implementation.
-    Wraps section-heading + first 3 block body elements in .section-start-guard
-    with break-inside: avoid. Creates a ~20-25mm minimum unit that cannot fit
-    in the small space remaining near the footer, forcing it to the next page.
-    Skips table-page-group sections (already managed with break-before: page).
-    """
-    GUARD_ELEMENTS = 2
-    BLOCK_TAG = re.compile(r'(?=<(?:p|ul|ol|h3|h4|table)\b)', re.DOTALL)
-
-    SECTION_PAT = re.compile(
-        r'<div class="(section[^"]*)">'
-        r'\s*<div class="section-heading">(.*?)</div>'
-        r'\s*<div class="section-body">(.*?)</div>'
-        r'\s*</div>',
-        re.DOTALL
-    )
-
-    def replace(m):
-        classes = m.group(1)
-        heading = m.group(2)
-        body = m.group(3).strip()
-
-        # table-page-group already has break-before: page — skip
-        if 'table-page-group' in classes:
-            return m.group(0)
-
-        parts = [p for p in BLOCK_TAG.split(body) if p.strip()]
-
-        if not parts:
-            return (
-                f'<div class="{classes}">'
-                f'<div class="section-start-guard">'
-                f'<div class="section-heading">{heading}</div>'
-                f'</div>'
-                f'</div>'
-            )
-
-        guard_parts = parts[:GUARD_ELEMENTS]
-        rest_parts = parts[GUARD_ELEMENTS:]
-
-        result = (
-            f'<div class="{classes}">'
-            f'<div class="section-start-guard">'
-            f'<div class="section-heading">{heading}</div>'
-            f'<div class="section-body">{"".join(guard_parts)}</div>'
-            f'</div>'
-        )
-        if rest_parts:
-            result += f'<div class="section-body">{"".join(rest_parts)}</div>'
-        result += '</div>'
-        return result
-
-    return SECTION_PAT.sub(replace, html)
-
-
-sections_html = wrap_section_starts(sections_html)
-
 # ── CSS ────────────────────────────────────────────────────────────────────────
 CSS_STR = f"""
 /* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
@@ -493,13 +433,18 @@ p, li, td, th {{
   widows: 3;
 }}
 
-/* Visual Clean Page Lock — قفل Python
-   section-start-guard يحتوي: عنوان + أول 3 عناصر من المحتوى
-   break-inside: avoid يجعله وحدة صلبة ~20-25mm لا تنكسر
-   إذا لم تتسع المساحة المتبقية → ينتقل كاملًا للصفحة التالية */
-.section-start-guard {{
-  break-inside: avoid;
-  page-break-inside: avoid;
+/* Visual Clean Page Lock — تلقائي
+   يربط أول عنصرين من القسم بعنوانه عبر سلسلة break:
+   heading (break-after:avoid) ← first-child (break-before:avoid) ← nth-child(2) (break-before:avoid)
+   النتيجة: WeasyPrint ينقل العنوان + أول عنصرين معًا إلى الصفحة التالية
+   إذا لم تتسع المساحة المتبقية — بدون قوائم يدوية */
+.section-body > *:first-child {{
+  break-before: avoid;
+  page-break-before: avoid;
+}}
+.section-body > *:nth-child(2) {{
+  break-before: avoid;
+  page-break-before: avoid;
 }}
 
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
