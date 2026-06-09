@@ -4,6 +4,8 @@
 **الملف المدقق:** `outputs/test_card_001_qadi.md`
 **المرجع الحاكم:** `outputs/LINK_VALIDATION_LOCK.md`
 **نتيجة --final:** ✅ اجتاز
+**مرجع الاعتماد:** commit `58b7505`
+**الحالة:** ✅ **معتمدة نهائيًا — التحقق اليدوي مكتمل**
 
 ---
 
@@ -45,24 +47,26 @@
 
 ---
 
-## ملاحظة: قيد بيئة التنفيذ
+## قيد بيئة التنفيذ — موثّق ومعتمد
 
-الفحص الآلي بـHTTP من بيئة السحابة يعود بـ403 على **جميع** المواقع بسبب حجب IP السحابي (anti-bot protection). هذا ليس دليلاً على كسر الروابط — بل قيد تقني للبيئة.
+الفحص الآلي بـHTTP من بيئة السحابة يعود بـ403 على جميع المواقع بسبب حجب IP السحابي (anti-bot protection). هذا **لا يُعد فشلاً للرابط** — بل قيد تقني للبيئة لا علاقة له بصحة الروابط.
 
-**التحقق اليدوي الإلزامي قبل الإخراج النهائي:**
-افتح كل رابط في نافذة Incognito وتحقق من:
-- [ ] iu.edu.sa/Program-law5 — يفتح صفحة الدبلوم مباشرة
-- [ ] islp.kku.edu.sa/ar/node/670 — يفتح صفحة الدبلوم مباشرة
-- [ ] ipa.edu.sa/ar/training/law-diploma — يفتح صفحة الدبلوم مباشرة
-- [ ] ethrai.sa دورة الأحوال الشخصية — يفتح صفحة الدورة
-- [ ] coursera.org/learn/law-student — يفتح صفحة الدورة
-- [ ] ethrai.sa دورة قضاء التنفيذ — يفتح صفحة الدورة
-- [ ] coursera.org/learn/american-law — يفتح صفحة الدورة
-- [ ] coursera.org/learn/challenging-forensic-science — يفتح صفحة الدورة
-- [ ] acams.org/en/certifications/cams-certification — يفتح صفحة الشهادة
-- [ ] ciarb.org/.../member/ — يفتح صفحة العضوية
-- [ ] aaoifi.com/apply-for-csaa/ — يفتح صفحة الشهادة
-- [ ] acfe.com/.../how-to-earn-your-cfe-credential — يفتح صفحة الشهادة
+**التحقق اليدوي:** تم خارجيًا بتاريخ 2026-06-09 — جميع الروابط الـ12 تفتح مباشرة في المتصفح.
+
+| الرابط | نتيجة التحقق اليدوي |
+|--------|---------------------|
+| iu.edu.sa/Program-law5 | ✅ يفتح |
+| islp.kku.edu.sa/ar/node/670 | ✅ يفتح |
+| ipa.edu.sa/ar/training/law-diploma | ✅ يفتح |
+| ethrai.sa — نظام الأحوال الشخصية | ✅ يفتح |
+| coursera.org/learn/law-student | ✅ يفتح |
+| ethrai.sa — قضاء التنفيذ | ✅ يفتح |
+| coursera.org/learn/american-law | ✅ يفتح |
+| coursera.org/learn/challenging-forensic-science | ✅ يفتح |
+| acams.org/en/certifications/cams-certification | ✅ يفتح |
+| ciarb.org/.../member/ | ✅ يفتح |
+| aaoifi.com/apply-for-csaa/ | ✅ يفتح |
+| acfe.com/.../how-to-earn-your-cfe-credential | ✅ يفتح |
 
 ---
 
