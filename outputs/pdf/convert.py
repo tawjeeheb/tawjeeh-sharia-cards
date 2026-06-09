@@ -220,23 +220,28 @@ sections_html = tag_large_tables(sections_html)
 def guard_list_starts(html):
     """
     Human Layout Rule — منطق المصمم البشري:
-    لا يظهر عنصر أو عنصران منفردان من قائمة في أسفل صفحة أو أعلى صفحة.
 
-    الآلية: تقسيم كل <ul>/<ol> إلى chunks من CHUNK_SIZE عناصر،
-    كل chunk في .list-start-guard بـ break-inside: avoid.
-    إذا كان الـchunk الأخير صغيرًا جدًا (< CHUNK_SIZE)، يُدمج مع ما قبله.
+    القوائم القصيرة (إجمالي نص < LONG_CHARS):
+      تُقسَّم إلى chunks صلبة من CHUNK_SIZE عناصر.
+      لا يظهر أقل من CHUNK_SIZE عناصر في بداية/نهاية أي صفحة.
 
-    النتيجة: لا يظهر أقل من CHUNK_SIZE عناصر منفردة في بداية/نهاية أي صفحة.
+    القوائم الطويلة (إجمالي نص >= LONG_CHARS):
+      start-guard فقط: أول CHUNK_SIZE عناصر كوحدة صلبة.
+      الباقي يتدفق بحرية — يُسمح بالانقسام الطبيعي بين الصفحات.
+      هذا يمنع العنوان اليتيم ويمنع سطرًا واحدًا بعد العنوان،
+      بدون إجبار القسم الطويل على الانتقال كاملًا.
+
+    الفارق: حجم نص القائمة (chars) لا عدد عناصرها فقط.
     لا تطبق على الجداول.
     """
-    CHUNK_SIZE = 3
+    CHUNK_SIZE = 3      # الحد الأدنى لعناصر القائمة كوحدة
+    LONG_CHARS = 550    # قوائم أكبر من هذا الحجم = طويلة → start-guard فقط
 
     def make_chunks(items):
-        """تقسيم إلى chunks متساوية، مع دمج الأخير إذا كان صغيرًا."""
+        """تقسيم إلى chunks متساوية، مع دمج الأخير إذا كان أصغر من CHUNK_SIZE."""
         if len(items) <= CHUNK_SIZE:
             return [items]
         raw = [items[i:i + CHUNK_SIZE] for i in range(0, len(items), CHUNK_SIZE)]
-        # دمج الـchunk الأخير مع ما قبله إذا كان أصغر من CHUNK_SIZE
         if len(raw) > 1 and len(raw[-1]) < CHUNK_SIZE:
             raw[-2] = raw[-2] + raw[-1]
             raw = raw[:-1]
@@ -253,6 +258,30 @@ def guard_list_starts(html):
         if not li_parts:
             return m.group(0)
 
+        # حساب حجم نص القائمة (بعد إزالة HTML)
+        text_chars = len(re.sub(r'<[^>]+>', '', inner))
+        is_long = text_chars >= LONG_CHARS
+
+        if is_long:
+            # قائمة طويلة: start-guard فقط، الباقي يتدفق بحرية
+            if len(li_parts) <= CHUNK_SIZE:
+                # قليلة العناصر رغم النص الطويل → كتلة واحدة
+                return (
+                    f'<div class="list-start-guard">'
+                    f'<{tag}{attrs}>{"".join(li_parts)}</{tag}>'
+                    f'</div>'
+                )
+            guard = li_parts[:CHUNK_SIZE]
+            rest  = li_parts[CHUNK_SIZE:]
+            start_attr = f' start="{CHUNK_SIZE + 1}"' if tag == 'ol' else ''
+            return (
+                f'<div class="list-start-guard">'
+                f'<{tag}{attrs}>{"".join(guard)}</{tag}>'
+                f'</div>'
+                f'<{tag}{attrs}{start_attr}>{"".join(rest)}</{tag}>'
+            )
+
+        # قائمة قصيرة: تقسيم كامل إلى chunks صلبة
         chunks = make_chunks(li_parts)
         result = []
         offset = 0
@@ -265,7 +294,6 @@ def guard_list_starts(html):
                 f'</div>'
             )
             offset += len(chunk)
-
         return ''.join(result)
 
     return re.sub(
