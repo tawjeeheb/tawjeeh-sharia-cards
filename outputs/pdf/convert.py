@@ -216,6 +216,68 @@ def tag_large_tables(html):
 
 sections_html = tag_large_tables(sections_html)
 
+
+def guard_list_starts(html):
+    """
+    Human Layout Rule — منطق المصمم البشري:
+    لا يظهر عنصر أو عنصران منفردان من قائمة في أسفل صفحة أو أعلى صفحة.
+
+    الآلية: تقسيم كل <ul>/<ol> إلى chunks من CHUNK_SIZE عناصر،
+    كل chunk في .list-start-guard بـ break-inside: avoid.
+    إذا كان الـchunk الأخير صغيرًا جدًا (< CHUNK_SIZE)، يُدمج مع ما قبله.
+
+    النتيجة: لا يظهر أقل من CHUNK_SIZE عناصر منفردة في بداية/نهاية أي صفحة.
+    لا تطبق على الجداول.
+    """
+    CHUNK_SIZE = 3
+
+    def make_chunks(items):
+        """تقسيم إلى chunks متساوية، مع دمج الأخير إذا كان صغيرًا."""
+        if len(items) <= CHUNK_SIZE:
+            return [items]
+        raw = [items[i:i + CHUNK_SIZE] for i in range(0, len(items), CHUNK_SIZE)]
+        # دمج الـchunk الأخير مع ما قبله إذا كان أصغر من CHUNK_SIZE
+        if len(raw) > 1 and len(raw[-1]) < CHUNK_SIZE:
+            raw[-2] = raw[-2] + raw[-1]
+            raw = raw[:-1]
+        return raw
+
+    def process_list(m):
+        tag   = m.group(1)
+        attrs = m.group(2)
+        inner = m.group(3)
+
+        li_parts = re.split(r'(?=<li[\s>])', inner)
+        li_parts = [p for p in li_parts if p.strip()]
+
+        if not li_parts:
+            return m.group(0)
+
+        chunks = make_chunks(li_parts)
+        result = []
+        offset = 0
+        for chunk in chunks:
+            start_attr = (f' start="{offset + 1}"' if tag == 'ol' and offset > 0
+                          else '')
+            result.append(
+                f'<div class="list-start-guard">'
+                f'<{tag}{attrs}{start_attr}>{"".join(chunk)}</{tag}>'
+                f'</div>'
+            )
+            offset += len(chunk)
+
+        return ''.join(result)
+
+    return re.sub(
+        r'<(ul|ol)([^>]*)>(.*?)</(ul|ol)>',
+        process_list,
+        html,
+        flags=re.DOTALL,
+    )
+
+
+sections_html = guard_list_starts(sections_html)
+
 # ── CSS ────────────────────────────────────────────────────────────────────────
 CSS_STR = f"""
 /* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
@@ -559,6 +621,12 @@ p, li, td, th {{
   break-inside: avoid;
   page-break-inside: avoid;
 }}
+/* Human Layout Rule — يمنع بدء قائمة بعنصر/عنصرين منفردَين قرب الفوتر */
+.list-start-guard {{
+  break-inside: avoid;
+  page-break-inside: avoid;
+}}
+
 /* Visual Clean Page Lock — قسم يستوجب بداية نظيفة فوق الفوتر */
 .section.clean-page-required {{
   break-before: page;
