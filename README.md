@@ -25,3 +25,4 @@ python3 outputs/pdf/convert.py
 | `outputs/link_audit_qadi_v1.md` | ملف تدقيق روابط بطاقة قاضي |
 | `outputs/ROLE_SPECIFIC_CONTENT_LOCK.md` | قفل حاكم — كل بطاقة تُبنى من الصفر؛ 18 عنصرًا واجب التخصيص؛ اختبار القبول الستة |
 | `outputs/CONTENT_DECISION_ENGINE.md` | محرك قرار المحتوى — 9 خطوات إلزامية؛ بطاقة قاضي = Golden Master للتصميم فقط لا للمحتوى |
+| `outputs/COURSE_SELECTION_ENGINE.md` | محرك اختيار الدورات — الاختيار يبدأ من المهارة؛ 3 مراحل + اختبار عدم النسخ + اختبار القبول |
