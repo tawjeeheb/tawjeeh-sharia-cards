@@ -27,3 +27,4 @@ python3 outputs/pdf/convert.py
 | `outputs/CONTENT_DECISION_ENGINE.md` | محرك قرار المحتوى — 9 خطوات إلزامية؛ بطاقة قاضي = Golden Master للتصميم فقط لا للمحتوى |
 | `outputs/COURSE_SELECTION_ENGINE.md` | محرك اختيار الدورات — الاختيار يبدأ من المهارة؛ 3 مراحل + اختبار عدم النسخ + اختبار القبول |
 | `outputs/CERTIFICATION_SELECTION_ENGINE.md` | محرك اختيار الشهادات — 10 مسارات مهنية؛ يبدأ من المهمة الحرجة لا من الشهرة؛ اختبار القبول |
+| `outputs/PROGRAM_SELECTION_ENGINE.md` | محرك اختيار البرامج — يبدأ من فجوة الدخول؛ 10 أنواع فجوة؛ أولوية للبرامج السعودية؛ اختبار القبول |
