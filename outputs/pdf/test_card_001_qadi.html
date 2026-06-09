@@ -187,8 +187,8 @@ p, li, td, th {
   margin-bottom: 4mm;
   break-inside: auto;
   page-break-inside: auto;
-  orphans: 2;
-  widows: 2;
+  orphans: 3;
+  widows: 3;
 }
 
 /* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
@@ -214,8 +214,8 @@ p, li, td, th {
   line-height: 1.72;
   break-inside: auto;
   page-break-inside: auto;
-  orphans: 2;
-  widows: 2;
+  orphans: 3;
+  widows: 3;
 }
 
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
@@ -232,8 +232,7 @@ p, li, td, th {
 
 .section-body p  {
   margin-bottom: 1.4mm;
-  break-inside: auto;
-  page-break-inside: auto;
+  break-inside: avoid-page;
 }
 
 .section-body .sector-label {
