@@ -32,3 +32,4 @@ python3 outputs/pdf/convert.py
 | `outputs/CONTENT_REGISTRY.md` | سجل مركزي لكل البرامج والشهادات والدورات المستخدمة — يُراجع قبل أي اختيار جديد |
 | `outputs/SOURCE_EVIDENCE_LOCK.md` | قفل الأدلة — أي معلومة مهنية بلا دليل قابل للتتبع لا تُذكر |
 | `outputs/FINAL_CARD_APPROVAL_CHECKLIST.md` | قائمة الفحص النهائية — 22 بندًا إلزاميًا؛ فشل بند واحد = البطاقة مرفوضة |
+| `outputs/CROSS_CARD_CONSISTENCY_ENGINE.md` | محرك الاتساق — 10 معايير أسلوبية تضمن أن جميع البطاقات تبدو من محرر واحد |
