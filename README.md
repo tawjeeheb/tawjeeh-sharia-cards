@@ -23,3 +23,4 @@ python3 outputs/pdf/convert.py
 | `outputs/LINK_VALIDATION_LOCK.md` | قفل دائم لجميع الروابط الخارجية — شروط القبول الإلزامية |
 | `outputs/COURSERA_LINK_LOCK.md` | قفل دائم لروابط Coursera — شروط القبول الإلزامية |
 | `outputs/link_audit_qadi_v1.md` | ملف تدقيق روابط بطاقة قاضي |
+| `outputs/ROLE_SPECIFIC_CONTENT_LOCK.md` | قفل حاكم — كل بطاقة تُبنى من الصفر؛ 18 عنصرًا واجب التخصيص؛ اختبار القبول الستة |
