@@ -73,10 +73,10 @@
 
 الدورات الداعمة
 * دورة [نظام الأحوال الشخصية](https://ethrai.sa/course-details/%D9%86%D8%B8%D8%A7%D9%85-%D8%A7%D9%84%D8%A3%D8%AD%D9%88%D8%A7%D9%84-%D8%A7%D9%84%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9): تدعم مهارة تكييف الوقائع قضائيًا
-* دورة [Think Again I: How to Understand Arguments](https://www.coursera.org/learn/understanding-arguments): تدعم مهارة تسبيب الأحكام القضائية
+* دورة [التفكير النقدي وتحليل الحجج](https://www.coursera.org/learn/understanding-arguments): تدعم مهارة تسبيب الأحكام القضائية
 * دورة [قضاء التنفيذ](https://ethrai.sa/course-details/eb5b9ea5-3261-ea11-80d7-0050568c1fee): تدعم مهارة إدارة إجراءات الجلسات
 * دورة [المرافعات أمام الجهات الشرعية](https://ethrai.sa/course-details/bbbfe41e-9487-ea11-80db-0050568c2944): تدعم مهارة تحرير منطوق الحكم
-* دورة [Challenging Forensic Science: How Science Should Speak to Court](https://www.coursera.org/learn/challenging-forensic-science): تدعم مهارة تقدير حجية الأدلة
+* دورة [تقييم الأدلة الجنائية أمام المحاكم](https://www.coursera.org/learn/challenging-forensic-science): تدعم مهارة تقدير حجية الأدلة
 
 جهات التوظيف وطريقة التقديم
 
