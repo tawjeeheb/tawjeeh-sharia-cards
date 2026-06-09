@@ -14,6 +14,7 @@ python3 outputs/pdf/convert.py
 
 | الملف | الغرض |
 |-------|-------|
+| `outputs/VISUAL_CLEAN_PAGE_LOCK.md` | قفل النظافة البصرية للصفحات — أولوية أعلى من عدد الصفحات |
 | `outputs/LINK_POLICY.md` | سياسة الروابط المعتمدة لجميع البطاقات |
 | `outputs/check_links.py` | سكربت فحص الروابط قبل التوليد |
 | `outputs/pdf/convert.py` | قالب التوليد (CSS + شكل الروابط مقفول) |
