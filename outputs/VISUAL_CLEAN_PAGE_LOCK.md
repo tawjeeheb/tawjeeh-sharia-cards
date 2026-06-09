@@ -1,7 +1,8 @@
 # Visual Clean Page Lock — Tawjeeh Cards
 
 **تاريخ الاعتماد:** 2026-06-09  
-**المرجع:** commit `53c4058` (القالب الحالي لبطاقة قاضي)
+**مرجع الحوكمة:** commit `39a7cd4` (توثيق المبدأ)  
+**مرجع التطبيق التقني:** commit `a6cd72d` (أول تطبيق فعلي — بطاقة قاضي)
 
 ---
 
@@ -68,6 +69,21 @@ Visual Cleanliness  >  Consistency  >  Page Count
 | عناصر القائمة لا تنكسر | `.section-body li { break-inside: avoid-page }` |
 | الجدول الكبير + عنوانه = صفحة مستقلة | `.section.table-page-group { break-before: page; break-inside: avoid }` |
 | حماية orphans | `orphans: 3; widows: 3` على `.section` و `.section-body` |
+| قسم حساس بصريًا — يبدأ دائمًا في صفحة نظيفة | `CLEAN_PAGE_SECTIONS` في Python + `.section.clean-page-required { break-before: page }` |
+
+### آلية CLEAN_PAGE_SECTIONS (مُعتمَدة من commit `a6cd72d`)
+
+```python
+# في convert.py — أضف أي قسم يظهر قريبًا من الفوتر هنا
+CLEAN_PAGE_SECTIONS = {
+    'الشهادات المهنية الاحترافية',  # كان عند 270.9mm (13.6mm من الفوتر)
+}
+```
+
+**القاعدة التشغيلية:**
+- إذا ظهر قسم قريبًا من الفوتر في أي بطاقة → أضفه لـ `CLEAN_PAGE_SECTIONS` في `convert.py`
+- **لا تعدّل الهوامش** — لا تعدّل الفوتر — لا تضغط المحتوى
+- المرجع: `outputs/pdf/convert.py` → `CLEAN_PAGE_SECTIONS`
 
 ---
 
