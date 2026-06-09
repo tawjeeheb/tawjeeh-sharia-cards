@@ -218,6 +218,20 @@ p, li, td, th {
   widows: 3;
 }
 
+/* Visual Clean Page Lock — تلقائي
+   يربط أول عنصرين من القسم بعنوانه عبر سلسلة break:
+   heading (break-after:avoid) ← first-child (break-before:avoid) ← nth-child(2) (break-before:avoid)
+   النتيجة: WeasyPrint ينقل العنوان + أول عنصرين معًا إلى الصفحة التالية
+   إذا لم تتسع المساحة المتبقية — بدون قوائم يدوية */
+.section-body > *:first-child {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+.section-body > *:nth-child(2) {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
 .section-body h3 {
   font-family: 'Noto Kufi Arabic', sans-serif;
@@ -494,7 +508,7 @@ p, li, td, th {
 <li>مسار التخصص: يمكن التخصص في مجالات قضائية دقيقة مثل «القضاء التجاري»، «القضاء الجزائي»، «قضاء الأحوال الشخصية»، «قضاء التنفيذ»، و«القضاء الإداري» بحسب الدوائر والاختصاصات التي تتيحها الأنظمة والقرارات القضائية المعتمدة.</li>
 </ul>
 </div></div>
-<div class="section clean-page-required"><div class="section-heading">الشهادات المهنية الاحترافية</div><div class="section-body">
+<div class="section"><div class="section-heading">الشهادات المهنية الاحترافية</div><div class="section-body">
 <ul>
 <li><a class="linked-inline-label" href="https://www.acams.org/en/certifications/cams-certification">شهادة أخصائي مكافحة غسل الأموال المعتمد (CAMS) <span class="linked-inline-arrow">↗</span></a>: تعزز الكفاءة في تحليل أدلة القضايا المالية الجزائية والجرائم المالية المنظمة (غير مدعومة)</li>
 <li><a class="linked-inline-label" href="https://www.ciarb.org/membership/routes-to-membership/member/">عضوية معهد التحكيم الملكي (MCIArb) <span class="linked-inline-arrow">↗</span></a>: تدعم الكفاءة في تقييم طلبات تنفيذ أحكام التحكيم أمام المحاكم (غير مدعومة)</li>

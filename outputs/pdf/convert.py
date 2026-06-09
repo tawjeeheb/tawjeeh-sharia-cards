@@ -144,7 +144,8 @@ cover_title = cover_match.group(1) if cover_match else ''
 # أقسام تستوجب بداية نظيفة — Visual Clean Page Lock
 # إذا لم تكن المساحة كافية فوق الفوتر، تبدأ في صفحة جديدة
 CLEAN_PAGE_SECTIONS = {
-    'الشهادات المهنية الاحترافية',
+    # استثناءات يدوية فقط — المنطق التلقائي في CSS يتولى الحالات العامة
+    # مثال: 'اسم قسم يحتاج إجبارًا دائمًا على صفحة جديدة'
 }
 
 # Replace h2 with section-heading divs, h3 with sub-heading divs
@@ -430,6 +431,20 @@ p, li, td, th {{
   page-break-inside: auto;
   orphans: 3;
   widows: 3;
+}}
+
+/* Visual Clean Page Lock — تلقائي
+   يربط أول عنصرين من القسم بعنوانه عبر سلسلة break:
+   heading (break-after:avoid) ← first-child (break-before:avoid) ← nth-child(2) (break-before:avoid)
+   النتيجة: WeasyPrint ينقل العنوان + أول عنصرين معًا إلى الصفحة التالية
+   إذا لم تتسع المساحة المتبقية — بدون قوائم يدوية */
+.section-body > *:first-child {{
+  break-before: avoid;
+  page-break-before: avoid;
+}}
+.section-body > *:nth-child(2) {{
+  break-before: avoid;
+  page-break-before: avoid;
 }}
 
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
