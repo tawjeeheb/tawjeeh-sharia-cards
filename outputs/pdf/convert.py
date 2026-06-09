@@ -141,6 +141,12 @@ html_body = enhance_program_links(html_body)
 cover_match = re.search(r'<h1>(.*?)</h1>', html_body, re.DOTALL)
 cover_title = cover_match.group(1) if cover_match else ''
 
+# أقسام تستوجب بداية نظيفة — Visual Clean Page Lock
+# إذا لم تكن المساحة كافية فوق الفوتر، تبدأ في صفحة جديدة
+CLEAN_PAGE_SECTIONS = {
+    'الشهادات المهنية الاحترافية',
+}
+
 # Replace h2 with section-heading divs, h3 with sub-heading divs
 # Wrap each h2 section in a .section div
 def transform_sections(html):
@@ -153,8 +159,9 @@ def transform_sections(html):
             if hm:
                 heading = hm.group(1)
                 body = part[hm.end():]
+                extra = ' clean-page-required' if heading in CLEAN_PAGE_SECTIONS else ''
                 out.append(
-                    f'<div class="section">'
+                    f'<div class="section{extra}">'
                     f'<div class="section-heading">{heading}</div>'
                     f'<div class="section-body">{body}</div>'
                     f'</div>'
@@ -537,6 +544,12 @@ p, li, td, th {{
   break-inside: avoid;
   page-break-inside: avoid;
 }}
+/* Visual Clean Page Lock — قسم يستوجب بداية نظيفة فوق الفوتر */
+.section.clean-page-required {{
+  break-before: page;
+  page-break-before: always;
+}}
+
 /* قسم كامل (عنوان + جدول) ينتقلان معًا إلى صفحة جديدة */
 .section.table-page-group {{
   break-before: page;

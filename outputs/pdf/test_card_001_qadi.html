@@ -330,6 +330,12 @@ p, li, td, th {
   break-inside: avoid;
   page-break-inside: avoid;
 }
+/* Visual Clean Page Lock — قسم يستوجب بداية نظيفة فوق الفوتر */
+.section.clean-page-required {
+  break-before: page;
+  page-break-before: always;
+}
+
 /* قسم كامل (عنوان + جدول) ينتقلان معًا إلى صفحة جديدة */
 .section.table-page-group {
   break-before: page;
@@ -458,7 +464,7 @@ p, li, td, th {
 <li><a class="linked-inline-label" href="https://www.ipa.edu.sa/ar/training/law-diploma">الدبلوم العالي للعلوم القانونية - معهد الإدارة العامة <span class="linked-inline-arrow">↗</span></a>: يعوض النقص الإجرائي لدى التخصصات الشرعية الدقيقة من خلال تأهيلهم في الأنظمة والإجراءات القانونية المدنية والجزائية والإدارية مع بقاء اشتراط المؤهل الشرعي النظامي لدخول السلك القضائي قائمًا، ويرفع من جاهزية التخصص الرئيسي من خلال التعامل مع ملفات نظامية عبر مسارات متخصصة في القانون الإداري والجزائي ضمن برنامج مدته ثلاث سنوات.</li>
 </ul>
 </div></div>
-<div class="section"><div class="section-heading">الشهادات المهنية الاحترافية</div><div class="section-body">
+<div class="section clean-page-required"><div class="section-heading">الشهادات المهنية الاحترافية</div><div class="section-body">
 <ul>
 <li><a class="linked-inline-label" href="https://www.acams.org/en/certifications/cams-certification">شهادة أخصائي مكافحة غسل الأموال المعتمد (CAMS) <span class="linked-inline-arrow">↗</span></a>: تعزز الكفاءة في تحليل أدلة القضايا المالية الجزائية والجرائم المالية المنظمة (غير مدعومة)</li>
 <li><a class="linked-inline-label" href="https://www.ciarb.org/membership/routes-to-membership/member/">عضوية معهد التحكيم الملكي (MCIArb) <span class="linked-inline-arrow">↗</span></a>: تدعم الكفاءة في تقييم طلبات تنفيذ أحكام التحكيم أمام المحاكم (غير مدعومة)</li>
