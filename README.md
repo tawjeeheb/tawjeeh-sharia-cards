@@ -31,3 +31,4 @@ python3 outputs/pdf/convert.py
 | `outputs/QUALITY_GATE.md` | بوابة الجودة — آخر خطوة قبل الاعتماد؛ 7 مراحل فحص؛ لا بطاقة تُعتمد بدون اجتيازها |
 | `outputs/CONTENT_REGISTRY.md` | سجل مركزي لكل البرامج والشهادات والدورات المستخدمة — يُراجع قبل أي اختيار جديد |
 | `outputs/SOURCE_EVIDENCE_LOCK.md` | قفل الأدلة — أي معلومة مهنية بلا دليل قابل للتتبع لا تُذكر |
+| `outputs/FINAL_CARD_APPROVAL_CHECKLIST.md` | قائمة الفحص النهائية — 22 بندًا إلزاميًا؛ فشل بند واحد = البطاقة مرفوضة |
