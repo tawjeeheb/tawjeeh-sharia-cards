@@ -26,3 +26,4 @@ python3 outputs/pdf/convert.py
 | `outputs/ROLE_SPECIFIC_CONTENT_LOCK.md` | قفل حاكم — كل بطاقة تُبنى من الصفر؛ 18 عنصرًا واجب التخصيص؛ اختبار القبول الستة |
 | `outputs/CONTENT_DECISION_ENGINE.md` | محرك قرار المحتوى — 9 خطوات إلزامية؛ بطاقة قاضي = Golden Master للتصميم فقط لا للمحتوى |
 | `outputs/COURSE_SELECTION_ENGINE.md` | محرك اختيار الدورات — الاختيار يبدأ من المهارة؛ 3 مراحل + اختبار عدم النسخ + اختبار القبول |
+| `outputs/CERTIFICATION_SELECTION_ENGINE.md` | محرك اختيار الشهادات — 10 مسارات مهنية؛ يبدأ من المهمة الحرجة لا من الشهرة؛ اختبار القبول |
