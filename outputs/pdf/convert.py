@@ -250,7 +250,7 @@ CSS_STR = f"""
   --page-top-safe-gap: 17mm;
   --footer-height: 12.5mm;
   --footer-safe-gap: 8mm;
-  --footer-reserved: 28mm;
+  --footer-reserved: 32mm;
 }}
 
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -375,7 +375,7 @@ p, li, td, th {{
   z-index: 1;
   box-sizing: border-box;
   /* padding-top صغير — الهامش العلوي الفعلي من @page margin-top: 17mm */
-  padding: 4mm 17mm 28mm 17mm;
+  padding: 4mm 17mm 32mm 17mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
