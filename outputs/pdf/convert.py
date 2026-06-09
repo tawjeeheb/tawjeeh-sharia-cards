@@ -599,6 +599,7 @@ p, li, td, th {{
   margin-bottom: 1.2mm;
   line-height: 1.68;
   break-inside: avoid-page;
+  page-break-inside: avoid;
 }}
 .section-body li::marker {{
   color: #023663;
@@ -649,10 +650,9 @@ p, li, td, th {{
   break-inside: avoid;
   page-break-inside: avoid;
 }}
-/* Human Layout Rule — يمنع بدء قائمة بعنصر/عنصرين منفردَين قرب الفوتر */
+/* Human Layout Rule — يجمع li معًا كمجموعة: break-inside على li هي القاعدة العليا */
 .list-start-guard {{
-  break-inside: avoid;
-  page-break-inside: avoid;
+  display: block;
 }}
 
 /* Visual Clean Page Lock — قسم يستوجب بداية نظيفة فوق الفوتر */
