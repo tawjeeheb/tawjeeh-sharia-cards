@@ -33,7 +33,17 @@
 /* ── Page layout ─────────────────────────────────────── */
 @page {
   size: A4;
-  margin: 0;
+  margin-top: 17mm;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+:root {
+  --page-top-safe-gap: 17mm;
+  --footer-height: 12.5mm;
+  --footer-safe-gap: 8mm;
+  --footer-reserved: 28mm;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -157,8 +167,8 @@ p, li, td, th {
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  /* الهوامش انتقلت هنا بعد إلغاء هوامش @page لإتاحة Footer ممتد للحواف */
-  padding: 15mm 17mm 22mm 17mm;
+  /* padding-top صغير — الهامش العلوي الفعلي من @page margin-top: 17mm */
+  padding: 4mm 17mm 28mm 17mm;
 }
 
 /* ── Profession title ────────────────────────────────── */
@@ -298,7 +308,7 @@ p, li, td, th {
 }
 .section-body strong { font-weight: bold; color: #023663; }
 
-/* ── Tables: تنقسم بشكل نظيف، رأس الجدول يتكرر ───────── */
+/* ── Tables ──────────────────────────────────────────────── */
 .section-body table {
   width: 100%;
   border-collapse: collapse;
@@ -306,8 +316,12 @@ p, li, td, th {
   line-height: 1.4;
   margin-top: 1.6mm;
   color: #023663;
-  break-inside: auto;
-  page-break-inside: auto;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.section-body thead, .section-body tbody, .section-body tfoot {
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 .section-body thead {
   display: table-header-group;
@@ -315,6 +329,27 @@ p, li, td, th {
 .section-body tr {
   break-inside: avoid;
   page-break-inside: avoid;
+}
+/* قسم كامل (عنوان + جدول) ينتقلان معًا إلى صفحة جديدة */
+.section.table-page-group {
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  padding-top: 3mm;
+}
+/* جدول كبير منفرد — يبدأ في صفحة جديدة */
+.section-body table.table-page-block {
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-top: 0;
+}
+/* جدول داخل قسم table-page-group — لا كسر إضافي */
+.section.table-page-group .section-body table.table-page-block {
+  break-before: auto;
+  page-break-before: auto;
 }
 .section-body th {
   background: #023663;
@@ -479,8 +514,8 @@ p, li, td, th {
 <li>التحق بالدبلوم العالي في القضاء والسياسة الشرعية في الجامعة الإسلامية بالمدينة المنورة إذا أردت تحويل معرفتك الشرعية النظرية إلى مهارة إجرائية قابلة للعرض في المقابلة، لأن البرنامج يتضمن تدريبًا ميدانيًا في القضاء الإداري والتجاري والجزائي. للتخصصات الدقيقة: يرفع مستوى الجاهزية الإجرائية بما يتجاوز ضعف الاسم الأكاديمي في أعين اللجنة، مع استمرار اشتراط اجتياز امتحان المعادلة الرسمي أولًا.</li>
 </ul>
 </div></div>
-<div class="section"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
-<table>
+<div class="section table-page-group"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
+<table class="table-page-block">
 <thead>
 <tr>
 <th>التخصص</th>

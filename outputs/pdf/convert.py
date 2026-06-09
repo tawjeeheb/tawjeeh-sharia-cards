@@ -164,6 +164,50 @@ def transform_sections(html):
 
 sections_html = transform_sections(html_body)
 
+
+def tag_large_tables(html):
+    """
+    للجداول الكبيرة (أكثر من 4 صفوف أو مع thead):
+    - إذا كانت .section مخصصة للجدول، تأخذ class إضافية table-page-group.
+    - الجدول نفسه يأخذ table-page-block.
+    - أي جدول كبير خارج هذا النمط يأخذ table-page-block منفردًا.
+    """
+    def is_large(t):
+        return t.count('<tr') > 4 or '<thead>' in t
+
+    SECTION_PAT = re.compile(
+        r'<div class="section">'
+        r'(<div class="section-heading">(?:(?!</div>).)*</div>)'
+        r'(<div class="section-body">\s*)'
+        r'(<table\b[^>]*>.*?</table>)',
+        re.DOTALL,
+    )
+
+    def replace_section(m):
+        table_html = m.group(3)
+        if not is_large(table_html):
+            return m.group(0)
+        new_table = (table_html if 'table-page-block' in table_html
+                     else table_html.replace('<table', '<table class="table-page-block"', 1))
+        return (
+            '<div class="section table-page-group">'
+            + m.group(1) + m.group(2) + new_table
+        )
+
+    result = SECTION_PAT.sub(replace_section, html)
+
+    def wrap_remaining(m):
+        full = m.group(0)
+        if 'table-page-block' in full:
+            return full
+        if is_large(full):
+            return full.replace('<table', '<table class="table-page-block"', 1)
+        return full
+    result = re.sub(r'<table\b[^>]*>.*?</table>', wrap_remaining, result, flags=re.DOTALL)
+    return result
+
+sections_html = tag_large_tables(sections_html)
+
 # ── CSS ────────────────────────────────────────────────────────────────────────
 CSS_STR = f"""
 /* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
@@ -196,7 +240,17 @@ CSS_STR = f"""
 /* ── Page layout ─────────────────────────────────────── */
 @page {{
   size: A4;
-  margin: 0;
+  margin-top: 17mm;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}}
+
+:root {{
+  --page-top-safe-gap: 17mm;
+  --footer-height: 12.5mm;
+  --footer-safe-gap: 8mm;
+  --footer-reserved: 28mm;
 }}
 
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -320,8 +374,8 @@ p, li, td, th {{
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  /* الهوامش انتقلت هنا بعد إلغاء هوامش @page لإتاحة Footer ممتد للحواف */
-  padding: 15mm 17mm 22mm 17mm;
+  /* padding-top صغير — الهامش العلوي الفعلي من @page margin-top: 17mm */
+  padding: 4mm 17mm 28mm 17mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
@@ -461,7 +515,7 @@ p, li, td, th {{
 }}
 .section-body strong {{ font-weight: bold; color: #023663; }}
 
-/* ── Tables: تنقسم بشكل نظيف، رأس الجدول يتكرر ───────── */
+/* ── Tables ──────────────────────────────────────────────── */
 .section-body table {{
   width: 100%;
   border-collapse: collapse;
@@ -469,8 +523,12 @@ p, li, td, th {{
   line-height: 1.4;
   margin-top: 1.6mm;
   color: #023663;
-  break-inside: auto;
-  page-break-inside: auto;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}}
+.section-body thead, .section-body tbody, .section-body tfoot {{
+  break-inside: avoid;
+  page-break-inside: avoid;
 }}
 .section-body thead {{
   display: table-header-group;
@@ -478,6 +536,27 @@ p, li, td, th {{
 .section-body tr {{
   break-inside: avoid;
   page-break-inside: avoid;
+}}
+/* قسم كامل (عنوان + جدول) ينتقلان معًا إلى صفحة جديدة */
+.section.table-page-group {{
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  padding-top: 3mm;
+}}
+/* جدول كبير منفرد — يبدأ في صفحة جديدة */
+.section-body table.table-page-block {{
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-top: 0;
+}}
+/* جدول داخل قسم table-page-group — لا كسر إضافي */
+.section.table-page-group .section-body table.table-page-block {{
+  break-before: auto;
+  page-break-before: auto;
 }}
 .section-body th {{
   background: #023663;
