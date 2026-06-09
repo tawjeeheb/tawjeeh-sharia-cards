@@ -242,15 +242,8 @@ CSS_STR = f"""
   size: A4;
   margin-top: 17mm;
   margin-right: 0;
-  margin-bottom: 12.5mm;
+  margin-bottom: 0;
   margin-left: 0;
-  @bottom-center {{
-    content: element(footer);
-    height: 12.5mm;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }}
 }}
 
 :root {{
@@ -287,14 +280,18 @@ p, li, td, th {{
   pointer-events: none;
 }}
 
-/* ── Running footer — حجز مساحة حقيقية في @page margin-bottom ── */
+/* ── Fixed footer — full-width gradient bar, edge-to-edge on every page ── */
 .footer {{
-  position: running(footer);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 12.5mm;
   background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
   border-radius: 0;
   box-sizing: border-box;
+  z-index: 999;
   overflow: hidden;
 }}
 
@@ -378,8 +375,7 @@ p, li, td, th {{
   z-index: 1;
   box-sizing: border-box;
   /* padding-top: 0 — الهامش العلوي كله من @page margin-top: 17mm */
-  /* padding-bottom: 2mm — الفوتر الآن في @page margin-bottom: 12.5mm */
-  padding: 0 17mm 2mm 17mm;
+  padding: 0 17mm 32mm 17mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
@@ -398,8 +394,8 @@ p, li, td, th {{
   margin-bottom: 4mm;
   break-inside: auto;
   page-break-inside: auto;
-  orphans: 3;
-  widows: 3;
+  orphans: 2;
+  widows: 2;
 }}
 
 /* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
@@ -425,8 +421,8 @@ p, li, td, th {{
   line-height: 1.72;
   break-inside: auto;
   page-break-inside: auto;
-  orphans: 3;
-  widows: 3;
+  orphans: 2;
+  widows: 2;
 }}
 
 /* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
@@ -443,7 +439,8 @@ p, li, td, th {{
 
 .section-body p  {{
   margin-bottom: 1.4mm;
-  break-inside: avoid-page;
+  break-inside: auto;
+  page-break-inside: auto;
 }}
 
 .section-body .sector-label {{
