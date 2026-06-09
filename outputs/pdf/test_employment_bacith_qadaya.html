@@ -232,7 +232,7 @@ p, li, td, th {
   page-break-before: avoid;
 }
 
-/* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
+/* عنوان فرعي h3 — العناوين البنيوية باللون الرسمي #496379 */
 .section-body h3 {
   font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 11.5pt;
@@ -242,6 +242,11 @@ p, li, td, th {
   margin-bottom: 1mm;
   break-after: avoid;
   page-break-after: avoid;
+}
+
+/* عناوين القطاعات — بلون المحتوى العادي #023663 */
+.section-body h3.sector-heading {
+  color: #023663;
 }
 
 .section-body p  {
@@ -444,7 +449,7 @@ p, li, td, th {
 <div class="content">
   <div class="profession-title"></div>
   <div class="section"><div class="section-heading">جهات التوظيف وطريقة التقديم</div><div class="section-body">
-<h3>القطاع الحكومي</h3>
+<h3 class="sector-heading">القطاع الحكومي</h3>
 <h3>جهات سبق وأعلنت</h3>
 <div class="long-list-flow"><ul><li>
 <p>ديوان المظالم: التقديم يبدأ عبر منصة جدارات (jadarat.sa) أو بوابة التوظيف jobs.bog.gov.sa عند فتح الإعلان؛ أعلن ديوان المظالم عن 73 وظيفة باحث قضايا مساعد (إعلان HR-27).</p>
@@ -471,7 +476,7 @@ p, li, td, th {
 <p>المكتب الاستراتيجي لتطوير منطقة جازان: التقديم يبدأ عبر careers.jso.gov.sa بإنشاء حساب والتقديم عند فتح الإعلان؛ أعلن المكتب عن وظيفة أخصائي قانوني (JB1100049471) بمهام بحث القضايا ورصد تنفيذ الأحكام ومتابعة النزاعات.</p>
 </li>
 </ul></div>
-<h3>القطاع شبه الحكومي</h3>
+<h3 class="sector-heading">القطاع شبه الحكومي</h3>
 <h3>جهات سبق وأعلنت</h3>
 <div class="short-list-guard"><ul><li>NEOM: التقديم يبدأ عبر careers.neom.com بإنشاء حساب والتقديم عند فتح الإعلان؛ أعلنت NEOM عن وظيفة Litigation Specialist (JB563087405681636) بمهام تمثيل المنظومة في المسائل القانونية وإجراء البحث القانوني والوقائعي؛ مسار مناسب لذوي الخبرة.</li>
 </ul></div></div></div>

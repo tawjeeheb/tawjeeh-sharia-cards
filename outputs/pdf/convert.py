@@ -105,6 +105,13 @@ H3_HEADINGS = {
     'السلك القضائي — وزارة العدل وديوان المظالم',
     'قبل التعيين', 'بعد التعيين',
 }
+# عناوين القطاعات — تظهر بلون المحتوى العادي (#023663)، لا باللون الرسمي للعناوين الفرعية
+SECTOR_H3_HEADINGS = {
+    'القطاع الحكومي', 'القطاع شبه الحكومي', 'القطاع الخاص',
+    'القطاع غير الربحي', 'القطاع المستقل', 'العمل الحر',
+    'الجهات الحكومية', 'الجهات شبه الحكومية',
+    'الجهات الخاصة', 'الجهات غير الربحية', 'الجهات المستقلة',
+}
 
 # ── Load & pre-process markdown ───────────────────────────────────────────────
 with open(MD_FILE, encoding="utf-8") as f:
@@ -146,6 +153,18 @@ def enhance_program_links(html):
     )
 
 html_body = enhance_program_links(html_body)
+
+
+def tag_sector_headings(html):
+    """أضف class="sector-heading" لعناوين القطاعات لتمييزها بصريًا عن العناوين الفرعية البنيوية."""
+    for heading in SECTOR_H3_HEADINGS:
+        html = html.replace(
+            f'<h3>{heading}</h3>',
+            f'<h3 class="sector-heading">{heading}</h3>',
+        )
+    return html
+
+html_body = tag_sector_headings(html_body)
 
 
 cover_match = re.search(r'<h1>(.*?)</h1>', html_body, re.DOTALL)
@@ -513,7 +532,7 @@ p, li, td, th {{
   page-break-before: avoid;
 }}
 
-/* عنوان فرعي h3 (مثل: القطاع الحكومي) — قصير، يبقى مع أول سطر يليه دون فصل مشوه */
+/* عنوان فرعي h3 — العناوين البنيوية باللون الرسمي #496379 */
 .section-body h3 {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 11.5pt;
@@ -523,6 +542,11 @@ p, li, td, th {{
   margin-bottom: 1mm;
   break-after: avoid;
   page-break-after: avoid;
+}}
+
+/* عناوين القطاعات — بلون المحتوى العادي #023663 */
+.section-body h3.sector-heading {{
+  color: #023663;
 }}
 
 .section-body p  {{
