@@ -219,33 +219,19 @@ sections_html = tag_large_tables(sections_html)
 
 def guard_list_starts(html):
     """
-    Human Layout Rule — منطق المصمم البشري:
+    Human Layout Rule — تصنيف ذكي للقوائم:
 
-    القوائم القصيرة (إجمالي نص < LONG_CHARS):
-      تُقسَّم إلى chunks صلبة من CHUNK_SIZE عناصر.
-      لا يظهر أقل من CHUNK_SIZE عناصر في بداية/نهاية أي صفحة.
+    قائمة قصيرة (≤ SHORT_ITEMS عناصر أو نصها < SHORT_CHARS):
+      → short-list-guard: الـUL كاملة كتلة صلبة، تنتقل للصفحة التالية إن لم تتسع.
 
-    القوائم الطويلة (إجمالي نص >= LONG_CHARS):
-      start-guard فقط: أول CHUNK_SIZE عناصر كوحدة صلبة.
-      الباقي يتدفق بحرية — يُسمح بالانقسام الطبيعي بين الصفحات.
-      هذا يمنع العنوان اليتيم ويمنع سطرًا واحدًا بعد العنوان،
-      بدون إجبار القسم الطويل على الانتقال كاملًا.
+    قائمة طويلة (> SHORT_ITEMS عناصر و نصها ≥ SHORT_CHARS):
+      → long-list-flow: بدون قيد على الـUL، تتدفق بين الصفحات بحرية.
+      كل li فيها محمي منفردًا بـ break-inside: avoid-page (CSS عام).
 
-    الفارق: حجم نص القائمة (chars) لا عدد عناصرها فقط.
     لا تطبق على الجداول.
     """
-    CHUNK_SIZE = 3      # الحد الأدنى لعناصر القائمة كوحدة
-    LONG_CHARS = 550    # قوائم أكبر من هذا الحجم = طويلة → start-guard فقط
-
-    def make_chunks(items):
-        """تقسيم إلى chunks متساوية، مع دمج الأخير إذا كان أصغر من CHUNK_SIZE."""
-        if len(items) <= CHUNK_SIZE:
-            return [items]
-        raw = [items[i:i + CHUNK_SIZE] for i in range(0, len(items), CHUNK_SIZE)]
-        if len(raw) > 1 and len(raw[-1]) < CHUNK_SIZE:
-            raw[-2] = raw[-2] + raw[-1]
-            raw = raw[:-1]
-        return raw
+    SHORT_ITEMS = 5     # قائمة بـ≤5 عناصر → قصيرة
+    SHORT_CHARS = 550   # قائمة بنص <550 حرف → قصيرة
 
     def process_list(m):
         tag   = m.group(1)
@@ -258,43 +244,23 @@ def guard_list_starts(html):
         if not li_parts:
             return m.group(0)
 
-        # حساب حجم نص القائمة (بعد إزالة HTML)
         text_chars = len(re.sub(r'<[^>]+>', '', inner))
-        is_long = text_chars >= LONG_CHARS
+        is_short = len(li_parts) <= SHORT_ITEMS or text_chars < SHORT_CHARS
 
-        if is_long:
-            # قائمة طويلة: start-guard فقط، الباقي يتدفق بحرية
-            if len(li_parts) <= CHUNK_SIZE:
-                # قليلة العناصر رغم النص الطويل → كتلة واحدة
-                return (
-                    f'<div class="list-start-guard">'
-                    f'<{tag}{attrs}>{"".join(li_parts)}</{tag}>'
-                    f'</div>'
-                )
-            guard = li_parts[:CHUNK_SIZE]
-            rest  = li_parts[CHUNK_SIZE:]
-            start_attr = f' start="{CHUNK_SIZE + 1}"' if tag == 'ol' else ''
+        if is_short:
+            # القائمة كاملة كتلة صلبة — تنتقل للصفحة التالية إن لم تتسع
             return (
-                f'<div class="list-start-guard">'
-                f'<{tag}{attrs}>{"".join(guard)}</{tag}>'
-                f'</div>'
-                f'<{tag}{attrs}{start_attr}>{"".join(rest)}</{tag}>'
-            )
-
-        # قائمة قصيرة: تقسيم كامل إلى chunks صلبة
-        chunks = make_chunks(li_parts)
-        result = []
-        offset = 0
-        for chunk in chunks:
-            start_attr = (f' start="{offset + 1}"' if tag == 'ol' and offset > 0
-                          else '')
-            result.append(
-                f'<div class="list-start-guard">'
-                f'<{tag}{attrs}{start_attr}>{"".join(chunk)}</{tag}>'
+                f'<div class="short-list-guard">'
+                f'<{tag}{attrs}>{"".join(li_parts)}</{tag}>'
                 f'</div>'
             )
-            offset += len(chunk)
-        return ''.join(result)
+        else:
+            # القائمة الطويلة تتدفق بحرية — كل li محمي بـCSS العام
+            return (
+                f'<div class="long-list-flow">'
+                f'<{tag}{attrs}>{"".join(li_parts)}</{tag}>'
+                f'</div>'
+            )
 
     return re.sub(
         r'<(ul|ol)([^>]*)>(.*?)</(ul|ol)>',
@@ -650,8 +616,15 @@ p, li, td, th {{
   break-inside: avoid;
   page-break-inside: avoid;
 }}
-/* Human Layout Rule — يجمع li معًا كمجموعة: break-inside على li هي القاعدة العليا */
-.list-start-guard {{
+/* Human Layout Rule — القائمة القصيرة تنتقل كاملة إذا لم تتسع */
+.short-list-guard {{
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+  display: block;
+}}
+
+/* القائمة الطويلة تتدفق بحرية — كل li محمي بالقاعدة العامة أدناه */
+.long-list-flow {{
   display: block;
 }}
 
