@@ -374,8 +374,8 @@ p, li, td, th {{
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  /* padding-top صغير — الهامش العلوي الفعلي من @page margin-top: 17mm */
-  padding: 4mm 17mm 32mm 17mm;
+  /* padding-top: 0 — الهامش العلوي كله من @page margin-top: 17mm */
+  padding: 0 17mm 32mm 17mm;
 }}
 
 /* ── Profession title ────────────────────────────────── */
@@ -543,7 +543,7 @@ p, li, td, th {{
   page-break-before: always;
   break-inside: avoid;
   page-break-inside: avoid;
-  padding-top: 3mm;
+  padding-top: 0;
 }}
 /* جدول كبير منفرد — يبدأ في صفحة جديدة */
 .section-body table.table-page-block {{
