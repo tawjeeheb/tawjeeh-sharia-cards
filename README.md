@@ -19,6 +19,7 @@ python3 outputs/pdf/convert.py
 | `outputs/check_links.py` | سكربت فحص الروابط قبل التوليد |
 | `outputs/pdf/convert.py` | قالب التوليد (CSS + شكل الروابط مقفول) |
 | `outputs/test_card_001_qadi.md` | البطاقة المرجعية النموذج |
+| `outputs/OFFICIAL_TITLE_TRANSLATION_LOCK.md` | قفل ترجمة أسماء الدورات والشهادات الأجنبية إلى العربية |
 | `outputs/LINK_VALIDATION_LOCK.md` | قفل دائم لجميع الروابط الخارجية — شروط القبول الإلزامية |
 | `outputs/COURSERA_LINK_LOCK.md` | قفل دائم لروابط Coursera — شروط القبول الإلزامية |
 | `outputs/link_audit_qadi_v1.md` | ملف تدقيق روابط بطاقة قاضي |
