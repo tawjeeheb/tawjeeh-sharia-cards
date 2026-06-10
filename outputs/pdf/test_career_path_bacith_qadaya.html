@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <style>
+/* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoKufiArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoKufiArabic-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoNaskhArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoNaskhArabic-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Aniq';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/aa-aniq-bold.otf');
+  font-weight: bold;
+}
+
+/* ── Page layout ─────────────────────────────────────── */
+@page {
+  size: A4;
+  margin-top: 17mm;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+:root {
+  --page-top-safe-gap: 17mm;
+  --footer-height: 12.5mm;
+  --footer-safe-gap: 8mm;
+  --footer-reserved: 32mm;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  direction: rtl;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  background: #ffffff;
+  color: #023663;
+}
+
+/* عدم ترك عنوان أو سطر معزول عند تقسيم الصفحات */
+p, li, td, th {
+  orphans: 2;
+  widows: 2;
+}
+
+/* ── Fixed watermark — appears on every page ─────────── */
+.page-watermark {
+  position: fixed;
+  top: calc(50% - 6.25mm);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 165mm;
+  opacity: 0.30;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Fixed footer — full-width gradient bar, edge-to-edge on every page ── */
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 12.5mm;
+  background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
+  border-radius: 0;
+  box-sizing: border-box;
+  z-index: 999;
+  overflow: hidden;
+}
+
+/* إضاءة ناعمة جدًا أعلى الشريط لإعطائه عمقًا خفيفًا دون مسّ التدرج الأساسي */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+/* صف مرن واحد موزّع على كامل العرض — عناصر بسيطة (أيقونة + نص) دون كبسولات ثقيلة */
+.footer-inner {
+  position: relative;
+  height: 12mm;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 14mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: ltr;
+}
+
+/* عنصر بسيط: أيقونة عارية بلا أي حاوية + يوزر بجانبها في سطر واحد */
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+  flex: 0 0 auto;
+}
+
+/* أيقونة صِرفة بلا خلفية ولا حدود ولا إطار — مجرد رمز SVG معروض مباشرة */
+.footer-icon {
+  display: inline-block;
+  width: 3.5mm;
+  height: 3.5mm;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/* دائرة صغيرة وناعمة جدًا خلف الأيقونات السوداء (TikTok / X) فقط، لإبراز اللون الأصلي فوق التدرج */
+.footer-icon-on-light {
+  width: 2.6mm;
+  height: 2.6mm;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.78);
+  background-size: 1.9mm 1.9mm;
+  padding: 0.45mm;
+  box-sizing: content-box;
+}
+
+.footer-link a {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  color: #ffffff;
+  font-size: 7.8pt;
+  font-weight: 700;
+  letter-spacing: 0.2pt;
+  text-decoration: none;
+  text-shadow: 0 0.2mm 0.3mm rgba(0, 0, 0, 0.22);
+}
+
+/* فاصل عمودي رفيع بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
+.footer-divider {
+  flex: 0 0 auto;
+  width: 0.3mm;
+  height: 6mm;
+  background: rgba(120, 235, 210, 0.45);
+  border-radius: 0.2mm;
+}
+
+/* ── Main content ────────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  /* padding-top: 0 — الهامش العلوي كله من @page margin-top: 17mm */
+  padding: 0 17mm 32mm 17mm;
+}
+
+/* ── Profession title ────────────────────────────────── */
+.profession-title {
+  font-family: 'Aniq', 'Noto Naskh Arabic', serif;
+  font-size: 17pt;
+  font-weight: bold;
+  color: #049e9e;
+  text-align: right;
+  margin-bottom: 5mm;
+  line-height: 1.25;
+}
+
+/* ── Section: تدفق ذكي — لا حبس للكتلة كاملة، العنوان يبقى مع بداية محتواه ── */
+.section {
+  margin-bottom: 4mm;
+  break-inside: auto;
+  page-break-inside: auto;
+  orphans: 3;
+  widows: 3;
+}
+
+/* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
+.section-heading {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 12pt;
+  font-weight: bold;
+  color: #5e4360;
+  text-align: right;
+  margin-bottom: 2mm;
+  line-height: 1.4;
+  background: none;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* محتوى العنصر — يتدفق بحرية بين الصفحات */
+.section-body {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10pt;
+  color: #023663;
+  text-align: right;
+  line-height: 1.72;
+  break-inside: auto;
+  page-break-inside: auto;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Visual Clean Page Lock — تلقائي */
+.section-body > *:first-child {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+.section-body > *:nth-child(2) {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+
+/* عناوين فرعية بنيوية (جهات سبق وأعلنت، قبل التعيين، إلخ) — باللون الرسمي للعناوين الفرعية */
+.section-body h3 {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 11.5pt;
+  font-weight: bold;
+  color: #496379;
+  margin-top: 2.6mm;
+  margin-bottom: 1mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* عناوين القطاعات (القطاع الحكومي، القطاع الخاص، إلخ) — بارزة لكن بلون المحتوى */
+.section-body h3.sector-heading {
+  color: #023663;
+}
+
+.section-body p  {
+  margin-bottom: 1.4mm;
+  break-inside: avoid-page;
+}
+
+.section-body .sector-label {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #023663;
+  margin-top: 2.6mm;
+  margin-bottom: 1mm;
+}
+
+.section-body .employment-sector {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: #023663;
+  margin-top: 3mm;
+  margin-bottom: 1.2mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body .employment-subcategory {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #496379;
+  margin-top: 2mm;
+  margin-bottom: 0.8mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body .condition-label {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 1.08em;
+  font-weight: 700;
+  color: #496379;
+}
+
+.section-body .experience-entity {
+  color: #023663;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 10.8pt;
+}
+
+.section-body .assessment-entity {
+  color: #023663;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 10.8pt;
+  display: block;
+  margin: 1.8mm 0 1mm 0;
+}
+
+.section-body ul,
+.section-body ol {
+  padding-right: 5mm;
+  padding-left: 0;
+  margin-top: 1.4mm;
+  margin-bottom: 2.2mm;
+  list-style-type: disc;
+  list-style-position: outside;
+}
+.section-body li {
+  margin-bottom: 1.2mm;
+  line-height: 1.68;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+.section-body li::marker {
+  color: #023663;
+  font-size: 1.35em;
+}
+
+.section-body a {
+  color: #023663;
+  text-decoration: none;
+  font-size: inherit;
+}
+.section-body a.linked-inline-label {
+  color: #023663;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #023663;
+  text-decoration-thickness: 0.3mm;
+  text-underline-offset: 0.65mm;
+  font-weight: inherit;
+  font-size: inherit;
+}
+.section-body .linked-inline-arrow {
+  font-size: 0.88em;
+  color: #023663;
+  font-weight: 400;
+}
+.section-body strong { font-weight: bold; color: #023663; }
+
+/* ── Tables ──────────────────────────────────────────────── */
+.section-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  margin-top: 1.6mm;
+  color: #023663;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.section-body thead, .section-body tbody, .section-body tfoot {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.section-body thead {
+  display: table-header-group;
+}
+.section-body tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+/* Human Layout Rule — القائمة القصيرة تنتقل كاملة إذا لم تتسع */
+.short-list-guard {
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+  display: block;
+}
+
+/* القائمة الطويلة تتدفق بحرية — كل li محمي بالقاعدة العامة أدناه */
+.long-list-flow {
+  display: block;
+}
+
+/* Visual Clean Page Lock — قسم يستوجب بداية نظيفة فوق الفوتر */
+.section.clean-page-required {
+  break-before: page;
+  page-break-before: always;
+}
+
+/* قسم كامل (عنوان + جدول) ينتقلان معًا إلى صفحة جديدة */
+.section.table-page-group {
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  padding-top: 0;
+}
+/* جدول كبير منفرد — يبدأ في صفحة جديدة */
+.section-body table.table-page-block {
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-top: 0;
+}
+/* جدول داخل قسم table-page-group — لا كسر إضافي */
+.section.table-page-group .section-body table.table-page-block {
+  break-before: auto;
+  page-break-before: auto;
+}
+.section-body th {
+  background: #023663;
+  color: #ffffff;
+  padding: 1.3mm 2.2mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 8.5pt;
+  vertical-align: middle;
+}
+.section-body td {
+  padding: 1.3mm 2.2mm;
+  border: 1px solid #c8d8e8;
+  text-align: center;
+  vertical-align: top;
+}
+.section-body tr:nth-child(even) td { background: #f0f5fa; }
+</style>
+</head>
+<body>
+<img class="page-watermark" src="data:image/jpeg;base64,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" alt="">
+<div class="footer">
+  <div class="footer-inner">
+    <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj48Y2lyY2xlIGN4PSI5IiBjeT0iMTYuMyIgcj0iMy40Ii8+PHBhdGggZD0iTTEyLjQgMy42aDIuN2MuMyAyLjUgMiA0LjMgNC41IDQuNnYyLjdjLTEuNyAwLTMuMi0uNS00LjUtMS40djYuOGMwIC4yIDAgLjQtLjEuNmgtMi42YzAtLjIuMS0uNC4xLS42VjMuNnoiLz48L3N2Zz4=')"></span><a href="https://www.tiktok.com/@tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjE3IiBoZWlnaHQ9IjE3IiByeD0iNSIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjQuMiIvPjwvc3ZnPg==')"></span><a href="https://instagram.com/tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgNGMyLjQgMCA0IDEuOSA0IDQuNCAwIDEuNi4xIDMgLjkgMy45LjYuNiAxLjMuOCAyIDEtLjQuOS0xLjUgMS4zLTIuNSAxLjUgMCAuNi0uMiAxLjItLjcgMS4ycy0xLS4zLTEuNy0uM2MtLjkgMC0xLjUuOS0yIC45cy0xLjEtLjktMi0uOWMtLjcgMC0xLjIuMy0xLjcuM3MtLjctLjYtLjctMS4yYy0xLS4yLTIuMS0uNi0yLjUtMS41LjctLjIgMS40LS40IDItMSAuOC0uOS45LTIuMy45LTMuOUM4IDUuOSA5LjYgNCAxMiA0eiIvPjwvc3ZnPg==')"></span><a href="https://www.snapchat.com/add/tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNS4yIDQuNmgzLjFsMy43IDQuOSA0LTQuOWgyLjhMMTMuNiAxMWw1LjQgOC40aC0zLjFsLTQtNS4zLTQuNCA1LjNINC42bDUuOS03LjJ6Ii8+PC9zdmc+')"></span><a href="https://x.com/tawjeeh_hub">tawjeeh_hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzIiB5PSI1LjUiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMyIgcng9IjMuNSIvPjxwYXRoIGQ9Ik0xMCA5LjNsNS4yIDIuNy01LjIgMi43eiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSJub25lIi8+PC9zdmc+')"></span><a href="https://www.youtube.com/@tawjeeh_hub">tawjeeh_hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI4LjIiLz48cGF0aCBkPSJNMy44IDEyaDE2LjRNMTIgMy44YzIuNiAyLjIgMi42IDE0LjIgMCAxNi40Ii8+PC9zdmc+')"></span><a href="https://www.tawjeeh.hub">www.tawjeeh.hub</a></span>
+  </div>
+</div>
+<div class="content">
+  <div class="profession-title"></div>
+  <div class="section"><div class="section-heading">المسار الوظيفي والتطور المهني</div><div class="section-body">
+<p>أولًا: نقطة الدخول إلى المسار</p>
+<p>تبدأ المداخل الواقعية لهذا المسار عبر مسميات قريبة مثل: باحث قضايا مساعد، مساعد قضائي، باحث قانوني مساعد، أو أخصائي قانوني مساعد. قد تظهر هذه المداخل كمستويات مناسبة لحديثي التخرج أو أصحاب الخبرة المحدودة من تخصصات الشريعة والقانون والأنظمة، مع بقاء الحكم النهائي لشروط كل إعلان وجهة.</p>
+<p>الخطأ الذي يقع فيه الخريج هو الاعتقاد بأن الشهادة وحدها كافية للدخول؛ فالجهات التي تعلن عن هذه الوظائف تبحث عن قدرة فعلية على فهم الإجراءات القضائية، وصياغة المذكرات، وإدارة الملفات — لا مجرد الحصول على مؤهل.</p>
+<p>ثانيًا: مسار الترقي داخل نفس التخصص</p>
+<p>قد يظهر التدرج داخل بعض الجهات بصيغ مثل: باحث قضايا مساعد، ثم باحث قضايا، ثم باحث قضايا أول، ثم أخصائي قضايا أو أخصائي قضايا أول، وصولًا إلى مشرف قضايا أو رئيس وحدة. هذا التدرج ليس ثابتًا في كل الجهات؛ بعضها يدمج مراحل أو يستخدم مسميات مختلفة.</p>
+<p>ما يُحقق التطور الفعلي داخل هذا المسار ليس الانتظار، بل جودة الملفات المُعدَّة، وعمق فهم الإجراءات، والقدرة على متابعة الدعاوى من الرفع حتى التنفيذ، وتراكم الخبرة في نوع محدد من القضايا. الترقي يعتمد على تقييم الأداء، وتوفر الشاغر، وسلم الجهة، وليس على سنوات الخدمة وحدها.</p>
+<p>ثالثًا: مسارات الانتقال الأفقي</p>
+<p>الانتقال الأفقي ليس ترقية، بل تغيير في مجال العمل مع الاحتفاظ بمستوى مقارب من المسؤولية. يعتمد على المهارات المكتسبة وطبيعة الجهة ورغبة الشخص في التوجه، وليس على المسمى وحده.</p>
+<p>تنقسم المسارات الأفقية القريبة إلى أربعة اتجاهات:</p>
+<div class="short-list-guard"><ul><li>
+<p>الانتقال إلى المسار القانوني العام: كأخصائي قانوني أو أخصائي أنظمة، عندما تتسع المهارة في تفسير الأنظمة وإعداد الآراء القانونية بما يتجاوز حدود القضايا الفردية.</p>
+</li>
+<li>
+<p>الانتقال إلى مسار العقود والمطالبات: كأخصائي عقود أو أخصائي مطالبات، عند تراكم الخبرة في قضايا العقود والنزاعات التعاقدية، وهو انتقال منطقي في الجهات ذات المشاريع والعقود الكبرى.</p>
+</li>
+<li>
+<p>الانتقال إلى مسار الامتثال والرقابة: كأخصائي امتثال، عند توجّه الجهة نحو ضبط المخاطر والامتثال النظامي، حيث تُوظّف مهارة فهم الإجراءات القضائية في بيئة رقابية بدل بيئة تقاضٍ.</p>
+</li>
+<li>
+<p>الانتقال إلى مسار البحث الشرعي أو النظامي: كباحث شرعي أو باحث أنظمة، في الجهات ذات الطابع الشرعي أو الحقوقي التي تحتاج إلى بحث نصي ومقارنة تشريعية بدل إدارة ملفات قضاء.</p>
+</li>
+</ul></div>
+<p>رابعًا: مسارات التخصص العميق</p>
+<p>التخصص العميق هو ما يُميّز باحث القضايا المتقدم في سوق العمل؛ فبدلًا من التشتت بين أنواع مختلفة من القضايا، يُركّز على بناء خبرة متعمقة في نوع واحد مرتبط بجهة أو بيئة عمل محددة:</p>
+<div class="long-list-flow"><ul><li>
+<p>القضايا الإدارية والتأديبية: مرتبطة بالجهات الحكومية والتقاضي أمام ديوان المظالم واللجان الإدارية؛ وهي من أكثر التخصصات طلبًا في الجهات الحكومية ذات الحجم الكبير.</p>
+</li>
+<li>
+<p>القضايا الضريبية والزكوية: مرتبطة بالجهات الضريبية والجمركية كهيئة الزكاة والضريبة والجمارك؛ تتطلب معرفة دقيقة بأنظمة الزكاة والضريبة وإجراءات الاعتراض.</p>
+</li>
+<li>
+<p>قضايا الأوقاف: مرتبطة بالجهات الوقفية كالهيئة العامة للأوقاف؛ تجمع بين الفقه الشرعي والإجراءات القانونية في شؤون الأوقاف والتبرعات.</p>
+</li>
+<li>
+<p>قضايا الملكية الفكرية: مرتبطة بالجهات التنظيمية كالهيئة السعودية للملكية الفكرية؛ تتمحور حول بناء ملفات الانتهاكات ومتابعة إجراءات التقاضي في هذا المجال.</p>
+</li>
+<li>
+<p>قضايا المشتريات والمحتوى المحلي: مرتبطة بجهات العقود والمشتريات الحكومية؛ تتضمن الاعتراضات والنزاعات المتعلقة بأنظمة المشتريات والمنافسات.</p>
+</li>
+<li>
+<p>النزاعات العمالية والمطالبات: مرتبطة بالشركات والجهات ذات عقود التشغيل الكبيرة؛ تشمل قضايا العمل والفصل والمطالبات أمام المحاكم العمالية.</p>
+</li>
+</ul></div>
+<p>اختيار التخصص بعد أول تجربة عملية — بدل الانتظار — هو ما يُسرّع التطور الفعلي في هذا المسار.</p>
+<p>خامسًا: مسارات القيادة والاستشارة</p>
+<p>عند تراكم الخبرة وتوسع المهارات في إدارة الملفات المعقدة وقيادة الفرق، قد يتجه المسار نحو:</p>
+<div class="short-list-guard"><ul><li>مشرف قضايا أو رئيس وحدة قضايا: الإشراف على فريق الباحثين ومراجعة الملفات وضمان جودة التمثيل.</li>
+<li>مدير إدارة قانونية أو قضائية: قيادة الإدارة الكاملة وتنسيق التمثيل أمام الجهات القضائية وإدارة الموارد.</li>
+<li>مستشار قانوني أو مستشار تقاضي: تقديم الرأي القانوني للإدارة العليا وقيادة الملفات الاستراتيجية الكبرى.</li>
+<li>مستشار منازعات: التخصص في حل النزاعات والتفاوض والتحكيم لدى الجهات ذات الحجم الكبير.</li>
+</ul></div>
+<p>هذه المسارات ليست خطوات حتمية، بل تعتمد على جودة المخرجات، والقدرة الفعلية على القيادة، وتوفر الشاغر الإداري، وسياسة الجهة. كثير من الباحثين المتقدمين يُفضلون البقاء متخصصين بدل الانتقال لدور إداري، وهو خيار مشروع يُبنى على طبيعة الشخص وأهدافه.</p>
+<p>سادسًا: المسارات المقيدة أو غير التلقائية</p>
+<p>هذا القسم من أهم ما يُقدمه هذا العنصر للقارئ؛ لأن الخلط بين "المسار القريب" و"المسار المفتوح" يُوقع الخريج في توقعات خاطئة.</p>
+<div class="short-list-guard"><ul><li>
+<p>القضاء (قاضٍ): ليس ترقية من باحث قضايا ولا مساره الطبيعي. التعيين القضائي له شروط مستقلة وفق أنظمة السلطة القضائية، تشمل المؤهل الشرعي المحدد والسن واشتراطات مجلس القضاء الأعلى. خبرة بحث القضايا قد تُعدّ رصيدًا، لكنها لا تفتح الباب تلقائيًا.</p>
+</li>
+<li>
+<p>النيابة العامة (عضو نيابة أو ملازم قضائي): مسار تعيين مستقل له بوابة قبول منفصلة، ولا يُعد استمرارًا وظيفيًا من مسار بحث القضايا.</p>
+</li>
+<li>
+<p>المحامي المرخص: يتطلب استيفاء متطلبات ترخيص المحاماة وفق نظام المحاماة والجهة المختصة بإصدار الترخيص، عبر المسار الرسمي المعلن لخدمة طلب ترخيص محاماة. خبرة بحث القضايا قد تساعد في فهم التقاضي، لكنها لا تمنح ترخيص المحاماة بذاتها.</p>
+</li>
+<li>
+<p>الباحث الشرعي في دور الإفتاء: يتطلب تأهيلًا علميًا شرعيًا عاليًا، وشروط الجهة المختصة. ليس نتيجة تلقائية للبحث في القضايا الشرعية.</p>
+</li>
+<li>
+<p>لقب "مستشار قانوني" أو "مستشار شرعي": قد يُعطى كمسمى وظيفي في بعض الجهات عند مستوى خبرة معين، لكنه ليس لقبًا تلقائيًا بمجرد سنوات الخدمة. يختلف تعريفه ومتطلباته من جهة إلى أخرى.</p>
+</li>
+</ul></div>
+<p>سابعًا: الخلاصة العملية للقارئ</p>
+<p>لا تبنِ تطورك المهني على انتظار الترقية الوظيفية وحدها. الانتقال الفعلي — سواء إلى مستوى أعلى أو إلى مسار قريب — يعتمد على شيء واحد: ملف خبرة قابل للإثبات.</p>
+<p>ابنِ هذا الملف عبر أربعة محاور: إتقان صياغة المذكرات والردود القانونية، وفهم عميق للإجراءات القضائية في نوع القضايا التي تعمل عليها، والقدرة على تحليل الأحكام السابقة واستخلاص الموقف القانوني، وإدارة المستندات والمواعيد بدقة.</p>
+<p>اختر تخصصًا دقيقًا بعد أول خبرة بدل التشتت بين كل المسارات؛ فباحث القضايا المتخصص في نوع محدد أكثر قيمة في سوق العمل من باحث عام يعمل على كل شيء دون عمق. والتخصص لا يُغلق أبوابًا، بل يفتح أبوابًا في الجهات التي تحتاج هذا النوع تحديدًا.</p></div></div>
+</div>
+</body>
+</html>
