@@ -96,15 +96,7 @@ H2_HEADINGS = {
     'المسار الوظيفي والتطور المهني', 'الملاحظات المهنية المتقدمة',
     'النصائح العملية الإضافية', 'جدول مدى قبول التخصصات',
 }
-H3_HEADINGS = {
-    'الجهات الحكومية', 'الجهات شبه الحكومية',
-    'الجهات الخاصة', 'الجهات غير الربحية', 'الجهات المستقلة',
-    'القطاع الحكومي', 'القطاع شبه الحكومي', 'القطاع الخاص',
-    'القطاع غير الربحي', 'القطاع المستقل', 'العمل الحر',
-    'الجهات الموصى بها', 'ملاحظة مهمة', 'جهات سبق وأعلنت',
-    'السلك القضائي — وزارة العدل وديوان المظالم',
-    'قبل التعيين', 'بعد التعيين',
-}
+
 # عناوين القطاعات — تظهر بلون المحتوى العادي (#023663)، لا باللون الرسمي للعناوين الفرعية
 SECTOR_H3_HEADINGS = {
     'القطاع الحكومي', 'القطاع شبه الحكومي', 'القطاع الخاص',
@@ -112,6 +104,20 @@ SECTOR_H3_HEADINGS = {
     'الجهات الحكومية', 'الجهات شبه الحكومية',
     'الجهات الخاصة', 'الجهات غير الربحية', 'الجهات المستقلة',
 }
+
+# Structural sub-headings — rendered as h3 with official sub-heading color (#496379)
+STRUCTURAL_H3_HEADINGS = {
+    'جهات سبق وأعلنت',
+    'جهات توظف لوجود ممارسة/وحدة/اختصاص',
+    'جهات مستحدثة',
+    'جهات ناشئة أو قليلة التنافس',
+    'قبل التعيين', 'بعد التعيين',
+    'الشروط العامة', 'شروط العمر', 'الشروط الإضافية',
+    'الجهات الموصى بها', 'ملاحظة مهمة',
+    'السلك القضائي — وزارة العدل وديوان المظالم',
+}
+
+H3_HEADINGS = SECTOR_H3_HEADINGS | STRUCTURAL_H3_HEADINGS
 
 # ── Load & pre-process markdown ───────────────────────────────────────────────
 with open(MD_FILE, encoding="utf-8") as f:
@@ -156,7 +162,6 @@ html_body = enhance_program_links(html_body)
 
 
 def tag_sector_headings(html):
-    """أضف class="sector-heading" لعناوين القطاعات لتمييزها بصريًا عن العناوين الفرعية البنيوية."""
     for heading in SECTOR_H3_HEADINGS:
         html = html.replace(
             f'<h3>{heading}</h3>',
@@ -165,7 +170,6 @@ def tag_sector_headings(html):
     return html
 
 html_body = tag_sector_headings(html_body)
-
 
 cover_match = re.search(r'<h1>(.*?)</h1>', html_body, re.DOTALL)
 cover_title = cover_match.group(1) if cover_match else ''
@@ -518,11 +522,7 @@ p, li, td, th {{
   widows: 3;
 }}
 
-/* Visual Clean Page Lock — تلقائي
-   يربط أول عنصرين من القسم بعنوانه عبر سلسلة break:
-   heading (break-after:avoid) ← first-child (break-before:avoid) ← nth-child(2) (break-before:avoid)
-   النتيجة: WeasyPrint ينقل العنوان + أول عنصرين معًا إلى الصفحة التالية
-   إذا لم تتسع المساحة المتبقية — بدون قوائم يدوية */
+/* Visual Clean Page Lock — تلقائي */
 .section-body > *:first-child {{
   break-before: avoid;
   page-break-before: avoid;
@@ -532,7 +532,7 @@ p, li, td, th {{
   page-break-before: avoid;
 }}
 
-/* عنوان فرعي h3 — العناوين البنيوية باللون الرسمي #496379 */
+/* عناوين فرعية بنيوية (جهات سبق وأعلنت، قبل التعيين، إلخ) — باللون الرسمي للعناوين الفرعية */
 .section-body h3 {{
   font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 11.5pt;
@@ -544,7 +544,7 @@ p, li, td, th {{
   page-break-after: avoid;
 }}
 
-/* عناوين القطاعات — بلون المحتوى العادي #023663 */
+/* عناوين القطاعات (القطاع الحكومي، القطاع الخاص، إلخ) — بارزة لكن بلون المحتوى */
 .section-body h3.sector-heading {{
   color: #023663;
 }}
