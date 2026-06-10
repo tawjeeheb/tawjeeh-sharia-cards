@@ -25,11 +25,10 @@ REPO_DIR  = os.path.dirname(os.path.dirname(BASE_DIR))
 LOGO_FILE = os.path.join(REPO_DIR, "design_reference", "tawjeeh_logo.jpeg")
 FONTS_DIR = os.path.join(REPO_DIR, "design_reference", "fonts")
 
-# sys.argv[1] يتيح تمرير ملف MD مختلف لإنتاج بطاقات متعددة
 if len(sys.argv) > 1:
-    _arg = sys.argv[1]
-    MD_FILE = os.path.abspath(_arg) if not os.path.isabs(_arg) else _arg
-    _stem   = os.path.splitext(os.path.basename(MD_FILE))[0]
+    _src = os.path.abspath(sys.argv[1])
+    _stem = os.path.splitext(os.path.basename(_src))[0]
+    MD_FILE  = _src
     HTML_OUT = os.path.join(BASE_DIR, f"{_stem}.html")
     PDF_OUT  = os.path.join(BASE_DIR, f"{_stem}.pdf")
 else:
