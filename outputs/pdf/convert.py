@@ -343,11 +343,18 @@ def tag_acceptance_table(html):
         prefix, body, suffix = m.group(1), m.group(2), m.group(3)
         # inject badges row by row
         body = re.sub(r'<tr>.*?</tr>', inject_badges, body, flags=re.DOTALL)
-        # wrap table in styled container
-        body = body.replace(
-            '<table',
-            '<div class="acceptance-table-wrapper"><table class="acceptance-table"',
-            1,
+        # wrap table in styled container — merge any existing class into acceptance-table
+        body = re.sub(
+            r'<table\b([^>]*?)>',
+            lambda m: (
+                '<div class="acceptance-table-wrapper">'
+                '<table class="acceptance-table'
+                + (' ' + re.search(r'class="([^"]*)"', m.group(1)).group(1)
+                   if re.search(r'class="([^"]*)"', m.group(1)) else '')
+                + '">'
+            ),
+            body,
+            count=1,
         )
         body = re.sub(r'(</table>)', r'\1</div>', body, count=1)
         return prefix + body + suffix
@@ -834,46 +841,41 @@ p, li, td, th {{
 .section-body .acceptance-table .acceptance-level-cell {{
   text-align: center;
   vertical-align: middle;
+  padding: 1.5mm 1.5mm;
 }}
 
-.badge-high {{
-  display: inline-block;
-  background: #049E9E;
-  color: #ffffff;
-  padding: 0.9mm 3mm;
-  border-radius: 10mm;
-  font-size: 7.8pt;
-  font-weight: bold;
-  text-align: center;
-  white-space: nowrap;
-  line-height: 1.4;
+/* اسم التخصص — أثقل وأكبر من بقية الخلايا */
+.section-body .acceptance-table td:nth-child(1) {{
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #023663;
+  line-height: 1.45;
 }}
 
-.badge-medium {{
-  display: inline-block;
-  background: #007F9E;
-  color: #ffffff;
-  padding: 0.9mm 3mm;
-  border-radius: 10mm;
-  font-size: 7.8pt;
-  font-weight: bold;
-  text-align: center;
-  white-space: nowrap;
-  line-height: 1.4;
-}}
-
+/* شارات مدى القبول — داخل الخلية تمامًا */
+.badge-high,
+.badge-medium,
 .badge-low {{
-  display: inline-block;
-  background: #5E4360;
-  color: #ffffff;
-  padding: 0.9mm 3mm;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+  margin: 0 auto;
+  min-width: 15mm;
+  max-width: 100%;
+  padding: 1.2mm 3mm;
   border-radius: 10mm;
   font-size: 7.8pt;
   font-weight: bold;
+  color: #ffffff;
+  line-height: 1;
   text-align: center;
-  white-space: nowrap;
-  line-height: 1.4;
 }}
+
+.badge-high   {{ background: #049E9E; }}
+.badge-medium {{ background: #007F9E; }}
+.badge-low    {{ background: #5E4360; }}
 """
 
 # ── Footer HTML ───────────────────────────────────────────────────────────────
