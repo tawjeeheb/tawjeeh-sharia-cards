@@ -147,11 +147,14 @@ for line in lines:
         processed.append(f'### {stripped}\n')
         _in_musamma = False
     else:
-        # أضف النص المستخرج من القوسين إلى المسميات المكافئة إن لم يكن موجودًا
+        # أضف النص المستخرج من القوسين إلى المسميات المكافئة إن لم يكن موجودًا حرفيًا
         if _in_musamma and _title_paren and stripped:
+            # فحص حرفي دقيق: تقسيم المحتوى على الفواصل والمسافات والتحقق من وجود الكلمة كاملة
+            _tokens = [t.strip() for t in re.split(r'[،,\s]+', stripped) if t.strip()]
+            _exact_present = _title_paren in _tokens
             if stripped == 'لا يوجد':
                 line = _title_paren + '\n'
-            elif _title_paren not in stripped:
+            elif not _exact_present:
                 line = line.rstrip() + '، ' + _title_paren + '\n'
             _in_musamma = False
         processed.append(line)
