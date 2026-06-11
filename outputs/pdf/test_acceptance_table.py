@@ -93,7 +93,7 @@ def build_rows():
     for spec, level, reason, raise_it in ROWS:
         out.append(
             f'<tr>'
-            f'<td>{spec}</td>'
+            f'<td style="font-size:10.5pt;font-weight:700;vertical-align:middle;">{spec}</td>'
             f'<td style="text-align:center;vertical-align:middle;">{badge(level)}</td>'
             f'<td>{reason}</td>'
             f'<td>{raise_it}</td>'
