@@ -897,17 +897,15 @@ p, li, td, th {{
   line-height: 1.45;
 }}
 
-/* شارات مدى القبول — داخل الخلية تمامًا */
+/* شارات مدى القبول — عرضها على قد النص فقط */
 .badge-high,
 .badge-medium,
 .badge-low {{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
+  width: auto;
+  min-width: 0;
   white-space: nowrap;
   box-sizing: border-box;
-  margin: 0 auto;
-  max-width: 100%;
   padding: 1.2mm 4mm;
   border-radius: 10mm;
   font-size: 7.8pt;
