@@ -82,7 +82,8 @@ ROWS = [
 def badge(level):
     b = BADGE[level]
     return (
-        f'<span style="display:inline-block;padding:1.2mm 3mm;border-radius:2mm;'
+        f'<span style="display:inline-flex;align-items:center;justify-content:center;'
+        f'padding:1.2mm 3mm;border-radius:2mm;margin:0 auto;'
         f'background:{b["bg"]};color:{b["text"]};font-size:8pt;font-weight:700;'
         f'white-space:nowrap;">{level}</span>'
     )
@@ -93,7 +94,7 @@ def build_rows():
         out.append(
             f'<tr>'
             f'<td>{spec}</td>'
-            f'<td style="text-align:center;">{badge(level)}</td>'
+            f'<td style="text-align:center;vertical-align:middle;">{badge(level)}</td>'
             f'<td>{reason}</td>'
             f'<td>{raise_it}</td>'
             f'</tr>'
