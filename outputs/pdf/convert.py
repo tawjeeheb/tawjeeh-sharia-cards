@@ -907,9 +907,8 @@ p, li, td, th {{
   white-space: nowrap;
   box-sizing: border-box;
   margin: 0 auto;
-  min-width: 15mm;
   max-width: 100%;
-  padding: 1.2mm 3mm;
+  padding: 1.2mm 4mm;
   border-radius: 10mm;
   font-size: 7.8pt;
   font-weight: bold;
