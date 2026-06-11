@@ -183,8 +183,8 @@ table {{
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  font-size: 9pt;
-  line-height: 1.45;
+  font-size: 9.25pt;
+  line-height: 1.55;
   color: #023663;
 }}
 thead tr {{
@@ -192,14 +192,14 @@ thead tr {{
 }}
 thead th {{
   font-size: 10pt; font-weight: bold;
-  padding: 2.2mm 2.2mm; text-align: right; vertical-align: middle;
+  padding: 2.6mm 2.3mm; text-align: right; vertical-align: middle;
   border: 1px solid #D9E3EA;
 }}
 tbody tr:nth-child(odd)  {{ background: #f5f8fb; }}
 tbody tr:nth-child(even) {{ background: #ffffff; }}
 tbody tr {{ break-inside: avoid; page-break-inside: avoid; }}
 tbody td {{
-  padding: 2.2mm 2.2mm; vertical-align: top; text-align: right;
+  padding: 2.6mm 2.3mm; vertical-align: top; text-align: right;
   border: 1px solid #D9E3EA;
 }}
 /* عرض الأعمدة الأربعة */
