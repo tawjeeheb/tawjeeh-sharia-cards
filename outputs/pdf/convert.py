@@ -172,6 +172,8 @@ html_body = tag_sector_headings(html_body)
 
 cover_match = re.search(r'<h1>(.*?)</h1>', html_body, re.DOTALL)
 cover_title = cover_match.group(1) if cover_match else ''
+# قاعدة عنوان المهنة: ما بين القوسين لا يظهر في الغلاف أو الهيدر
+cover_title = re.sub(r'\s*\([^)]*\)', '', cover_title).strip()
 
 # أقسام تستوجب بداية نظيفة — Visual Clean Page Lock
 # إذا لم تكن المساحة كافية فوق الفوتر، تبدأ في صفحة جديدة
