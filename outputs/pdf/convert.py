@@ -304,6 +304,59 @@ def guard_list_starts(html):
 
 sections_html = guard_list_starts(sections_html)
 
+
+def tag_acceptance_table(html):
+    """
+    Find the acceptance table section and:
+    - wrap the table in a styled container div
+    - inject badge <span> into the مدى القبول column (2nd td in each data row)
+    """
+    section_pat = re.compile(
+        r'(<div class="[^"]*section[^"]*">'
+        r'<div class="section-heading">جدول مدى قبول التخصصات</div>'
+        r'<div class="section-body">)'
+        r'(.*?)'
+        r'(</div>\s*</div>)',
+        re.DOTALL,
+    )
+
+    BADGE_MAP = {
+        'عالي':  'badge-high',
+        'متوسط': 'badge-medium',
+        'ضعيف':  'badge-low',
+    }
+
+    def inject_badges(row_match):
+        row_html = row_match.group(0)
+        tds = list(re.finditer(r'<td([^>]*)>(.*?)</td>', row_html, re.DOTALL))
+        if len(tds) < 2:
+            return row_html
+        second = tds[1]
+        raw = re.sub(r'<[^>]+>', '', second.group(2)).strip()
+        if raw not in BADGE_MAP:
+            return row_html
+        badge = f'<span class="{BADGE_MAP[raw]}">{raw}</span>'
+        new_td = f'<td{second.group(1)} class="acceptance-level-cell">{badge}</td>'
+        return row_html[:second.start()] + new_td + row_html[second.end():]
+
+    def process_section(m):
+        prefix, body, suffix = m.group(1), m.group(2), m.group(3)
+        # inject badges row by row
+        body = re.sub(r'<tr>.*?</tr>', inject_badges, body, flags=re.DOTALL)
+        # wrap table in styled container
+        body = body.replace(
+            '<table',
+            '<div class="acceptance-table-wrapper"><table class="acceptance-table"',
+            1,
+        )
+        body = re.sub(r'(</table>)', r'\1</div>', body, count=1)
+        return prefix + body + suffix
+
+    return section_pat.sub(process_section, html)
+
+
+sections_html = tag_acceptance_table(sections_html)
+
 # ── CSS ────────────────────────────────────────────────────────────────────────
 CSS_STR = f"""
 /* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
@@ -726,6 +779,101 @@ p, li, td, th {{
   vertical-align: top;
 }}
 .section-body tr:nth-child(even) td {{ background: #f0f5fa; }}
+
+/* ── Acceptance Table ─────────────────────────────────────── */
+.acceptance-table-wrapper {{
+  border-radius: 3mm;
+  overflow: hidden;
+  box-shadow: 0 0.8mm 3mm rgba(2, 54, 99, 0.13);
+  margin-top: 2mm;
+}}
+
+.section-body .acceptance-table {{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  line-height: 1.45;
+  margin-top: 0;
+  table-layout: fixed;
+}}
+
+.section-body .acceptance-table th {{
+  background: #023663;
+  color: #ffffff;
+  padding: 2mm 2.5mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 8.5pt;
+  vertical-align: middle;
+  border: none;
+}}
+
+/* Column widths: التخصص | مدى القبول | سبب التقييم | متطلبات القبول | ملاحظات */
+.section-body .acceptance-table th:nth-child(1),
+.section-body .acceptance-table td:nth-child(1) {{ width: 13%; text-align: right; }}
+.section-body .acceptance-table th:nth-child(2),
+.section-body .acceptance-table td:nth-child(2) {{ width: 10%; text-align: center; }}
+.section-body .acceptance-table th:nth-child(3),
+.section-body .acceptance-table td:nth-child(3) {{ width: 24%; text-align: right; }}
+.section-body .acceptance-table th:nth-child(4),
+.section-body .acceptance-table td:nth-child(4) {{ width: 29%; text-align: right; }}
+.section-body .acceptance-table th:nth-child(5),
+.section-body .acceptance-table td:nth-child(5) {{ width: 24%; text-align: right; }}
+
+.section-body .acceptance-table td {{
+  padding: 2mm 2.5mm;
+  border: 0.25mm solid #c8d8e8;
+  vertical-align: middle;
+  color: #023663;
+  font-size: 8.5pt;
+}}
+
+.section-body .acceptance-table tr:nth-child(odd) td  {{ background: #ffffff; }}
+.section-body .acceptance-table tr:nth-child(even) td {{ background: #f2f6fb; }}
+
+.section-body .acceptance-table .acceptance-level-cell {{
+  text-align: center;
+  vertical-align: middle;
+}}
+
+.badge-high {{
+  display: inline-block;
+  background: #049E9E;
+  color: #ffffff;
+  padding: 0.9mm 3mm;
+  border-radius: 10mm;
+  font-size: 7.8pt;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.4;
+}}
+
+.badge-medium {{
+  display: inline-block;
+  background: #007F9E;
+  color: #ffffff;
+  padding: 0.9mm 3mm;
+  border-radius: 10mm;
+  font-size: 7.8pt;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.4;
+}}
+
+.badge-low {{
+  display: inline-block;
+  background: #5E4360;
+  color: #ffffff;
+  padding: 0.9mm 3mm;
+  border-radius: 10mm;
+  font-size: 7.8pt;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.4;
+}}
 """
 
 # ── Footer HTML ───────────────────────────────────────────────────────────────

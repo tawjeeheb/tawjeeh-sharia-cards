@@ -423,6 +423,101 @@ p, li, td, th {
   vertical-align: top;
 }
 .section-body tr:nth-child(even) td { background: #f0f5fa; }
+
+/* ── Acceptance Table ─────────────────────────────────────── */
+.acceptance-table-wrapper {
+  border-radius: 3mm;
+  overflow: hidden;
+  box-shadow: 0 0.8mm 3mm rgba(2, 54, 99, 0.13);
+  margin-top: 2mm;
+}
+
+.section-body .acceptance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  line-height: 1.45;
+  margin-top: 0;
+  table-layout: fixed;
+}
+
+.section-body .acceptance-table th {
+  background: #023663;
+  color: #ffffff;
+  padding: 2mm 2.5mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 8.5pt;
+  vertical-align: middle;
+  border: none;
+}
+
+/* Column widths: التخصص | مدى القبول | سبب التقييم | متطلبات القبول | ملاحظات */
+.section-body .acceptance-table th:nth-child(1),
+.section-body .acceptance-table td:nth-child(1) { width: 13%; text-align: right; }
+.section-body .acceptance-table th:nth-child(2),
+.section-body .acceptance-table td:nth-child(2) { width: 10%; text-align: center; }
+.section-body .acceptance-table th:nth-child(3),
+.section-body .acceptance-table td:nth-child(3) { width: 24%; text-align: right; }
+.section-body .acceptance-table th:nth-child(4),
+.section-body .acceptance-table td:nth-child(4) { width: 29%; text-align: right; }
+.section-body .acceptance-table th:nth-child(5),
+.section-body .acceptance-table td:nth-child(5) { width: 24%; text-align: right; }
+
+.section-body .acceptance-table td {
+  padding: 2mm 2.5mm;
+  border: 0.25mm solid #c8d8e8;
+  vertical-align: middle;
+  color: #023663;
+  font-size: 8.5pt;
+}
+
+.section-body .acceptance-table tr:nth-child(odd) td  { background: #ffffff; }
+.section-body .acceptance-table tr:nth-child(even) td { background: #f2f6fb; }
+
+.section-body .acceptance-table .acceptance-level-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.badge-high {
+  display: inline-block;
+  background: #049E9E;
+  color: #ffffff;
+  padding: 0.9mm 3mm;
+  border-radius: 10mm;
+  font-size: 7.8pt;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.badge-medium {
+  display: inline-block;
+  background: #007F9E;
+  color: #ffffff;
+  padding: 0.9mm 3mm;
+  border-radius: 10mm;
+  font-size: 7.8pt;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.badge-low {
+  display: inline-block;
+  background: #5E4360;
+  color: #ffffff;
+  padding: 0.9mm 3mm;
+  border-radius: 10mm;
+  font-size: 7.8pt;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.4;
+}
 </style>
 </head>
 <body>
@@ -584,68 +679,75 @@ p, li, td, th {
 </ul></div>
 </div></div>
 <div class="section table-page-group"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
-<table class="table-page-block">
+<div class="acceptance-table-wrapper"><table class="acceptance-table" class="table-page-block">
 <thead>
 <tr>
 <th>التخصص</th>
-<th>مستوى القبول</th>
+<th>مدى القبول</th>
 <th>سبب التقييم</th>
-<th>البرامج أو الشهادات اللازمة لرفع القبول</th>
+<th>متطلبات القبول أو رفع القبول</th>
 <th>ملاحظات دقيقة</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>الشريعة</td>
-<td>عالي</td>
-<td>المؤهل الأصلي المنصوص عليه في المادة 31 من نظام القضاء — شهادة صادرة من كليات الشريعة في المملكة دون حاجة إلى معادلة</td>
-<td>لا يحتاج برنامجًا تعويضيًا — الدبلوم العالي في القضاء والسياسة الشرعية أو الدبلوم العالي في الفقه داعمان للجاهزية</td>
-<td>يُشترط تقدير لا يقل عن جيد جدًا في مادة الفقه وأصوله بصرف النظر عن التقدير العام للشهادة</td>
-</tr>
-<tr>
-<td>الفقه وأصوله</td>
-<td>عالي</td>
-<td>يندرج ضمن كليات الشريعة في الجامعات السعودية ويمثل المادة المشترطة تحديدًا بتقدير جيد جدًا في المادة 31</td>
-<td>لا يحتاج برنامجًا تعويضيًا — الدبلوم العالي في الفقه داعم ويعمّق التحصيل في محور الاختيار</td>
-<td>تقدير جيد جدًا في هذا التخصص يتوافق مباشرة مع الشرط النظامي الأكثر أثرًا في الفرز</td>
-</tr>
-<tr>
-<td>السياسات الشرعية والأنظمة</td>
-<td>عالي</td>
-<td>يرتفع قبوله إذا كان صادرًا من كلية شريعة أو مسار شرعي نظامي مستوفٍ لشرط المادة 31، ويقوى لارتباطه بالأنظمة والإجراءات القضائية المطبقة في المحاكم السعودية</td>
-<td>لا يحتاج برنامجًا تعويضيًا إذا كان مستوفيًا لشرط المؤهل، والدبلوم العالي في القضاء والسياسة الشرعية يعزز التطبيق الإجرائي</td>
-<td>قوته مرتبطة بمصدر الشهادة وتصنيفها الأكاديمي، ولا يُعامل تلقائيًا كبديل عن شهادة كلية الشريعة إذا لم يثبت استيفاؤه للشرط النظامي</td>
+<td class="acceptance-level-cell"><span class="badge-high">عالي</span></td>
+<td>المؤهل الأقرب لشرط القضاء؛ لأنه يرتبط مباشرة بكليات الشريعة والفقه وأصوله</td>
+<td>استيفاء شروط التقدير، التزكيات العلمية، اختبار القدرات، والمقابلة حسب إعلان الجهة المختصة</td>
+<td>قوة المؤهل لا تعفي من مراحل المفاضلة؛ القبول ليس تلقائيًا بمجرد اسم التخصص</td>
 </tr>
 <tr>
 <td>الدراسات الإسلامية</td>
-<td>متوسط</td>
-<td>لا يصدر عادةً من كلية شريعة — يقبل بشرط اجتياز امتحان المعادلة الخاص الذي يعده المجلس الأعلى للقضاء وفق المادة 31</td>
-<td>الدبلوم العالي في القضاء والسياسة الشرعية لرفع الجاهزية الإجرائية بعد تحقق المعادلة</td>
-<td>اجتياز امتحان المعادلة شرط نظامي لا يعوضه أي برنامج تأهيلي — يجب تحقيقه قبل الدخول في إجراءات الاختيار</td>
+<td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td>
+<td>تخصص شرعي واسع، لكنه لا يطابق مؤهل كلية الشريعة تلقائيًا</td>
+<td>يحتاج تحقق الجهة المختصة من المعادلة أو اجتياز ما تطلبه من اختبار خاص، ثم استيفاء بقية شروط المفاضلة</td>
+<td>قربه من الشريعة يرفع فرصته، لكن اسم التخصص وحده لا يكفي للحكم بالقبول</td>
 </tr>
 <tr>
 <td>أصول الدين</td>
-<td>متوسط</td>
-<td>لا يصدر من كلية شريعة — يقبل بشرط اجتياز امتحان المعادلة الخاص وفق المادة 31 من نظام القضاء</td>
-<td>الدبلوم العالي في الفقه بعد تحقق المعادلة لتعميق التحصيل في المجال المشترط نظاميًا</td>
-<td>محتوى التخصص قريب من العلوم الشرعية الأصولية لكن مسار الدخول القضائي يبقى مشروطًا بالمعادلة الرسمية</td>
+<td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td>
+<td>قوي في الجوانب العقدية والأصولية، لكنه أضعف من الشريعة في الفقه التطبيقي والإجراءات القضائية</td>
+<td>يحتاج معادلة أو اختبارًا خاصًا متى طلبت الجهة المختصة ذلك، مع تقوية الفقه وأصوله تطبيقيًا</td>
+<td>الفجوة ليست في الشرعية العامة، بل في ملاءمة المحتوى لمهام القضاء</td>
 </tr>
 <tr>
-<td>العقيدة</td>
-<td>متوسط</td>
-<td>لا يصدر من كلية شريعة — يقبل بشرط اجتياز امتحان المعادلة الخاص وفق المادة 31 من نظام القضاء</td>
-<td>الدبلوم العالي في القضاء والسياسة الشرعية لرفع الجاهزية الإجرائية بعد تحقق المعادلة</td>
-<td>محتوى التخصص أبعد عن الإجراءات القضائية التطبيقية مقارنةً بأصول الدين والدراسات الإسلامية — الفجوة الإجرائية أوسع</td>
+<td>الدعوة</td>
+<td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td>
+<td>تخصص شرعي مرتبط بالخطاب والإرشاد أكثر من القضاء والفقه التطبيقي</td>
+<td>يحتاج إثبات كفاءة فقهية ومعادلة رسمية عند طلبها، ولا يكفي التأهيل الدعوي وحده</td>
+<td>مناسبته للقضاء تعتمد على سد فجوة الفقه التطبيقي لا على قوة الخطاب الدعوي</td>
+</tr>
+<tr>
+<td>الحسبة والرقابة</td>
+<td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td>
+<td>له صلة بالرقابة الشرعية والضبط، لكنه لا يساوي مؤهل الشريعة القضائي مباشرة</td>
+<td>يحتاج قبول الجهة المختصة لمعادلة المؤهل، مع تقوية الفقه وأصول التقاضي</td>
+<td>قربه التطبيقي مفيد، لكنه لا يلغي شرط المؤهل القضائي الرسمي</td>
+</tr>
+<tr>
+<td>الحديث وأصوله وعلومه</td>
+<td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td>
+<td>علم شرعي أصيل، لكن مركزه الرواية والتوثيق لا الفقه القضائي التطبيقي</td>
+<td>يحتاج معادلة رسمية عند طلبها، مع بناء قوي في الفقه وأصوله وصياغة الأحكام</td>
+<td>قوة التخصص في الحديث لا تعوض وحدها نقص التدريب الفقهي القضائي</td>
 </tr>
 <tr>
 <td>الثقافة الإسلامية</td>
-<td>ضعيف</td>
-<td>لا يُعامل كمؤهل شرعي مباشر وفق المادة 31 — ليس من كليات الشريعة ولم يثبت له مسار معادلة رسمية معتمد في الاختيار القضائي</td>
-<td>لا يوجد في البطاقة برنامج يعوض غياب المؤهل الشرعي النظامي — الشرط الجوهري غير مستوفى</td>
-<td>الشرط النظامي مغلق أمام هذا التخصص إلا في حال صدور قرار رسمي من المجلس الأعلى للقضاء بقبول المعادلة وهو غير مثبت</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>تخصص عام لا يظهر له ارتباط كافٍ بمتطلبات القضاء أو شرط كلية الشريعة</td>
+<td>لا يظهر مسار قبول مباشر لهذا التخصص في السلك القضائي ما لم تقبل الجهة المختصة معادلته رسميًا</td>
+<td>قد يفيد معرفيًا، لكنه لا يكفي وحده لبناء أهلية قضائية واضحة</td>
+</tr>
+<tr>
+<td>القرآن وعلومه</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>تخصص قرآني أصيل، لكنه بعيد عن الفقه القضائي وأصول التقاضي المطلوبة للمهنة</td>
+<td>لا يظهر مسار قبول مباشر لهذا التخصص في السلك القضائي ما لم تقبل الجهة المختصة معادلته رسميًا</td>
+<td>الفجوة الأساسية فقهية وقضائية، ولا تُجسر بمجرد حفظ أو علوم القرآن</td>
 </tr>
 </tbody>
-</table></div></div>
+</table></div></div></div>
 </div>
 </body>
 </html>
