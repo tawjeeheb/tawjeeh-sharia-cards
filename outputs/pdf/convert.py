@@ -122,17 +122,38 @@ H3_HEADINGS = SECTOR_H3_HEADINGS | STRUCTURAL_H3_HEADINGS
 with open(MD_FILE, encoding="utf-8") as f:
     lines = f.readlines()
 
+# استخرج النص بين القوسين من عنوان المهنة (قبل المعالجة)
+_title_paren = ''
+for _line in lines:
+    _s = _line.rstrip()
+    if re.match(r'^\d+\.\s+\S', _s) and len(_s) < 35:
+        _m = re.search(r'\(([^)]+)\)', _s)
+        if _m:
+            _title_paren = _m.group(1).strip()
+        break
+
 processed = []
+_in_musamma = False
 for line in lines:
     stripped = line.rstrip()
     if re.match(r'^\d+\.\s+\S', stripped) and len(stripped) < 35:
         title = re.sub(r'^\d+\.\s+', '', stripped)
         processed.append(f'# {title}\n')
+        _in_musamma = False
     elif stripped in H2_HEADINGS:
         processed.append(f'## {stripped}\n')
+        _in_musamma = (stripped == 'المسميات المكافئة')
     elif stripped in H3_HEADINGS:
         processed.append(f'### {stripped}\n')
+        _in_musamma = False
     else:
+        # أضف النص المستخرج من القوسين إلى المسميات المكافئة إن لم يكن موجودًا
+        if _in_musamma and _title_paren and stripped:
+            if stripped == 'لا يوجد':
+                line = _title_paren + '\n'
+            elif _title_paren not in stripped:
+                line = line.rstrip() + '، ' + _title_paren + '\n'
+            _in_musamma = False
         processed.append(line)
 
 md_content = ''.join(processed)
