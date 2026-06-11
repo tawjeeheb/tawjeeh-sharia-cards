@@ -22,9 +22,7 @@ WEBSITE_URL     = f"https://{WEBSITE}"
 # ── Paths ─────────────────────────────────────────────────────────────────────
 BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR  = os.path.dirname(os.path.dirname(BASE_DIR))
-_LOGO_HIGHRES = os.path.join(REPO_DIR, "design_reference", "tawjeeh_hub_watermark_highres_v2.png")
-_LOGO_FALLBACK = os.path.join(REPO_DIR, "design_reference", "tawjeeh_logo.jpeg")
-LOGO_FILE = _LOGO_HIGHRES if os.path.exists(_LOGO_HIGHRES) else _LOGO_FALLBACK
+LOGO_FILE = os.path.join(REPO_DIR, "design_reference", "project_logo_watermark_transparent.png")
 FONTS_DIR = os.path.join(REPO_DIR, "design_reference", "fonts")
 
 if len(sys.argv) > 1:
@@ -434,10 +432,10 @@ p, li, td, th {{
 /* إحداثيات مطلقة لضمان الثبات الكامل على كل صفحات A4 (297mm × 210mm) */
 .page-watermark {{
   position: fixed;
-  top: 135mm;
+  top: 122mm;
   left: 105mm;
   transform: translate(-50%, -50%);
-  width: 145mm;
+  width: 125mm;
   opacity: 0.30;
   z-index: 2;
   pointer-events: none;
