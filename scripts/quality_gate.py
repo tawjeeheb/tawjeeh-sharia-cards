@@ -61,9 +61,7 @@ def run_checks(path):
         # شرطة مقبولة: داخل span HTML (الشروط والمؤهلات) أو داخل سطر برامج التأهيل
         if re.match(r'^\s*-\s+', line):
             if in_tahdeel:
-                continue  # استثناء برامج التأهيل — داخل السطر
-            if '<span class="condition-label">' in line or '<span class="assessment' in line:
-                continue  # HTML span مقبول
+                continue  # الاستثناء الوحيد: داخل سطر برامج التأهيل للفصل بين البرنامج والجهة
             bad_dash_lines.append(i)
 
     if bad_dash_lines:
