@@ -434,10 +434,10 @@ p, li, td, th {{
 /* إحداثيات مطلقة لضمان الثبات الكامل على كل صفحات A4 (297mm × 210mm) */
 .page-watermark {{
   position: fixed;
-  top: 148.5mm;
+  top: 135mm;
   left: 105mm;
   transform: translate(-50%, -50%);
-  width: 165mm;
+  width: 145mm;
   opacity: 0.30;
   z-index: 2;
   pointer-events: none;
