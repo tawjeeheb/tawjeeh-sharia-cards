@@ -435,7 +435,7 @@ p, li, td, th {{
   top: 122mm;
   left: 105mm;
   transform: translate(-50%, -50%);
-  width: 125mm;
+  width: 135mm;
   opacity: 0.30;
   z-index: 2;
   pointer-events: none;
