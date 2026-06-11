@@ -344,11 +344,15 @@ def tag_acceptance_table(html):
         # inject badges row by row
         body = re.sub(r'<tr>.*?</tr>', inject_badges, body, flags=re.DOTALL)
         # wrap table in styled container — merge any existing class into acceptance-table
+        watermark_img = (
+            f'<img class="acceptance-table-watermark" src="{LOGO_B64}" alt="">'
+        )
         body = re.sub(
             r'<table\b([^>]*?)>',
             lambda m: (
                 '<div class="acceptance-table-wrapper">'
-                '<table class="acceptance-table'
+                + watermark_img
+                + '<table class="acceptance-table'
                 + (' ' + re.search(r'class="([^"]*)"', m.group(1)).group(1)
                    if re.search(r'class="([^"]*)"', m.group(1)) else '')
                 + '">'
@@ -789,13 +793,27 @@ p, li, td, th {{
 
 /* ── Acceptance Table ─────────────────────────────────────── */
 .acceptance-table-wrapper {{
+  position: relative;
   border-radius: 3mm;
   overflow: hidden;
   box-shadow: 0 0.8mm 3mm rgba(2, 54, 99, 0.13);
   margin-top: 2mm;
 }}
 
+.acceptance-table-watermark {{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120mm;
+  opacity: 0.045;
+  z-index: 0;
+  pointer-events: none;
+}}
+
 .section-body .acceptance-table {{
+  position: relative;
+  z-index: 1;
   width: 100%;
   border-collapse: collapse;
   font-size: 8.5pt;
