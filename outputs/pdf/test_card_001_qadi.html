@@ -62,10 +62,11 @@ p, li, td, th {
 }
 
 /* ── Fixed watermark — appears on every page ─────────── */
+/* إحداثيات مطلقة لضمان الثبات الكامل على كل صفحات A4 (297mm × 210mm) */
 .page-watermark {
   position: fixed;
-  top: calc(50% - 6.25mm);
-  left: 50%;
+  top: 148.5mm;
+  left: 105mm;
   transform: translate(-50%, -50%);
   width: 165mm;
   opacity: 0.30;
