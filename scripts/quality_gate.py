@@ -255,6 +255,22 @@ def run_checks(path):
     else:
         results.append(('C7', 'لا تشابه ≥60% في العناصر الحساسة مع بطاقات أخرى', 'PASS', ''))
 
+    # ── C8: وجود ملف evidence لدعم الشهادات المهنية ────────────────────────────
+    has_certs_element = 'الشهادات المهنية الاحترافية' in content
+    if has_certs_element:
+        stem = os.path.splitext(os.path.basename(path))[0]
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(path)))
+        evidence_path = os.path.join(repo_root, 'outputs', 'evidence',
+                                     f'{stem}_certifications_support_audit.md')
+        if os.path.exists(evidence_path):
+            results.append(('C8', 'ملف تحقق دعم الشهادات موجود', 'PASS',
+                             f'→ {os.path.relpath(evidence_path, repo_root)}'))
+        else:
+            results.append(('C8', 'ملف تحقق دعم الشهادات مفقود', 'MANUAL',
+                             f'⚠️ يجب إنشاء: outputs/evidence/{stem}_certifications_support_audit.md'))
+    else:
+        results.append(('C8', 'لا يوجد عنصر شهادات — C8 غير مطبّق', 'PASS', ''))
+
     return results, title_paren
 
 
