@@ -98,11 +98,10 @@
 * فحص المستندات المشبوهة: لرصد التزوير في الوثائق
 
 الدورات الداعمة
-* دورة [نظام الأحوال الشخصية](https://ethrai.sa/course-details/%D9%86%D8%B8%D8%A7%D9%85-%D8%A7%D9%84%D8%A3%D8%AD%D9%88%D8%A7%D9%84-%D8%A7%D9%84%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9): تدعم مهارة تحرير وثائق التوثيق
-* دورة [المرافعات أمام الجهات الشرعية](https://ethrai.sa/course-details/bbbfe41e-9487-ea11-80db-0050568c2944): تدعم مهارة التحقق من الأهلية القانونية
-* دورة [التفكير النقدي وتحليل الحجج](https://www.coursera.org/learn/understanding-arguments): تدعم مهارة قراءة الصكوك العقارية
-* دورة [قضاء التنفيذ](https://ethrai.sa/course-details/eb5b9ea5-3261-ea11-80d7-0050568c1fee): تدعم مهارة أرشفة سجلات التوثيق
-* دورة [تقييم وتحليل الأدلة الجنائية أمام المحاكم](https://www.coursera.org/learn/challenging-forensic-science): تدعم مهارة فحص المستندات المشبوهة
+* دورة [تقنيات رقمنة الوثائق الأرشيفية - دروب](https://lms.doroob.sa/courses/Doroob/C.S-INTEC007/SEP2020/about): تدعم مهارة أرشفة سجلات التوثيق
+* دورة [مكافحة غسل الأموال - دروب](https://lms.doroob.sa/courses/Doroob/W.S-LAW001/JUN2020/about): تدعم مهارة فحص المستندات المشبوهة
+* دورة [التميز الاستراتيجي في إدارة عقود المشاريع - دروب](https://lms.doroob.sa/courses/course-v1:Doroob+W.S-BUSAD041+SEP2025/about): تدعم مهارة تحرير وثائق التوثيق
+* دورة [تقنيات المستقبل في الحكومة الرقمية - دروب](https://lms.doroob.sa/courses/course-v1:Doroob+C.S-INTEC013+AUG2024/about): تدعم مهارة إدارة منصة ناجز
 
 جهات التوظيف وطرق التقديم
 

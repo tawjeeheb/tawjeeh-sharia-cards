@@ -187,6 +187,74 @@ def run_checks(path):
             results.append(('C6', 'جدول القبول: رأس الجدول', 'MANUAL',
                              'لم يُعثر على الأعمدة الأربعة — تحقق يدويًا'))
 
+    # ── C7: تحذير تشابه العناصر الحساسة بين البطاقات ────────────────────────────
+    SENSITIVE_ELEMENTS = [
+        'المهارات المطلوبة',
+        'الدورات الداعمة',
+        'برامج التأهيل المعتمدة',
+        'الشهادات المهنية الاحترافية',
+        'الملاحظات المهنية المتقدمة',
+        'النصائح العملية الإضافية',
+    ]
+    SIMILARITY_THRESHOLD = 0.60
+
+    def extract_links_and_names(card_lines, element_name):
+        """استخرج الروابط والأسماء من عنصر معين."""
+        in_element = False
+        tokens = set()
+        for line in card_lines:
+            s = line.strip()
+            if s == element_name:
+                in_element = True
+                continue
+            if in_element and s in ELEMENTS_ORDER:
+                break
+            if in_element and s:
+                # استخرج نصوص الروابط [نص](url) والروابط نفسها
+                for m in re.finditer(r'\[([^\]]+)\]\(([^)]+)\)', line):
+                    tokens.add(m.group(1).strip())
+                    tokens.add(m.group(2).strip())
+        return tokens
+
+    def jaccard_similarity(set_a, set_b):
+        if not set_a and not set_b:
+            return 0.0
+        intersection = set_a & set_b
+        union = set_a | set_b
+        return len(intersection) / len(union) if union else 0.0
+
+    outputs_dir = os.path.dirname(path)
+    other_cards = [
+        f for f in os.listdir(outputs_dir)
+        if f.endswith('.md') and os.path.join(outputs_dir, f) != path
+    ]
+
+    c7_warnings = []
+    for other_name in sorted(other_cards):
+        other_path = os.path.join(outputs_dir, other_name)
+        try:
+            with open(other_path, encoding='utf-8') as f:
+                other_lines = f.readlines()
+        except Exception:
+            continue
+        for elem in SENSITIVE_ELEMENTS:
+            tokens_current = extract_links_and_names(lines, elem)
+            tokens_other = extract_links_and_names(other_lines, elem)
+            if not tokens_current or not tokens_other:
+                continue
+            sim = jaccard_similarity(tokens_current, tokens_other)
+            if sim >= SIMILARITY_THRESHOLD:
+                c7_warnings.append(
+                    f'{elem} ↔ {other_name}: {int(sim * 100)}% تشابه'
+                )
+
+    if c7_warnings:
+        detail = ' | '.join(c7_warnings[:5])
+        results.append(('C7', 'تشابه العناصر الحساسة بين البطاقات', 'MANUAL',
+                         f'⚠️ يُمنع الاعتماد حتى يُكتب تبرير مهني: {detail}'))
+    else:
+        results.append(('C7', 'لا تشابه ≥60% في العناصر الحساسة مع بطاقات أخرى', 'PASS', ''))
+
     return results, title_paren
 
 
