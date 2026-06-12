@@ -271,6 +271,26 @@ def run_checks(path):
     else:
         results.append(('C8', 'لا يوجد عنصر شهادات — C8 غير مطبّق', 'PASS', ''))
 
+    # ── C9: لا عناوين قطاعية داخل "الشروط والمؤهلات" ───────────────────────────
+    CONDS_ELEMENT = 'الشروط والمؤهلات'
+    NEXT_AFTER_CONDS = 'متطلبات التقييم والتهيئة المهنية'
+    in_conds = False
+    sector_in_conds = []
+    for i, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if stripped == CONDS_ELEMENT:
+            in_conds = True
+            continue
+        if in_conds and stripped == NEXT_AFTER_CONDS:
+            break
+        if in_conds and re.search(r'class="sector-label"', line):
+            sector_in_conds.append(i)
+    if sector_in_conds:
+        results.append(('C9', 'عناوين قطاعية في الشروط والمؤهلات', 'MANUAL',
+                         f'⚠️ سطور {sector_in_conds[:5]} — مسموح فقط لبطاقات متعددة القطاعات الحقيقية (حكومي+مرخص). تحقق بشري مطلوب.'))
+    else:
+        results.append(('C9', 'لا عناوين قطاعية في الشروط والمؤهلات', 'PASS', ''))
+
     return results, title_paren
 
 
