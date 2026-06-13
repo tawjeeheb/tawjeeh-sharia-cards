@@ -16,6 +16,12 @@ try:
 except ImportError:
     _CONTRACT_AVAILABLE = False
 
+try:
+    from scope_guard import run_scope_check
+    _SCOPE_GUARD_AVAILABLE = True
+except ImportError:
+    _SCOPE_GUARD_AVAILABLE = False
+
 ELEMENTS_ORDER = [
     'المسميات المكافئة',
     'التصنيف الوطني SSC',
@@ -328,6 +334,17 @@ def run_checks(path):
     else:
         results.append(('C11+', 'فحوصات العقد (C11-C22)', 'MANUAL',
                          '⚠️ validate_card_contract.py غير موجود — تحقق يدوي مطلوب'))
+
+    # ── C23: Scope Guard ────────────────────────────────────────────────────────
+    if _SCOPE_GUARD_AVAILABLE:
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(path)))
+        stem = os.path.splitext(os.path.basename(path))[0]
+        lock_path = os.path.join(repo_root, 'outputs', 'locks', f'{stem}_scope_lock.json')
+        scope_results = run_scope_check(path, lock_path, allowed_elements=None)
+        for sr in scope_results:
+            results.append((sr[0], sr[1], sr[2], sr[3]))
+    else:
+        results.append(('C23', 'Scope Guard (غير متاح)', 'MANUAL', '⚠️ scope_guard.py غير موجود'))
 
     return results, title_paren
 
