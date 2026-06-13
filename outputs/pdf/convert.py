@@ -149,9 +149,10 @@ for line in lines:
     else:
         # أضف النص المستخرج من القوسين إلى المسميات المكافئة إن لم يكن موجودًا حرفيًا
         if _in_musamma and _title_paren and stripped:
-            # فحص حرفي دقيق: تقسيم المحتوى على الفواصل والمسافات والتحقق من وجود الكلمة كاملة
-            _tokens = [t.strip() for t in re.split(r'[،,\s]+', stripped) if t.strip()]
-            _exact_present = _title_paren in _tokens
+            # فحص صحيح: تحقق أن كل مسمى من مسميات العنوان موجود بالفعل في محتوى القسم
+            _paren_terms = [t.strip() for t in re.split(r'[،,]+', _title_paren) if t.strip()]
+            _sec_terms = [t.strip() for t in re.split(r'[،,]+', stripped) if t.strip()]
+            _exact_present = all(pt in _sec_terms for pt in _paren_terms)
             if stripped == 'لا يوجد':
                 line = _title_paren + '\n'
             elif not _exact_present:
