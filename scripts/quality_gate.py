@@ -291,6 +291,26 @@ def run_checks(path):
     else:
         results.append(('C9', 'لا عناوين قطاعية في الشروط والمؤهلات', 'PASS', ''))
 
+    # ── C10: عنوان البطاقة غير فارغ في HTML ────────────────────────────────────
+    if os.path.exists(html_path):
+        with open(html_path, encoding='utf-8') as f:
+            html_c10 = f.read()
+        m10 = re.search(r'class="profession-title">(.*?)</div>', html_c10)
+        if m10:
+            title_c10 = m10.group(1).strip()
+            if title_c10:
+                results.append(('C10', 'عنوان البطاقة غير فارغ في HTML', 'PASS',
+                                 f'العنوان: {title_c10}'))
+            else:
+                results.append(('C10', 'عنوان البطاقة فارغ في HTML', 'FAIL',
+                                 '❌ profession-title فارغ — العنوان لن يظهر في PDF'))
+        else:
+            results.append(('C10', 'عنوان البطاقة غير موجود في HTML', 'FAIL',
+                             '❌ لم يُعثر على div.profession-title في HTML'))
+    else:
+        results.append(('C10', 'عنوان البطاقة (HTML غير موجود)', 'MANUAL',
+                         f'المسار المتوقع: {html_path}'))
+
     return results, title_paren
 
 
