@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <style>
+/* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoKufiArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoKufiArabic-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoNaskhArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoNaskhArabic-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Aniq';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/aa-aniq-bold.otf');
+  font-weight: bold;
+}
+
+/* ── Page layout ─────────────────────────────────────── */
+@page {
+  size: A4;
+  margin-top: 17mm;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+:root {
+  --page-top-safe-gap: 17mm;
+  --footer-height: 12.5mm;
+  --footer-safe-gap: 8mm;
+  --footer-reserved: 32mm;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  direction: rtl;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  background: #ffffff;
+  color: #023663;
+}
+
+/* عدم ترك عنوان أو سطر معزول عند تقسيم الصفحات */
+p, li, td, th {
+  orphans: 2;
+  widows: 2;
+}
+
+/* ── Fixed watermark — appears on every page ─────────── */
+/* إحداثيات مطلقة لضمان الثبات الكامل على كل صفحات A4 (297mm × 210mm) */
+.page-watermark {
+  position: fixed;
+  top: 122mm;
+  left: 105mm;
+  transform: translate(-50%, -50%);
+  width: 135mm;
+  opacity: 0.30;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Fixed footer — full-width gradient bar, edge-to-edge on every page ── */
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 12.5mm;
+  background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
+  border-radius: 0;
+  box-sizing: border-box;
+  z-index: 999;
+  overflow: hidden;
+}
+
+/* إضاءة ناعمة جدًا أعلى الشريط لإعطائه عمقًا خفيفًا دون مسّ التدرج الأساسي */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+/* صف مرن واحد موزّع على كامل العرض — عناصر بسيطة (أيقونة + نص) دون كبسولات ثقيلة */
+.footer-inner {
+  position: relative;
+  height: 12mm;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 14mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: ltr;
+}
+
+/* عنصر بسيط: أيقونة عارية بلا أي حاوية + يوزر بجانبها في سطر واحد */
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+  flex: 0 0 auto;
+}
+
+/* أيقونة صِرفة بلا خلفية ولا حدود ولا إطار — مجرد رمز SVG معروض مباشرة */
+.footer-icon {
+  display: inline-block;
+  width: 3.5mm;
+  height: 3.5mm;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/* دائرة صغيرة وناعمة جدًا خلف الأيقونات السوداء (TikTok / X) فقط، لإبراز اللون الأصلي فوق التدرج */
+.footer-icon-on-light {
+  width: 2.6mm;
+  height: 2.6mm;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.78);
+  background-size: 1.9mm 1.9mm;
+  padding: 0.45mm;
+  box-sizing: content-box;
+}
+
+.footer-link a {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  color: #ffffff;
+  font-size: 7.8pt;
+  font-weight: 700;
+  letter-spacing: 0.2pt;
+  text-decoration: none;
+  text-shadow: 0 0.2mm 0.3mm rgba(0, 0, 0, 0.22);
+}
+
+/* فاصل عمودي رفيع بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
+.footer-divider {
+  flex: 0 0 auto;
+  width: 0.3mm;
+  height: 6mm;
+  background: rgba(120, 235, 210, 0.45);
+  border-radius: 0.2mm;
+}
+
+/* ── Main content ────────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  /* padding-top: 0 — الهامش العلوي كله من @page margin-top: 17mm */
+  padding: 0 17mm 32mm 17mm;
+}
+
+/* ── Profession title ────────────────────────────────── */
+.profession-title {
+  font-family: 'Aniq', 'Noto Naskh Arabic', serif;
+  font-size: 17pt;
+  font-weight: bold;
+  color: #049e9e;
+  text-align: right;
+  margin-bottom: 5mm;
+  line-height: 1.25;
+}
+
+/* ── Section: تدفق ذكي — لا حبس للكتلة كاملة، العنوان يبقى مع بداية محتواه ── */
+.section {
+  margin-bottom: 4mm;
+  break-inside: auto;
+  page-break-inside: auto;
+  orphans: 3;
+  widows: 3;
+}
+
+/* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
+.section-heading {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 12pt;
+  font-weight: bold;
+  color: #5e4360;
+  text-align: right;
+  margin-bottom: 2mm;
+  line-height: 1.4;
+  background: none;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* محتوى العنصر — يتدفق بحرية بين الصفحات */
+.section-body {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10pt;
+  color: #023663;
+  text-align: right;
+  line-height: 1.72;
+  break-inside: auto;
+  page-break-inside: auto;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Visual Clean Page Lock — تلقائي */
+.section-body > *:first-child {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+.section-body > *:nth-child(2) {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+
+/* عناوين فرعية بنيوية (جهات سبق وأعلنت، قبل التعيين، إلخ) — باللون الرسمي للعناوين الفرعية */
+.section-body h3 {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 11.5pt;
+  font-weight: bold;
+  color: #496379;
+  margin-top: 2.6mm;
+  margin-bottom: 1mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* عناوين القطاعات (القطاع الحكومي، القطاع الخاص، إلخ) — بارزة لكن بلون المحتوى */
+.section-body h3.sector-heading {
+  color: #023663;
+}
+
+.section-body p  {
+  margin-bottom: 1.4mm;
+  break-inside: avoid-page;
+}
+
+.section-body .sector-label {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #023663;
+  margin-top: 2.6mm;
+  margin-bottom: 1mm;
+}
+
+.section-body .employment-sector {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: #023663;
+  margin-top: 3mm;
+  margin-bottom: 1.2mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body .employment-subcategory {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #496379;
+  margin-top: 2mm;
+  margin-bottom: 0.8mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body .condition-label {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 1.08em;
+  font-weight: 700;
+  color: #496379;
+}
+
+.section-body .experience-entity {
+  color: #023663;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 10.8pt;
+}
+
+.section-body .assessment-entity {
+  color: #023663;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 10.8pt;
+  display: block;
+  margin: 1.8mm 0 1mm 0;
+}
+
+.section-body ul,
+.section-body ol {
+  padding-right: 5mm;
+  padding-left: 0;
+  margin-top: 1.4mm;
+  margin-bottom: 2.2mm;
+  list-style-type: disc;
+  list-style-position: outside;
+}
+.section-body li {
+  margin-bottom: 1.2mm;
+  line-height: 1.68;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+.section-body li::marker {
+  color: #023663;
+  font-size: 1.35em;
+}
+
+.section-body a {
+  color: #023663;
+  text-decoration: none;
+  font-size: inherit;
+}
+.section-body a.linked-inline-label {
+  color: #023663;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #023663;
+  text-decoration-thickness: 0.3mm;
+  text-underline-offset: 0.65mm;
+  font-weight: inherit;
+  font-size: inherit;
+}
+.section-body .linked-inline-arrow {
+  font-size: 0.88em;
+  color: #023663;
+  font-weight: 400;
+}
+.section-body strong { font-weight: bold; color: #023663; }
+
+/* ── Tables ──────────────────────────────────────────────── */
+.section-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  margin-top: 1.6mm;
+  color: #023663;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.section-body thead, .section-body tbody, .section-body tfoot {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.section-body thead {
+  display: table-header-group;
+}
+.section-body tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+/* Human Layout Rule — القائمة القصيرة تنتقل كاملة إذا لم تتسع */
+.short-list-guard {
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+  display: block;
+}
+
+/* القائمة الطويلة تتدفق بحرية — كل li محمي بالقاعدة العامة أدناه */
+.long-list-flow {
+  display: block;
+}
+
+/* Visual Clean Page Lock — قسم يستوجب بداية نظيفة فوق الفوتر */
+.section.clean-page-required {
+  break-before: page;
+  page-break-before: always;
+}
+
+/* قسم كامل (عنوان + جدول) ينتقلان معًا إلى صفحة جديدة */
+.section.table-page-group {
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  padding-top: 0;
+}
+/* جدول كبير منفرد — يبدأ في صفحة جديدة */
+.section-body table.table-page-block {
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-top: 0;
+}
+/* جدول داخل قسم table-page-group — لا كسر إضافي */
+.section.table-page-group .section-body table.table-page-block {
+  break-before: auto;
+  page-break-before: auto;
+}
+.section-body th {
+  background: #023663;
+  color: #ffffff;
+  padding: 1.3mm 2.2mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 8.5pt;
+  vertical-align: middle;
+}
+.section-body td {
+  padding: 1.3mm 2.2mm;
+  border: 1px solid #c8d8e8;
+  text-align: center;
+  vertical-align: top;
+}
+.section-body tr:nth-child(even) td { background: #f0f5fa; }
+
+/* ── Acceptance Table ─────────────────────────────────────── */
+.acceptance-table-wrapper {
+  position: relative;
+  border-radius: 3mm;
+  overflow: hidden;
+  box-shadow: 0 0.8mm 3mm rgba(2, 54, 99, 0.13);
+  margin-top: 2mm;
+}
+
+.acceptance-table-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120mm;
+  opacity: 0.045;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.section-body .acceptance-table {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  line-height: 1.45;
+  margin-top: 0;
+  table-layout: fixed;
+}
+
+.section-body .acceptance-table th {
+  background: #023663;
+  color: #ffffff;
+  padding: 2mm 2.5mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 8.5pt;
+  vertical-align: middle;
+  border: none;
+}
+
+/* Column widths: التخصص | مدى القبول | سبب التقييم | متطلبات القبول | ملاحظات */
+.section-body .acceptance-table th:nth-child(1),
+.section-body .acceptance-table td:nth-child(1) { width: 13%; text-align: right; }
+.section-body .acceptance-table th:nth-child(2),
+.section-body .acceptance-table td:nth-child(2) { width: 10%; text-align: center; }
+.section-body .acceptance-table th:nth-child(3),
+.section-body .acceptance-table td:nth-child(3) { width: 24%; text-align: right; }
+.section-body .acceptance-table th:nth-child(4),
+.section-body .acceptance-table td:nth-child(4) { width: 29%; text-align: right; }
+.section-body .acceptance-table th:nth-child(5),
+.section-body .acceptance-table td:nth-child(5) { width: 24%; text-align: right; }
+
+.section-body .acceptance-table td {
+  padding: 2mm 2.5mm;
+  border: 0.25mm solid #c8d8e8;
+  vertical-align: middle;
+  color: #023663;
+  font-size: 8.5pt;
+}
+
+.section-body .acceptance-table tr:nth-child(odd) td  { background: #ffffff; }
+.section-body .acceptance-table tr:nth-child(even) td { background: #f2f6fb; }
+
+.section-body .acceptance-table .acceptance-level-cell {
+  text-align: center;
+  vertical-align: middle;
+  padding: 1.5mm 1.5mm;
+}
+
+/* اسم التخصص — أثقل وأكبر من بقية الخلايا */
+.section-body .acceptance-table td:nth-child(1) {
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #023663;
+  line-height: 1.45;
+}
+
+/* شارات مدى القبول — عرضها على قد النص فقط */
+.badge-high,
+.badge-medium,
+.badge-low {
+  display: inline-block;
+  width: auto;
+  min-width: 0;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: 1.2mm 4mm;
+  border-radius: 10mm;
+  font-size: 7.8pt;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1;
+  text-align: center;
+}
+
+.badge-high   { background: #049E9E; }
+.badge-medium { background: #007F9E; }
+.badge-low    { background: #5E4360; }
+</style>
+</head>
+<body>
+<img class="page-watermark" src="data:image/jpeg;base64,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" alt="">
+<div class="footer">
+  <div class="footer-inner">
+    <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj48Y2lyY2xlIGN4PSI5IiBjeT0iMTYuMyIgcj0iMy40Ii8+PHBhdGggZD0iTTEyLjQgMy42aDIuN2MuMyAyLjUgMiA0LjMgNC41IDQuNnYyLjdjLTEuNyAwLTMuMi0uNS00LjUtMS40djYuOGMwIC4yIDAgLjQtLjEuNmgtMi42YzAtLjIuMS0uNC4xLS42VjMuNnoiLz48L3N2Zz4=')"></span><a href="https://www.tiktok.com/@tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjE3IiBoZWlnaHQ9IjE3IiByeD0iNSIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjQuMiIvPjwvc3ZnPg==')"></span><a href="https://instagram.com/tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgNGMyLjQgMCA0IDEuOSA0IDQuNCAwIDEuNi4xIDMgLjkgMy45LjYuNiAxLjMuOCAyIDEtLjQuOS0xLjUgMS4zLTIuNSAxLjUgMCAuNi0uMiAxLjItLjcgMS4ycy0xLS4zLTEuNy0uM2MtLjkgMC0xLjUuOS0yIC45cy0xLjEtLjktMi0uOWMtLjcgMC0xLjIuMy0xLjcuM3MtLjctLjYtLjctMS4yYy0xLS4yLTIuMS0uNi0yLjUtMS41LjctLjIgMS40LS40IDItMSAuOC0uOS45LTIuMy45LTMuOUM4IDUuOSA5LjYgNCAxMiA0eiIvPjwvc3ZnPg==')"></span><a href="https://www.snapchat.com/add/tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNS4yIDQuNmgzLjFsMy43IDQuOSA0LTQuOWgyLjhMMTMuNiAxMWw1LjQgOC40aC0zLjFsLTQtNS4zLTQuNCA1LjNINC42bDUuOS03LjJ6Ii8+PC9zdmc+')"></span><a href="https://x.com/tawjeeh_hub">tawjeeh_hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzIiB5PSI1LjUiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMyIgcng9IjMuNSIvPjxwYXRoIGQ9Ik0xMCA5LjNsNS4yIDIuNy01LjIgMi43eiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSJub25lIi8+PC9zdmc+')"></span><a href="https://www.youtube.com/@tawjeeh_hub">tawjeeh_hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI4LjIiLz48cGF0aCBkPSJNMy44IDEyaDE2LjRNMTIgMy44YzIuNiAyLjIgMi42IDE0LjIgMCAxNi40Ii8+PC9zdmc+')"></span><a href="https://www.tawjeeh.hub">www.tawjeeh.hub</a></span>
+  </div>
+</div>
+<div class="content">
+  <div class="profession-title">محكّم</div>
+  <div class="section"><div class="section-heading">المسميات المكافئة</div><div class="section-body">
+<p>محكّم تجاري، محكّم معتمد، محكّم دولي، محكّم تجاري، محكّم معتمد</p>
+</div></div>
+<div class="section"><div class="section-heading">التصنيف الوطني SSC</div><div class="section-body">
+<div class="short-list-guard"><ul><li>المجموعة الرئيسية: 2 - المختصون والمهنيون</li>
+<li>المجموعة الفرعية: 26 - المختصون في القانون والاجتماع والثقافة والدين</li>
+<li>المجموعة الرئيسية الدقيقة: 261 - المختصون القانونيون</li>
+<li>المجموعة الثانوية: 2619 - المختصون القانونيون غير المصنفين في مكان آخر</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">طبيعة العمل</div><div class="section-body">
+<p>المحكّم هو الجهة القضائية البديلة التي يختارها أطراف النزاع التجاري أو المدني طوعًا للفصل في خلافاتهم خارج المحكمة: يستمع إلى أدلة الطرفين ويُحلّل العقود ويُصدر حكمًا تحكيميًا ملزمًا للطرفين وفق أحكام <a class="linked-inline-label" href="https://laws.moj.gov.sa">نظام التحكيم السعودي الصادر بالمرسوم الملكي م/34 لعام 1433هـ. يختلف عن القاضي في أنه لا يُعيَّن بمرسوم بل يُختار باتفاق الأطراف أو بتزكية من مركز التحكيم المعتمد، ويختلف عن المحامي في أنه لا يُمثّل طرفًا بل يُفصل بين الأطراف بحياد تام. يعمل في مسارين رئيسيين <span class="linked-inline-arrow">↗</span></a>: التحكيم المؤسسي داخل مراكز التحكيم المعتمدة كالغرف التجارية ومركز التحكيم التجاري الخليجي، والتحكيم الحر حيث يُعيَّن المحكّم مباشرةً من الأطراف خارج مؤسسة ثابتة. تتقاطع المساران في متطلب جوهري واحد: الحياد التام والكفاءة القانونية في تقييم الأدلة وتطبيق أحكام النظام السعودي أو القانون المتفق عليه.</p>
+</div></div>
+<div class="section"><div class="section-heading">المهام الرئيسية</div><div class="section-body">
+<div class="short-list-guard"><ul><li>دراسة وثيقة التحكيم واتفاقية التحكيم المبرمة بين الأطراف وتحديد نطاق الاختصاص والقانون الواجب التطبيق</li>
+<li>إدارة جلسات التحكيم واستماع مرافعات وأدلة الأطراف وفق إجراءات منظمة ومتوازنة</li>
+<li>فحص المستندات والعقود والأدلة المقدمة وتقييمها وفق معايير الإثبات في النظام المتفق عليه</li>
+<li>إعداد حكم التحكيم الموثَّق والمسبَّب الصادر في النزاع مع بيان الأسباب القانونية والحجج التي استند إليها</li>
+<li>الحفاظ على الحياد والاستقلالية والإفصاح عن أي تضارب مصالح محتمل وفق أحكام النظام</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">المرتبة والراتب</div><div class="section-body">
+<p><strong>القطاع الخاص — مراكز التحكيم والشركات:</strong></p>
+<div class="short-list-guard"><ul><li>محكّم مبتدئ (قضايا صغيرة ومتوسطة): نحو 5,000 – 15,000 ريال للقضية الواحدة تقريبًا وفق تعقيد النزاع ومدة التحكيم.</li>
+<li>محكّم أول (قضايا متوسطة وكبيرة): نحو 15,000 – 50,000 ريال للقضية تقريبًا مع تراكم الخبرة والسمعة المهنية.</li>
+<li>محكّم رئيس هيئة (قضايا كبرى متعددة أطراف): من 50,000 ريال للقضية فأعلى تقريبًا في النزاعات التجارية الضخمة.</li>
+</ul></div>
+<p><strong>القطاع المستقل — الممارسة الحرة:</strong></p>
+<div class="short-list-guard"><ul><li>محكّم مُدرَج في قوائم مراكز التحكيم: أتعاب متفاوتة حسب حجم النزاع وقيمة موضوع الدعوى، تُحسب غالبًا بنسبة مئوية من قيمة النزاع أو بالساعة.</li>
+<li>محكّم دولي (قضايا عابرة للحدود): أتعاب بالعملة المتفق عليها، وغالبًا ما تُحدَّد وفق جداول المراكز الدولية كغرفة التجارة الدولية ICC.</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">المزايا الوظيفية</div><div class="section-body">
+<p class="sector-label">القطاع الخاص — مراكز التحكيم والشركات</p>
+
+<div class="short-list-guard"><ul><li>التعرض لنزاعات تجارية متنوعة في قطاعات مختلفة يبني خبرة قانونية وتجارية لا تُتاح في التخصص الأضيق.</li>
+<li>بناء سمعة مهنية مستقلة من خلال الأحكام التحكيمية المنشورة والسجل الحقوقي المتراكم.</li>
+<li>شبكة علاقات واسعة مع المحامين والشركات والمؤسسات المالية تفتح أبوابًا للقضايا الكبرى.</li>
+<li>إمكانية العمل في مراكز تحكيم دولية معتمدة كغرفة التجارة الدولية ومركز التحكيم التجاري الخليجي.</li>
+</ul></div>
+<p class="sector-label">القطاع المستقل — الممارسة الحرة</p>
+
+<div class="short-list-guard"><ul><li>مرونة عالية في إدارة الوقت واختيار القضايا وفق التخصص المفضَّل وجداول العمل الشخصية.</li>
+<li>العائد المالي مرتبط بالسمعة المهنية وليس بسلم وظيفي ثابت، مما يفتح آفاقًا غير محدودة لمن بنى مصداقية قوية.</li>
+<li>التدرج التدريجي من المُحكَّم في نزاعات صغيرة إلى محكّم رئيسي في هيئات تحكيم دولية ضمن مسار واضح.</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">الشروط والمؤهلات</div><div class="section-body">
+<div class="short-list-guard"><ul><li><span class="condition-label">الشروط العامة:</span> الأهلية القانونية الكاملة، حسن السيرة والسلوك، عدم الإدانة بجريمة مخلة بالشرف أو الأمانة — وفق المادة الثامنة من نظام التحكيم السعودي م/34 لعام 1433هـ.</li>
+<li><span class="condition-label">شروط المؤهل:</span> شهادة جامعية في الشريعة الإسلامية أو الأنظمة (الحقوق) أو ما يعادلها من جامعة معترف بها لدى وزارة التعليم؛ تشترط بعض مراكز التحكيم خبرة قانونية لا تقل عن خمس سنوات للقيد في قوائمها.</li>
+<li><span class="condition-label">متطلب العمر:</span> لا يوجد متطلب عمر محدد في نظام التحكيم — غير أن بعض مراكز التحكيم تشترط ألا يقل عمر المحكّم عن خمسة وعشرين عامًا.</li>
+<li><span class="condition-label">الشروط الإضافية:</span> إخلاء سبيل من أي مصلحة مباشرة في موضوع النزاع؛ والإفصاح الكامل عن أي علاقة بأحد أطراف التحكيم قبل قبول المهمة؛ والالتزام بمدونة سلوك المحكّمين الصادرة عن مركز التحكيم المعتمد.</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">متطلبات التقييم والتهيئة المهنية</div><div class="section-body">
+<p><span class="assessment-entity">مراكز التحكيم السعودية المعتمدة</span></p>
+<div class="short-list-guard"><ul><li><span class="condition-label">قبل القيد:</span> تقديم طلب مشفوعًا بالسيرة الذاتية التفصيلية والمؤهلات والخبرات القانونية لمركز التحكيم؛ تقييم الملف من قِبل اللجنة المختصة، وقد يُجرى اختبار أو مقابلة لبعض المراكز.</li>
+<li><span class="condition-label">بعد القيد:</span> المشاركة في برامج التأهيل والتدريب على إجراءات مركز التحكيم قبل إسناد أول قضية؛ بعض المراكز تُلزم بحضور جلسات استماع بصفة مراقب قبل الاستقلالية الكاملة.</li>
+</ul></div>
+<p><span class="assessment-entity">التحكيم الحر والتعيين المباشر من الأطراف</span></p>
+<div class="short-list-guard"><ul><li><span class="condition-label">التأهل:</span> الحصول على اعتراف مهني من خلال شهادة دولية كـCIArb أو سجل حافل من القضايا القانونية المُعالَجة؛ الأطراف ومحاموهم يُقيّمون السيرة الذاتية والمصداقية المهنية قبل الاتفاق على تعيين المحكّم.</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">الخبرات المطلوبة</div><div class="section-body">
+<p><span class="experience-entity">التحكيم المؤسسي في المراكز:</span> تشترط معظم مراكز التحكيم السعودية خبرة قانونية مهنية لا تقل عن خمس سنوات في المحاماة أو القضاء أو الاستشارات القانونية قبل القيد في قوائم المحكّمين؛ والخبرة في قضايا العقود والمنازعات التجارية ذات صلة مباشرة وتُقدَّم في الملف.</p>
+<p><span class="experience-entity">الممارسة المستقلة:</span> لا حد أدنى نظامي للخبرة في التعيين المباشر من الأطراف؛ غير أن المحكّم الذي بنى سمعته من خلال سنوات في المحاماة أو القضاء هو الأكثر اختيارًا عمليًا؛ والمشاركة في التدريب على التحكيم مبكرًا — حضور جلسات وكتابة مذكرات — تُقرّب المسار بشكل ملموس.</p>
+</div></div>
+<div class="section"><div class="section-heading">برامج التأهيل المعتمدة</div><div class="section-body">
+<div class="short-list-guard"><ul><li><a class="linked-inline-label" href="https://www.ipa.edu.sa/ar/training">برنامج التحكيم التجاري - معهد الإدارة العامة <span class="linked-inline-arrow">↗</span></a>: يُؤهّل على إجراءات التحكيم وكتابة حكم التحكيم وفق النظام السعودي وإدارة جلسات الاستماع، ويسد فجوة الجانب الإجرائي التطبيقي لدى الخريجين الجدد من الشريعة والأنظمة.</li>
+<li><a class="linked-inline-label" href="https://sba.gov.sa">برنامج التسوية البديلة للمنازعات - الهيئة السعودية للمحامين <span class="linked-inline-arrow">↗</span></a>: يُعمّق الإلمام بآليات التحكيم والوساطة والتوفيق وفق الإطار التنظيمي السعودي، ويُتيح شبكة مهنية مع المحامين والمحكّمين المرخصين.</li>
+<li><a class="linked-inline-label" href="https://www.kaust.edu.sa">دبلوم التحكيم الدولي - جامعة الملك عبدالله للعلوم والتقنية KAUST <span class="linked-inline-arrow">↗</span></a>: يُطوّر الكفاءة في التحكيم العابر للحدود والنزاعات المشمولة بالقانون الأجنبي، مما يرفع التنافسية في القضايا الدولية الضخمة.</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">المهارات المطلوبة</div><div class="section-body">
+<div class="short-list-guard"><ul><li>تحليل العقود والنصوص القانونية: لتحديد الحقوق والالتزامات وتفسير البنود الخلافية تفسيرًا دقيقًا</li>
+<li>إدارة جلسات الاستماع: لضبط التسلسل الإجرائي وضمان تكافؤ الفرص بين الأطراف بحياد تام</li>
+<li>كتابة الحكم التحكيمي: لإصدار حكم مسبَّب مكتوب يصمد عند الطعن أمام دوائر التنفيذ</li>
+<li>الحياد والاستقلالية: لإدارة التحكيم بمعزل عن أي ضغط خارجي أو مصلحة خاصة</li>
+<li>الإلمام بنظام التحكيم السعودي: لضمان صحة الإجراءات والحكم وقابليتهما للتنفيذ القضائي</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">الدورات الداعمة</div><div class="section-body">
+<div class="short-list-guard"><ul><li>دورة <a class="linked-inline-label" href="https://lms.doroob.sa/courses/Doroob/W.S-LAW001/JUN2020/about">مكافحة غسل الأموال <span class="linked-inline-arrow">↗</span></a>: لفحص النزاعات المالية المشبوهة</li>
+<li>دورة <a class="linked-inline-label" href="https://lms.doroob.sa/courses/course-v1:Doroob+C.S-SECU001+SEP2022/about">الجرائم الإلكترونية وحماية المعلومات <span class="linked-inline-arrow">↗</span></a>: لتقييم الأدلة الرقمية في النزاعات</li>
+<li>دورة <a class="linked-inline-label" href="https://lms.doroob.sa/courses/Doroob/W.S-LAW002/APR2021/about">مهارات التحقيق والاستجواب الفعّال <span class="linked-inline-arrow">↗</span></a>: لإدارة الاستماع واستجلاء الوقائع</li>
+<li>دورة <a class="linked-inline-label" href="https://www.coursera.org/learn/negotiation">التفاوض الناجح وإدارة الخلافات <span class="linked-inline-arrow">↗</span></a>: لإدارة جلسات التسوية قبل الفصل</li>
+<li>دورة <a class="linked-inline-label" href="https://www.coursera.org/learn/arbitration">التحكيم الدولي في النزاعات <span class="linked-inline-arrow">↗</span></a>: لفهم إجراءات التحكيم الدولي</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">جهات التوظيف وطرق التقديم</div><div class="section-body">
+<p>القطاع الخاص (محكّم تجاري، محكّم معتمد)</p>
+<div class="short-list-guard"><ul><li>مراكز التحكيم التجاري المعتمدة المرتبطة بغرف التجارة والصناعة على مستوى المناطق (مثل: <a href="https://riyadh.chamber.org.sa">غرفة الرياض</a>، <a href="https://jcci.org.sa">غرفة جدة</a>، <a href="https://chamber.org.sa">غرفة الشرقية</a>، <a class="linked-inline-label" href="https://www.saudichambers.org.sa">الاتحاد السعودي للغرف التجارية الصناعية) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر بوابات قوائم المحكّمين في كل غرفة لمن استوفى شروط القيد من خبرة وشهادة ومؤهل.</li>
+<li>مراكز التحكيم الدولية ذات الفروع أو الشراكات في المملكة العربية السعودية (مثل: <a href="https://www.gccac.org">مركز التحكيم التجاري الخليجي</a>، <a class="linked-inline-label" href="https://crcica.org">مركز القاهرة الإقليمي للتحكيم التجاري الدولي) <span class="linked-inline-arrow">↗</span></a>: التقديم بتقديم الملف المهني والسيرة الذاتية لإدارة القيد عبر الموقع الرسمي لكل مركز.</li>
+<li>مكاتب المحاماة والاستشارات القانونية الكبرى التي تُقدّم خدمات التحكيم لعملائها جنبًا إلى جنب مع المرافعات (مثل: <a href="https://www.al-jafali.com">الجفالي وآخرون</a>، <a href="https://www.mm.com.sa">المشعل ومسعد</a>، <a class="linked-inline-label" href="https://www.bakermckenzie.com">Baker McKenzie) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر صفحات Careers الرسمية أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات «Arbitration Associate» و«Dispute Resolution Counsel».</li>
+<li>الشركات التجارية والصناعية الكبرى التي تُضمّن عقودها شرط التحكيم وتحتاج محكّمين ضمن هيئة التحكيم المُشكَّلة (مثل: <a href="https://www.aramco.com/en/careers">شركة أرامكو السعودية</a>، <a href="https://www.sabic.com/ar/careers">سابك</a>، <a class="linked-inline-label" href="https://www.neom.com">شركة نيوم) <span class="linked-inline-arrow">↗</span></a>: الاستهداف عبر العلاقات المهنية مع المستشارين القانونيين الداخليين، أو التواصل عبر <a href="https://www.linkedin.com/jobs">LinkedIn</a>.</li>
+</ul></div>
+<p>القطاع المستقل (محكّم تجاري، محكّم دولي)</p>
+<div class="short-list-guard"><ul><li>اللجنة الدائمة لمراكز التحكيم السعودية المشرفة على ترخيص مراكز التحكيم واعتماد المحكّمين (مثل: <a class="linked-inline-label" href="https://scsac.org.sa">اللجنة الدائمة لمراكز التحكيم) <span class="linked-inline-arrow">↗</span></a>: التقديم بالملف المهني عبر البوابة الرسمية للجنة للقيد في سجل المحكّمين المعتمدين على المستوى الوطني.</li>
+<li>هيئات التحكيم ذات الطابع الخاص التي تُدير قوائم المحكّمين وتُسند القضايا للمحكّمين المقيَّدين (مثل: <a href="https://saudichambers.org.sa">هيئة التحكيم السعودية</a>، مراكز التحكيم في الأحياء المالية الخاصة كـ<a class="linked-inline-label" href="https://www.difc.ae">DIFC) <span class="linked-inline-arrow">↗</span></a>: القيد في قوائم المحكّمين عبر تقديم الطلب مشفوعًا بالمؤهلات والخبرة واجتياز أي تقييم تشترطه الهيئة.</li>
+<li>التعيين المباشر من أطراف النزاع عبر الاتفاق بينهم على اختيار المحكّم من خارج قوائم المراكز الرسمية: يتطلب بناء سمعة مهنية موثَّقة والقيد في قوائم <a href="https://www.ciarb.org/networking/our-branches/middle-eastindian-subcontinent/saudi-arabia/">معهد التحكيم المعتمد CIArb</a> لرفع مصداقية الملف أمام الأطراف ومحاميهم.</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">المسار الوظيفي والتطور المهني</div><div class="section-body">
+<div class="short-list-guard"><ul><li><strong>مسار الترقي:</strong> يبدأ محكّمًا في نزاعات صغيرة ومتوسطة، ثم عضوًا في هيئات تحكيم ثلاثية، وصولًا إلى رئيس هيئة تحكيم في القضايا الكبرى ثم محكّمًا دوليًا في مراكز تحكيم عابرة للحدود.</li>
+<li><strong>مسار الانتقال:</strong> يمكن الانتقال إلى وساطة النزاعات التجارية كبديل أسرع للتحكيم، أو إلى التدريس في برامج التحكيم بالجامعات ومعاهد التدريب، أو إلى الانضمام لمجالس إدارة مراكز التحكيم.</li>
+<li><strong>مسار التخصص:</strong> التخصص في تحكيم عقود الإنشاء والبنية التحتية، أو تحكيم المنازعات المصرفية والمالية، أو التحكيم في قضايا الملكية الفكرية والتقنية.</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">الشهادات المهنية الاحترافية</div><div class="section-body">
+<div class="short-list-guard"><ul><li><a class="linked-inline-label" href="https://www.ciarb.org/qualifications/fellowship">زمالة معهد التحكيم المعتمد (FCIArb) — Chartered Institute of Arbitrators <span class="linked-inline-arrow">↗</span></a>: لاكتساب الاعتراف الدولي بالكفاءة التحكيمية وفتح أبواب القضايا العابرة للحدود في المراكز الدولية (غير مدعومة)</li>
+<li><a class="linked-inline-label" href="https://www.acfe.com/cfe-credential/how-to-earn-your-cfe-credential">شهادة محترف فحص الاحتيال المعتمد (CFE) <span class="linked-inline-arrow">↗</span></a>: لتعزيز قدرة تقييم الأدلة المالية والمستندية في قضايا التحكيم التجاري ذات الطابع الاحتيالي (مدعومة)</li>
+<li><a class="linked-inline-label" href="https://iami.global">شهادة وسيط ومحكّم معتمد — مجلس الاعتماد الدولي للتوسط والتحكيم (IAMI) <span class="linked-inline-arrow">↗</span></a>: لاكتساب اعتراف مهني في آليات التسوية البديلة للنزاعات على المستوى الإقليمي والدولي (غير مدعومة)</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">الملاحظات المهنية المتقدمة</div><div class="section-body">
+<div class="short-list-guard"><ul><li>نظام التحكيم السعودي الصادر بالمرسوم الملكي م/34 بتاريخ 24/5/1433هـ هو المرجع الحاكم لكل إجراءات التحكيم داخل المملكة؛ أي مخالفة إجرائية — كإصدار الحكم خارج المهلة النظامية أو دون توقيع كامل أعضاء الهيئة — تُعرّض الحكم للبطلان عند رفعه للتنفيذ أمام <a href="https://www.bog.gov.sa">ديوان المظالم</a>.</li>
+<li>الفرق الجوهري بين التحكيم المؤسسي والتحكيم الحر: التحكيم المؤسسي يُدار وفق لوائح مركز التحكيم ويتمتع بدعم إداري وإجرائي، بينما التحكيم الحر يمنح أطراف النزاع مرونة أكبر في تصميم الإجراءات لكن يُلقي على المحكّم عبء الإدارة الإجرائية الكاملة.</li>
+<li>المحكّم لا يملك صلاحية إجبار الشهود على الحضور ولا تنفيذ قراراته مباشرةً؛ تنفيذ حكم التحكيم يستلزم الرجوع لـ<a href="https://www.bog.gov.sa">ديوان المظالم</a> الذي يُصدر أمر التنفيذ وفق المادة الثامنة والأربعين من نظام التحكيم.</li>
+<li>الطلب على التحكيم في المملكة في ارتفاع موثَّق تزامنًا مع رؤية 2030 والتوسع في المشاريع الكبرى والعقود الدولية؛ <a href="https://scsac.org.sa">اللجنة الدائمة لمراكز التحكيم</a> رخّصت عددًا متناميًا من مراكز التحكيم خلال السنوات الأخيرة، مما يُنشئ طلبًا حقيقيًا على محكّمين مؤهَّلين.</li>
+</ul></div>
+</div></div>
+<div class="section"><div class="section-heading">النصائح العملية الإضافية</div><div class="section-body">
+<div class="short-list-guard"><ul><li>أتقن كتابة الحكم التحكيمي المسبَّب الذي يُبيّن الوقائع والأدلة والأسباب القانونية بوضوح؛ الحكم غير المسبَّب يُرفض تنفيذه قضائيًا ويُعرّض مهنتك للطعون المتكررة.</li>
+<li>ابنِ تخصصًا قطاعيًا واضحًا — إنشاء، أو مصارف، أو عقارات — بدلًا من التعميم؛ الشركات تختار المحكّم الذي يُثبت إلمامًا عميقًا بطبيعة قطاعها لا من يدّعي الكفاءة الشاملة.</li>
+<li>احرص على الإفصاح الاستباقي عن أي صلة بأي طرف قبل قبول المهمة؛ الكشف المتأخر عن تضارب المصالح يُوقف التحكيم ويُلحق ضررًا بالغًا بسمعتك المهنية.</li>
+<li>شارك في برامج التدريب والمحاكاة التحكيمية في بداية مسارك؛ الممارسة على قضايا افتراضية تُجوّد مهارة إدارة الجلسات وكتابة الحكم قبل مواجهة قضايا حقيقية ذات مخاطر مالية عالية.</li>
+<li>سجّل في قوائم أكثر من مركز تحكيم؛ تعدد الجهات التي تُزكّيك يُوسّع فرص التعيين ويُعجّل بناء ملف خبرات متنوع يُقنع الأطراف ومحاميهم.</li>
+</ul></div>
+</div></div>
+<div class="section table-page-group"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
+<div class="acceptance-table-wrapper"><img class="acceptance-table-watermark" src="data:image/jpeg;base64,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" alt=""><table class="acceptance-table table-page-block">
+<thead>
+<tr>
+<th>التخصص</th>
+<th>مدى القبول</th>
+<th>السبب</th>
+<th>ما يرفع القبول</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الشريعة</td>
+<td class="acceptance-level-cell"><span class="badge-high">عالي</span></td>
+<td>نظام التحكيم السعودي يُصنّف الشريعة مؤهلًا أساسيًا معادلًا للأنظمة في اشتراطات المحكّم</td>
+<td>لا يحتاج تعويضًا — برنامج التحكيم التجاري داعم للجانب الإجرائي التطبيقي</td>
+</tr>
+<tr>
+<td>الدراسات الإسلامية</td>
+<td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td>
+<td>يُعطي الأساس الشرعي لكن لا يُغطي قانون العقود التجارية والتحكيم الدولي بعمق تطبيقي</td>
+<td>دبلوم الأنظمة القانونية أو برنامج التحكيم لاكتساب الجانب الإجرائي والتعاقدي</td>
+</tr>
+<tr>
+<td>الثقافة الإسلامية</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>تخصص عام لا يستوفي اشتراط الدرجة القانونية أو الشرعية المطلوبة في نظام التحكيم</td>
+<td>دبلوم الأنظمة القانونية ضروري — لكن القبول يبقى ضعيفًا أمام خريجي الشريعة والأنظمة</td>
+</tr>
+<tr>
+<td>أصول الدين</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>يتمحور حول العقيدة والمنهج ولا يستوفي الاشتراط القانوني الصريح في نظام التحكيم م/34</td>
+<td>لا يوجد برنامج يُحوله إلى مؤهل كافٍ في غياب شهادة جامعية في الشريعة أو الأنظمة</td>
+</tr>
+<tr>
+<td>الدعوة</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>لا يُغطي قانون العقود ولا أصول التحكيم ولا الإجراءات القانونية المطلوبة في المحكّم</td>
+<td>لا يوجد مسار تأهيلي يُحوله إلى مؤهل تنافسي لقيد المحكّم في المراكز المعتمدة</td>
+</tr>
+<tr>
+<td>الحسبة والرقابة</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>يشترك مع التحكيم في مفهوم الفصل بين الأطراف لكن لا يستوفي الاشتراط القانوني الرسمي</td>
+<td>دبلوم الأنظمة القانونية ضروري — ويبقى القبول ضعيفًا في مراكز التحكيم الكبرى</td>
+</tr>
+<tr>
+<td>الحديث والسنة وعلومها</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>علوم نقلية لا تستوفي اشتراط الدرجة القانونية أو الشرعية التطبيقية في نظام التحكيم</td>
+<td>لا يوجد برنامج يُحوله إلى مؤهل قانوني كافٍ لقيد المحكّم في مراكز التحكيم</td>
+</tr>
+<tr>
+<td>التفسير والقرآن وعلومه</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>لا صلة مهنية بإجراءات التحكيم وإدارة جلسات الاستماع وكتابة الأحكام التحكيمية</td>
+<td>لا يوجد مسار تأهيلي يُحوله إلى مؤهل تنافسي في التحكيم التجاري المؤسسي</td>
+</tr>
+</tbody>
+</table></div></div></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+# Manifest — بطاقة 011
+# أخصائي قانوني
+# تاريخ الإنشاء: 2026-06-13
+
+card_number: "011"
+card_name_display: "أخصائي قانوني"
+card_file: "outputs/test_card_011_akhsaiy_qanuni.md"
+
+pdf:
+  expected_title: "أخصائي قانوني (مساعد قانوني، أخصائي شؤون قانونية، أخصائي عقود)"
+  html_path: "outputs/pdf/test_card_011_akhsaiy_qanuni.html"
+  pdf_path: "outputs/pdf/test_card_011_akhsaiy_qanuni.pdf"
+
+equivalent_titles:
+  - مساعد قانوني
+  - أخصائي شؤون قانونية
+  - أخصائي عقود
+
+employment_entities:
+  authoritative_prompt: "prompts/13_employment_entities_application.md"
+  prompt_version: "v4.0"
+  approval_commit: "742ff09"
+  allowed_sectors:
+    - الحكومي
+    - شبه الحكومي
+    - الخاص
+  independent_sector_allowed: false
+
+evidence_files:
+  - "outputs/evidence/test_card_011_akhsaiy_qanuni_certifications_support_audit.md"
+
+status: active
+created_at: "2026-06-13"
+quality_gate: "C1-C23"

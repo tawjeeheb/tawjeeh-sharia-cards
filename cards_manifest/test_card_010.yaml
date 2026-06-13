@@ -1,0 +1,30 @@
+# Manifest — بطاقة 010
+# قاضٍ
+# تاريخ الإنشاء: 2026-06-13
+
+card_number: "010"
+card_name_display: "قاضٍ"
+card_file: "outputs/test_card_010_qadi.md"
+
+pdf:
+  expected_title: "قاضٍ (قاضٍ شرعي)"
+  html_path: "outputs/pdf/test_card_010_qadi.html"
+  pdf_path: "outputs/pdf/test_card_010_qadi.pdf"
+
+equivalent_titles:
+  - قاضٍ شرعي
+
+employment_entities:
+  authoritative_prompt: "prompts/13_employment_entities_application.md"
+  prompt_version: "v4.0"
+  approval_commit: "742ff09"
+  allowed_sectors:
+    - الحكومي
+  independent_sector_allowed: false
+
+evidence_files:
+  - "outputs/evidence/test_card_010_qadi_certifications_support_audit.md"
+
+status: active
+created_at: "2026-06-13"
+quality_gate: "C1-C23"
