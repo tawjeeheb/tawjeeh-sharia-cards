@@ -168,3 +168,4 @@
 | 2026-06-13 | اعتماد v4.0 نهائيًا لعنصر "جهات التوظيف وطرق التقديم" — `prompts/13_employment_entities_application.md` | commit 742ff09 |
 | 2026-06-13 | اعتماد نظام الضبط البرمجي C11–C22 نهائيًا — `contracts/card_content_contract.yaml` + `scripts/validate_card_contract.py` + دمج في `quality_gate.py` — بوابة الجودة لا تمر إلا عند 22/22 PASS — لا تجاوز يدوي | commit 075d362 |
 | 2026-06-13 | اعتماد Scope Guard C23 نهائيًا — `scripts/scope_guard.py` + `outputs/locks/test_card_009_scope_lock.json` + دمج C23 في `quality_gate.py` — البوابة 24/24 PASS — أي تعديل على بطاقة مقفلة يتطلب `--allow` صريحًا — لا تجاوز يدوي | commit 15c6101 |
+| 2026-06-13 | اعتماد One-Click Card Pipeline نهائيًا — `scripts/run_card_pipeline.py` + `cards_manifest/` + `Makefile` + `.github/workflows/card-quality.yml` — validate-all يقرأ من manifests فقط — 009 locked — 001–008 legacy_pre_contract — البناء لا ينكسر بالقديم | commit 51b27bd |
