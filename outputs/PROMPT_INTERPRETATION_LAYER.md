@@ -166,3 +166,4 @@
 |---------|---------|--------|
 | 2026-06-13 | إنشاء الطبقة بناءً على أمر المستخدم | جلسة claude/intelligent-lovelace-fFwwA |
 | 2026-06-13 | اعتماد v4.0 نهائيًا لعنصر "جهات التوظيف وطرق التقديم" — `prompts/13_employment_entities_application.md` | commit 742ff09 |
+| 2026-06-13 | اعتماد نظام الضبط البرمجي C11–C22 نهائيًا — `contracts/card_content_contract.yaml` + `scripts/validate_card_contract.py` + دمج في `quality_gate.py` — بوابة الجودة لا تمر إلا عند 22/22 PASS — لا تجاوز يدوي | commit 075d362 |
