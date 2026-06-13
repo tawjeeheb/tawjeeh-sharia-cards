@@ -1,0 +1,46 @@
+# Manifest — بطاقة 009
+# أخصائي التحقيق القضائي والنظامي
+# تاريخ الاعتماد: 2026-06-13
+
+card_number: "009"
+card_name_display: "أخصائي التحقيق القضائي والنظامي"
+card_file: "outputs/test_card_009_akhsaiy_tahqiq_qadaiy.md"
+
+pdf:
+  expected_title: "أخصائي تحقيق قضائي ونظامي"
+  html_path: "outputs/pdf/test_card_009_akhsaiy_tahqiq_qadaiy.html"
+  pdf_path: "outputs/pdf/test_card_009_akhsaiy_tahqiq_qadaiy.pdf"
+
+equivalent_titles:
+  - محقق
+  - محقق قضائي
+  - محقق نظامي
+  - أخصائي تحقيق أمني
+  - شرطي تحري
+  - محقق عمالي
+  - محقق إداري
+
+employment_entities:
+  authoritative_prompt: "prompts/13_employment_entities_application.md"
+  prompt_version: "v4.0"
+  approval_commit: "742ff09"
+  allowed_sectors:
+    - الحكومي
+    - شبه الحكومي
+    - الخاص
+  independent_sector_allowed: false
+
+evidence_files:
+  - "outputs/evidence/test_card_009_akhsaiy_tahqiq_qadaiy_certifications_support_audit.md"
+
+scope_lock: "outputs/locks/test_card_009_scope_lock.json"
+locked_commit: "742ff09"
+
+# العناصر المسموح بتعديلها في مهمة تعديل محدودة مستقبلًا
+# (فارغة الآن — البطاقة مقفلة بالكامل)
+editable_elements: []
+
+status: "معتمدة"
+locked_at: "2026-06-13"
+quality_gate: "C1-C23"
+last_pass: "24/24"
