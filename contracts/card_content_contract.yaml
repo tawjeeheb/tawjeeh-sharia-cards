@@ -1,0 +1,132 @@
+# عقد محتوى البطاقة — Card Content Contract
+# الإصدار: 1.0  |  تاريخ الاعتماد: 2026-06-13
+# المرجع: outputs/PROMPT_INTERPRETATION_LAYER.md
+
+version: "1.0"
+ratified: "2026-06-13"
+authoritative_governance: "outputs/PROMPT_INTERPRETATION_LAYER.md"
+
+# ── 1. ترتيب العناصر الإلزامي (18 عنصرًا) ────────────────────────────────────
+elements:
+  count: 18
+  order:
+    - المسميات المكافئة
+    - التصنيف الوطني SSC
+    - طبيعة العمل
+    - المهام الرئيسية
+    - المرتبة والراتب
+    - المزايا الوظيفية
+    - الشروط والمؤهلات
+    - متطلبات التقييم والتهيئة المهنية
+    - الخبرات المطلوبة
+    - برامج التأهيل المعتمدة
+    - المهارات المطلوبة
+    - الدورات الداعمة
+    - جهات التوظيف وطرق التقديم
+    - المسار الوظيفي والتطور المهني
+    - الشهادات المهنية الاحترافية
+    - الملاحظات المهنية المتقدمة
+    - النصائح العملية الإضافية
+    - جدول مدى قبول التخصصات
+  rules:
+    - no_deletion: true       # لا يُحذف عنصر
+    - no_rename: true         # لا يُغيَّر عنوان عنصر
+    - no_reorder: true        # لا يُقدَّم عنصر على الآخر
+
+# ── 2. المسميات المكافئة ───────────────────────────────────────────────────────
+equivalent_titles:
+  single_line: true           # يجب أن تكون في سطر واحد فقط بعد العنوان مباشرة
+
+# ── 3. الدورات الداعمة ─────────────────────────────────────────────────────────
+courses:
+  count_exact: 5
+  allowed_platforms:
+    - domain: lms.doroob.sa
+      label: دروب
+    - domain: coursera.org
+      label: Coursera
+    - domain: ethrai.sa
+      label: إثرائي
+  course_name_must_be_arabic: true   # اسم الدورة (نص الرابط) يبدأ بحرف عربي
+  reason_after_colon_max_words: 5    # السبب بعد النقطتين لا يتجاوز 5 كلمات
+  reason_pattern: "دورة [اسم](رابط): سبب"
+  no_platform_name_in_course_name: true  # لا يُدرج اسم المنصة داخل اسم الدورة
+
+# ── 4. الشهادات المهنية الاحترافية ────────────────────────────────────────────
+certifications:
+  support_status_required: true
+  allowed_statuses:
+    - مدعومة
+    - غير مدعومة
+  evidence_file_required: true       # يجب وجود ملف outputs/evidence/{stem}_certifications_support_audit.md
+
+# ── 5. جهات التوظيف وطرق التقديم ─────────────────────────────────────────────
+employment_entities:
+  authoritative_prompt: "prompts/13_employment_entities_application.md"
+  prompt_version: "v4.0"
+  approval_commit: "742ff09"
+
+  forbidden_headings:
+    # الفئات القديمة ممنوعة كعناوين مستقلة داخل العنصر
+    - "جهات سبق وأعلنت"
+    - "جهات توظف لوجود ممارسة/وحدات"
+    - "جهات توظف لوجود أدوات أو وحدات"
+    - "جهات مستحدثة/ناشئة"
+    - "جهات مستحدثة / ناشئة قليلة التنافس"
+
+  sector_headings:
+    require_titles_in_parens: true
+    # كل سطر قطاع يجب أن يحتوي قوسين مثل: "القطاع الحكومي (مسمى1، مسمى2)"
+    pattern: "القطاع X (مسمى1، مسمى2، ...)"
+
+  sector_order:
+    # القطاعات تظهر بهذا الترتيب — أي قطاع مثبت لا يظهر قبل الذي قبله
+    - الحكومي
+    - شبه الحكومي
+    - الخاص
+    - غير الربحي
+    - المستقل
+
+  independent_sector:
+    allowed_only_if_genuinely_freelance: true
+    # لا يُذكر القطاع المستقل إلا إذا ثبتت الممارسة كخدمة حرة فعلية
+
+  bullets_per_sector:
+    min: 3
+    max: 5
+
+  no_raw_links_in_bullets: true      # الروابط داخل أسماء الجهات/المنصات فقط
+
+# ── 6. جدول مدى قبول التخصصات ────────────────────────────────────────────────
+acceptance_table:
+  required_columns:
+    - التخصص
+    - مدى القبول
+    - السبب
+    - ما يرفع القبول
+  forbidden_columns:
+    - ملاحظات دقيقة
+
+# ── 7. الشروط والمؤهلات ────────────────────────────────────────────────────────
+conditions:
+  forbidden_headings_inside:
+    - شروط التخصصات الدقيقة
+  required_sub_structure:
+    - الشروط العامة
+    - شروط المؤهل
+    - متطلب العمر
+    - الشروط الإضافية
+
+# ── 8. البرومبتات المؤرشفة ─────────────────────────────────────────────────────
+archived_prompts:
+  forbidden_reference_paths:
+    - prompts/archive/
+  exception: "governance_reports_only"
+  # أي بطاقة أو سكربت نشط يستدعي ملفًا مؤرشفًا = FAIL
+  # الاستثناء: ملفات تقارير الحوكمة الداخلية فقط
+
+# ── 9. عام ─────────────────────────────────────────────────────────────────────
+general:
+  no_css_template_changes: true
+  no_element_reordering: true
+  no_deprecated_prompt_usage: true

@@ -7,6 +7,15 @@ import sys
 import re
 import os
 
+# دمج فحوصات العقد C11-C22
+_scripts_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _scripts_dir)
+try:
+    from validate_card_contract import run_contract_checks
+    _CONTRACT_AVAILABLE = True
+except ImportError:
+    _CONTRACT_AVAILABLE = False
+
 ELEMENTS_ORDER = [
     'المسميات المكافئة',
     'التصنيف الوطني SSC',
@@ -310,6 +319,15 @@ def run_checks(path):
     else:
         results.append(('C10', 'عنوان البطاقة (HTML غير موجود)', 'MANUAL',
                          f'المسار المتوقع: {html_path}'))
+
+    # ── C11-C22: فحوصات العقد ────────────────────────────────────────────────────
+    if _CONTRACT_AVAILABLE:
+        contract_results = run_contract_checks(path)
+        for cr in contract_results:
+            results.append((cr[0], cr[1], cr[2], cr[3]))
+    else:
+        results.append(('C11+', 'فحوصات العقد (C11-C22)', 'MANUAL',
+                         '⚠️ validate_card_contract.py غير موجود — تحقق يدوي مطلوب'))
 
     return results, title_paren
 
