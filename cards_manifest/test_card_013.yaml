@@ -1,0 +1,37 @@
+# Manifest — بطاقة 013
+# مستشار شرعي وقانوني
+# تاريخ الإنشاء: 2026-06-13
+
+card_number: "013"
+card_name_display: "مستشار شرعي وقانوني"
+card_file: "outputs/test_card_013_mustashar_shari_qanuni.md"
+
+pdf:
+  expected_title: "مستشار شرعي وقانوني (مستشار شرعي، مستشار قانوني، باحث قانوني، أخصائي قانوني للشريعة، أخصائي قانوني، محلل دعم قانوني)"
+  html_path: "outputs/pdf/test_card_013_mustashar_shari_qanuni.html"
+  pdf_path: "outputs/pdf/test_card_013_mustashar_shari_qanuni.pdf"
+
+equivalent_titles:
+  - مستشار شرعي
+  - مستشار قانوني
+  - باحث قانوني
+  - أخصائي قانوني للشريعة
+  - أخصائي قانوني
+  - محلل دعم قانوني
+
+employment_entities:
+  authoritative_prompt: "prompts/13_employment_entities_application.md"
+  prompt_version: "v4.0"
+  approval_commit: "742ff09"
+  allowed_sectors:
+    - الحكومي
+    - شبه الحكومي
+    - الخاص
+  independent_sector_allowed: false
+
+evidence_files:
+  - "outputs/evidence/test_card_013_mustashar_shari_qanuni_certifications_support_audit.md"
+
+status: active
+created_at: "2026-06-13"
+quality_gate: "C1-C23"
