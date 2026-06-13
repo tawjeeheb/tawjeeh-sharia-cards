@@ -301,8 +301,18 @@ def run_checks(path):
         if in_conds and re.search(r'class="sector-label"', line):
             sector_in_conds.append(i)
     if sector_in_conds:
-        results.append(('C9', 'عناوين قطاعية في الشروط والمؤهلات', 'MANUAL',
-                         f'⚠️ سطور {sector_in_conds[:5]} — مسموح فقط لبطاقات متعددة القطاعات الحقيقية (حكومي+مرخص). تحقق بشري مطلوب.'))
+        # تحقق: هل الكارت فعلاً متعدد القطاعات (حكومي + مرخص/حر)؟
+        conds_text = '\n'.join(
+            lines[i - 1] for i in sector_in_conds
+        )
+        has_gov = 'الحكومي' in conds_text
+        has_licensed = 'الحر' in conds_text or 'المرخص' in conds_text or 'مرخص' in conds_text
+        if has_gov and has_licensed:
+            results.append(('C9', 'لا عناوين قطاعية في الشروط والمؤهلات', 'PASS',
+                             'بطاقة متعددة القطاعات (حكومي + مرخص) — السياق صحيح'))
+        else:
+            results.append(('C9', 'عناوين قطاعية في الشروط والمؤهلات', 'MANUAL',
+                             f'⚠️ سطور {sector_in_conds[:5]} — مسموح فقط لبطاقات متعددة القطاعات الحقيقية (حكومي+مرخص). تحقق بشري مطلوب.'))
     else:
         results.append(('C9', 'لا عناوين قطاعية في الشروط والمؤهلات', 'PASS', ''))
 

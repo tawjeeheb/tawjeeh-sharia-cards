@@ -126,7 +126,7 @@ with open(MD_FILE, encoding="utf-8") as f:
 _title_paren = ''
 for _line in lines:
     _s = _line.rstrip()
-    if re.match(r'^\d+\.\s+\S', _s) and len(_s) < 35:
+    if re.match(r'^\d+\.\s+\S', _s):
         _m = re.search(r'\(([^)]+)\)', _s)
         if _m:
             _title_paren = _m.group(1).strip()
@@ -136,7 +136,7 @@ processed = []
 _in_musamma = False
 for line in lines:
     stripped = line.rstrip()
-    if re.match(r'^\d+\.\s+\S', stripped) and len(stripped) < 35:
+    if re.match(r'^\d+\.\s+\S', stripped):
         title = re.sub(r'^\d+\.\s+', '', stripped)
         processed.append(f'# {title}\n')
         _in_musamma = False
