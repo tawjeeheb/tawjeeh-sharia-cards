@@ -27,7 +27,9 @@ employment_entities:
     - الحكومي
     - شبه الحكومي
     - الخاص
-  independent_sector_allowed: false
+    - غير الربحي
+    - المستقل
+  independent_sector_allowed: true
 
 evidence_files:
   - "outputs/evidence/test_card_013_mustashar_shari_qanuni_certifications_support_audit.md"
