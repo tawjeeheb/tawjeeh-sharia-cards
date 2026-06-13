@@ -152,7 +152,7 @@ def run_checks(path):
     title_paren = ''
     for line in lines:
         s = line.strip()
-        if re.match(r'^\d+\.\s+', s) and len(s) < 35:
+        if re.match(r'^\d+\.\s+', s):
             m = re.search(r'\(([^)]+)\)', s)
             if m:
                 title_paren = m.group(1).strip()
@@ -172,14 +172,18 @@ def run_checks(path):
             if in_musamma and s:
                 musamma_content += s + ' '
 
-        tokens = [t.strip() for t in re.split(r'[،,\s]+', musamma_content) if t.strip()]
-        if title_paren in tokens:
-            results.append(('C5', f'"{title_paren}" موجود حرفيًا في المسميات المكافئة',
+        # نفصل المسميات بالفاصلة فقط لنحافظ على المسميات متعددة الكلمات
+        musamma_terms = [t.strip() for t in re.split(r'[،,]+', musamma_content) if t.strip()]
+        # title_paren قد يحتوي مسمى واحدًا أو قائمة — نفحص كل مسمى على حدة
+        paren_terms = [t.strip() for t in re.split(r'[،,]+', title_paren) if t.strip()]
+        missing_terms = [p for p in paren_terms if p not in musamma_terms]
+        if not missing_terms:
+            results.append(('C5', f'مسميات H1 موجودة في المسميات المكافئة',
                              'PASS', f'المسميات: {musamma_content.strip()}'))
         else:
-            results.append(('C5', f'"{title_paren}" موجود حرفيًا في المسميات المكافئة',
+            results.append(('C5', f'مسميات H1 موجودة في المسميات المكافئة',
                              'FAIL',
-                             f'النص المطلوب: "{title_paren}" — المسميات الحالية: "{musamma_content.strip()}"'))
+                             f'مفقود: {missing_terms} — المسميات الحالية: "{musamma_content.strip()}"'))
     else:
         results.append(('C5', 'لا يوجد نص بين قوسين في H1', 'PASS', 'لا شيء يلزم نقله'))
 

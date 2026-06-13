@@ -33,7 +33,7 @@ employment_entities:
 evidence_files:
   - "outputs/evidence/test_card_009_akhsaiy_tahqiq_qadaiy_certifications_support_audit.md"
 
-scope_lock: "outputs/locks/test_card_009_scope_lock.json"
+scope_lock: "outputs/locks/test_card_009_akhsaiy_tahqiq_qadaiy_scope_lock.json"
 locked_commit: "742ff09"
 
 # العناصر المسموح بتعديلها في مهمة تعديل محدودة مستقبلًا
