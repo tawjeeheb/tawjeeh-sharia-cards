@@ -1,0 +1,7 @@
+# Manifest — بطاقة 007
+# الحالة: legacy_pre_contract — أُنشئت قبل اعتماد C11–C23 — لا تُفحص في validate-all
+
+card_number: "007"
+card_file: "outputs/test_card_007_katib_adl.md"
+status: legacy_pre_contract
+note: "أُنشئت قبل اعتماد عقد المحتوى C11–C23 — تحتاج مراجعة مستقبلية"

@@ -40,7 +40,7 @@ locked_commit: "742ff09"
 # (فارغة الآن — البطاقة مقفلة بالكامل)
 editable_elements: []
 
-status: "معتمدة"
+status: locked
 locked_at: "2026-06-13"
 quality_gate: "C1-C23"
 last_pass: "24/24"

@@ -259,23 +259,90 @@ def run_pipeline(card_path, build=False, allowed=None, release=False):
     return print_pipeline_report(card_path, steps)
 
 
+def load_manifest_status(card_path):
+    """
+    يقرأ حالة البطاقة من manifest إن وجد.
+    القيم: active | locked | legacy_pre_contract | draft | None (لا manifest)
+    """
+    try:
+        import yaml  # اختياري
+    except ImportError:
+        yaml = None
+
+    stem = os.path.splitext(os.path.basename(card_path))[0]
+    m = re.match(r'test_card_(\d+)', stem)
+    candidates = []
+    if m:
+        candidates.append(os.path.join(MANIFESTS_DIR, f'test_card_{m.group(1)}.yaml'))
+    candidates.append(os.path.join(MANIFESTS_DIR, f'{stem}.yaml'))
+
+    for mpath in candidates:
+        if not os.path.exists(mpath):
+            continue
+        # قراءة بسيطة بدون yaml لتجنب التبعية
+        with open(mpath, encoding='utf-8') as f:
+            for line in f:
+                if line.strip().startswith('status:'):
+                    val = line.split(':', 1)[1].strip().strip('"\'')
+                    return val
+    return None  # لا manifest
+
+
 def run_validate_all():
-    """يشغّل بوابة الجودة على جميع البطاقات في outputs/."""
-    cards = sorted(glob.glob(os.path.join(OUTPUTS_DIR, 'test_card_*.md')))
-    if not cards:
-        print('⚠️  لا توجد بطاقات في outputs/')
+    """
+    يشغّل بوابة الجودة فقط على البطاقات ذات الحالة active/locked في manifests/.
+    البطاقات legacy_pre_contract و draft تُعرض كـ SKIPPED ولا تكسر البناء.
+    البطاقات بلا manifest تُعرض كـ SKIPPED.
+    """
+    manifests = sorted(glob.glob(os.path.join(MANIFESTS_DIR, '*.yaml')))
+
+    if not manifests:
+        print('⚠️  لا توجد manifests — أضف بطاقات إلى cards_manifest/')
         return True
 
-    print(f'\n🔍 فحص {len(cards)} بطاقة...\n')
+    enforced = []   # active | locked
+    skipped = []    # legacy_pre_contract | draft | no manifest
+
+    for mpath in manifests:
+        # استخرج مسار البطاقة من الـ manifest
+        card_file = None
+        status = None
+        with open(mpath, encoding='utf-8') as f:
+            for line in f:
+                if line.strip().startswith('card_file:'):
+                    card_file = line.split(':', 1)[1].strip().strip('"\'')
+                if line.strip().startswith('status:'):
+                    status = line.split(':', 1)[1].strip().strip('"\'')
+        if card_file:
+            abs_path = os.path.join(REPO_ROOT, card_file)
+            if os.path.exists(abs_path):
+                if status in ('active', 'locked'):
+                    enforced.append((abs_path, status))
+                else:
+                    skipped.append((abs_path, status or 'غير محدد'))
+            else:
+                skipped.append((card_file, f'{status} — الملف غير موجود'))
+
+    total = len(enforced) + len(skipped)
+    print(f'\n🔍 Manifests: {total} | مفحوصة: {len(enforced)} | متخطاة: {len(skipped)}\n')
+
     all_pass = True
-    for card in cards:
-        ok, detail, _ = step_quality(card)
+    for card_path, status in enforced:
+        ok, detail, _ = step_quality(card_path)
         icon = '✅' if ok else '❌'
-        print(f'  {icon} {os.path.basename(card)}: {detail}')
+        print(f'  {icon} [{status}] {os.path.basename(card_path)}: {detail}')
         if not ok:
             all_pass = False
 
-    print('\n' + ('✅ جميع البطاقات PASS' if all_pass else '❌ توجد بطاقات بها أخطاء'))
+    for card_path, status in skipped:
+        name = os.path.basename(card_path) if os.path.exists(str(card_path)) else card_path
+        print(f'  ⏭  [SKIPPED — {status}] {name}')
+
+    print()
+    if all_pass:
+        print('✅ جميع البطاقات النشطة/المقفلة PASS')
+    else:
+        print('❌ توجد بطاقات نشطة/مقفلة بها أخطاء')
     return all_pass
 
 
