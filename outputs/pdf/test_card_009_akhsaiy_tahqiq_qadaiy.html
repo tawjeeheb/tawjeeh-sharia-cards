@@ -55,11 +55,14 @@ html, body {
   color: #023663;
 }
 
+/* عدم ترك عنوان أو سطر معزول عند تقسيم الصفحات */
 p, li, td, th {
   orphans: 2;
   widows: 2;
 }
 
+/* ── Fixed watermark — appears on every page ─────────── */
+/* إحداثيات مطلقة لضمان الثبات الكامل على كل صفحات A4 (297mm × 210mm) */
 .page-watermark {
   position: fixed;
   top: 122mm;
@@ -71,6 +74,7 @@ p, li, td, th {
   pointer-events: none;
 }
 
+/* ── Fixed footer — full-width gradient bar, edge-to-edge on every page ── */
 .footer {
   position: fixed;
   left: 0;
@@ -85,6 +89,7 @@ p, li, td, th {
   overflow: hidden;
 }
 
+/* إضاءة ناعمة جدًا أعلى الشريط لإعطائه عمقًا خفيفًا دون مسّ التدرج الأساسي */
 .footer::before {
   content: "";
   position: absolute;
@@ -96,6 +101,7 @@ p, li, td, th {
   pointer-events: none;
 }
 
+/* صف مرن واحد موزّع على كامل العرض — عناصر بسيطة (أيقونة + نص) دون كبسولات ثقيلة */
 .footer-inner {
   position: relative;
   height: 12mm;
@@ -108,6 +114,7 @@ p, li, td, th {
   direction: ltr;
 }
 
+/* عنصر بسيط: أيقونة عارية بلا أي حاوية + يوزر بجانبها في سطر واحد */
 .footer-link {
   display: flex;
   align-items: center;
@@ -115,6 +122,7 @@ p, li, td, th {
   flex: 0 0 auto;
 }
 
+/* أيقونة صِرفة بلا خلفية ولا حدود ولا إطار — مجرد رمز SVG معروض مباشرة */
 .footer-icon {
   display: inline-block;
   width: 3.5mm;
@@ -125,6 +133,7 @@ p, li, td, th {
   background-size: contain;
 }
 
+/* دائرة صغيرة وناعمة جدًا خلف الأيقونات السوداء (TikTok / X) فقط، لإبراز اللون الأصلي فوق التدرج */
 .footer-icon-on-light {
   width: 2.6mm;
   height: 2.6mm;
@@ -145,6 +154,7 @@ p, li, td, th {
   text-shadow: 0 0.2mm 0.3mm rgba(0, 0, 0, 0.22);
 }
 
+/* فاصل عمودي رفيع بلون تركوازي متناسق مع الطرف الأخضر من التدرج */
 .footer-divider {
   flex: 0 0 auto;
   width: 0.3mm;
@@ -153,13 +163,16 @@ p, li, td, th {
   border-radius: 0.2mm;
 }
 
+/* ── Main content ────────────────────────────────────── */
 .content {
   position: relative;
   z-index: 1;
   box-sizing: border-box;
+  /* padding-top: 0 — الهامش العلوي كله من @page margin-top: 17mm */
   padding: 0 17mm 32mm 17mm;
 }
 
+/* ── Profession title ────────────────────────────────── */
 .profession-title {
   font-family: 'Aniq', 'Noto Naskh Arabic', serif;
   font-size: 17pt;
@@ -170,6 +183,7 @@ p, li, td, th {
   line-height: 1.25;
 }
 
+/* ── Section: تدفق ذكي — لا حبس للكتلة كاملة، العنوان يبقى مع بداية محتواه ── */
 .section {
   margin-bottom: 4mm;
   break-inside: auto;
@@ -178,6 +192,7 @@ p, li, td, th {
   widows: 3;
 }
 
+/* لا يُترك العنوان وحيدًا في آخر الصفحة — يبقى ملتصقًا بأول أسطر محتواه */
 .section-heading {
   font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 12pt;
@@ -191,6 +206,7 @@ p, li, td, th {
   page-break-after: avoid;
 }
 
+/* محتوى العنصر — يتدفق بحرية بين الصفحات */
 .section-body {
   font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 10pt;
@@ -203,6 +219,7 @@ p, li, td, th {
   widows: 3;
 }
 
+/* Visual Clean Page Lock — تلقائي */
 .section-body > *:first-child {
   break-before: avoid;
   page-break-before: avoid;
@@ -212,6 +229,7 @@ p, li, td, th {
   page-break-before: avoid;
 }
 
+/* عناوين فرعية بنيوية (جهات سبق وأعلنت، قبل التعيين، إلخ) — باللون الرسمي للعناوين الفرعية */
 .section-body h3 {
   font-family: 'Noto Kufi Arabic', sans-serif;
   font-size: 11.5pt;
@@ -223,6 +241,7 @@ p, li, td, th {
   page-break-after: avoid;
 }
 
+/* عناوين القطاعات (القطاع الحكومي، القطاع الخاص، إلخ) — بارزة لكن بلون المحتوى */
 .section-body h3.sector-heading {
   color: #023663;
 }
@@ -328,6 +347,7 @@ p, li, td, th {
 }
 .section-body strong { font-weight: bold; color: #023663; }
 
+/* ── Tables ──────────────────────────────────────────────── */
 .section-body table {
   width: 100%;
   border-collapse: collapse;
@@ -349,21 +369,25 @@ p, li, td, th {
   break-inside: avoid;
   page-break-inside: avoid;
 }
+/* Human Layout Rule — القائمة القصيرة تنتقل كاملة إذا لم تتسع */
 .short-list-guard {
   break-inside: avoid-page;
   page-break-inside: avoid;
   display: block;
 }
 
+/* القائمة الطويلة تتدفق بحرية — كل li محمي بالقاعدة العامة أدناه */
 .long-list-flow {
   display: block;
 }
 
+/* Visual Clean Page Lock — قسم يستوجب بداية نظيفة فوق الفوتر */
 .section.clean-page-required {
   break-before: page;
   page-break-before: always;
 }
 
+/* قسم كامل (عنوان + جدول) ينتقلان معًا إلى صفحة جديدة */
 .section.table-page-group {
   break-before: page;
   page-break-before: always;
@@ -371,6 +395,7 @@ p, li, td, th {
   page-break-inside: avoid;
   padding-top: 0;
 }
+/* جدول كبير منفرد — يبدأ في صفحة جديدة */
 .section-body table.table-page-block {
   break-before: page;
   page-break-before: always;
@@ -378,6 +403,7 @@ p, li, td, th {
   page-break-inside: avoid;
   margin-top: 0;
 }
+/* جدول داخل قسم table-page-group — لا كسر إضافي */
 .section.table-page-group .section-body table.table-page-block {
   break-before: auto;
   page-break-before: auto;
@@ -399,6 +425,7 @@ p, li, td, th {
 }
 .section-body tr:nth-child(even) td { background: #f0f5fa; }
 
+/* ── Acceptance Table ─────────────────────────────────────── */
 .acceptance-table-wrapper {
   position: relative;
   border-radius: 3mm;
@@ -440,14 +467,17 @@ p, li, td, th {
   border: none;
 }
 
+/* Column widths: التخصص | مدى القبول | سبب التقييم | متطلبات القبول | ملاحظات */
 .section-body .acceptance-table th:nth-child(1),
 .section-body .acceptance-table td:nth-child(1) { width: 13%; text-align: right; }
 .section-body .acceptance-table th:nth-child(2),
 .section-body .acceptance-table td:nth-child(2) { width: 10%; text-align: center; }
 .section-body .acceptance-table th:nth-child(3),
-.section-body .acceptance-table td:nth-child(3) { width: 37%; text-align: right; }
+.section-body .acceptance-table td:nth-child(3) { width: 24%; text-align: right; }
 .section-body .acceptance-table th:nth-child(4),
-.section-body .acceptance-table td:nth-child(4) { width: 40%; text-align: right; }
+.section-body .acceptance-table td:nth-child(4) { width: 29%; text-align: right; }
+.section-body .acceptance-table th:nth-child(5),
+.section-body .acceptance-table td:nth-child(5) { width: 24%; text-align: right; }
 
 .section-body .acceptance-table td {
   padding: 2mm 2.5mm;
@@ -466,6 +496,7 @@ p, li, td, th {
   padding: 1.5mm 1.5mm;
 }
 
+/* اسم التخصص — أثقل وأكبر من بقية الخلايا */
 .section-body .acceptance-table td:nth-child(1) {
   font-size: 10.5pt;
   font-weight: 700;
@@ -473,6 +504,7 @@ p, li, td, th {
   line-height: 1.45;
 }
 
+/* شارات مدى القبول — عرضها على قد النص فقط */
 .badge-high,
 .badge-medium,
 .badge-low {
@@ -496,7 +528,7 @@ p, li, td, th {
 </style>
 </head>
 <body>
-<img class="page-watermark" src="data:image/jpeg;base64,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" alt="">
+<img class="page-watermark" src="data:image/jpeg;base64,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" alt="">
 <div class="footer">
   <div class="footer-inner">
     <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj48Y2lyY2xlIGN4PSI5IiBjeT0iMTYuMyIgcj0iMy40Ii8+PHBhdGggZD0iTTEyLjQgMy42aDIuN2MuMyAyLjUgMiA0LjMgNC41IDQuNnYyLjdjLTEuNyAwLTMuMi0uNS00LjUtMS40djYuOGMwIC4yIDAgLjQtLjEuNmgtMi42YzAtLjIuMS0uNC4xLS42VjMuNnoiLz48L3N2Zz4=')"></span><a href="https://www.tiktok.com/@tawjeeh.hub">tawjeeh.hub</a></span>
@@ -513,197 +545,219 @@ p, li, td, th {
   </div>
 </div>
 <div class="content">
-  <div class="profession-title">أخصائي تحقيق قضائي ونظامي</div>
+  <div class="profession-title"></div>
   <div class="section"><div class="section-heading">المسميات المكافئة</div><div class="section-body">
 <p>محقق، محقق قضائي، محقق نظامي، أخصائي تحقيق أمني، شرطي تحري، محقق عمالي، محقق إداري</p>
 </div></div>
 <div class="section"><div class="section-heading">التصنيف الوطني SSC</div><div class="section-body">
-<ul>
-<li>المجموعة الرئيسية: 3 - الفنيون ومساعدو المهنيين</li>
+<div class="short-list-guard"><ul><li>المجموعة الرئيسية: 3 - الفنيون ومساعدو المهنيين</li>
 <li>المجموعة الفرعية: 33 - الفنيون ومساعدو المهنيين في مجالات القانون والاجتماع والدين والثقافة</li>
 <li>المجموعة الرئيسية الدقيقة: 335 - المساعدون المهنيون في مجالات الشرطة والسجون والجمارك</li>
 <li>المجموعة الثانوية: 3355 - ضباط الشرطة والمحققون</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">طبيعة العمل</div><div class="section-body">
-<p>أخصائي التحقيق القضائي والنظامي هو الحلقة الجوهرية في منظومة إثبات الجريمة وتحقيق العدالة: يجمع الأدلة ويحقق في الوقائع ويُحرر المحاضر الرسمية في الجهات القضائية والأمنية والعمالية والإدارية. يعمل في أربعة مسارات رئيسية: مسار التحقيق الجنائي في <a href="https://www.pp.gov.sa">النيابة العامة</a> والشرطة لفحص الجرائم الجنائية، ومسار التحقيق الأمني في الأجهزة الأمنية للتحقق من المخاطر الأمنية، ومسار التحقيق العمالي في <a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية</a> للفصل في النزاعات العمالية، ومسار التحقيق الإداري في الشركات والمؤسسات المالية لكشف الاحتيال الداخلي وانتهاكات السياسات. تتقاطع المسارات الأربعة في مهارة جوهرية واحدة: القدرة على استخلاص الحقيقة من الأدلة والإفادات وبناء ملف تحقيق متماسك يصمد أمام الفحص القانوني.</p>
+<p>أخصائي التحقيق القضائي والنظامي هو الحلقة الجوهرية في منظومة إثبات الجريمة وتحقيق العدالة: يجمع الأدلة ويحقق في الوقائع ويُحرر المحاضر الرسمية في الجهات القضائية والأمنية والعمالية والإدارية. يعمل في أربعة مسارات رئيسية: مسار التحقيق الجنائي في <a href="https://www.pp.gov.sa">النيابة العامة</a> والشرطة لفحص الجرائم الجنائية، ومسار التحقيق الأمني في الأجهزة الأمنية للتحقق من المخاطر الأمنية، ومسار التحقيق العمالي في <a class="linked-inline-label" href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية للفصل في النزاعات العمالية، ومسار التحقيق الإداري في الشركات والمؤسسات المالية لكشف الاحتيال الداخلي وانتهاكات السياسات. تتقاطع المسارات الأربعة في مهارة جوهرية واحدة <span class="linked-inline-arrow">↗</span></a>: القدرة على استخلاص الحقيقة من الأدلة والإفادات وبناء ملف تحقيق متماسك يصمد أمام الفحص القانوني.</p>
 </div></div>
 <div class="section"><div class="section-heading">المهام الرئيسية</div><div class="section-body">
-<ul>
-<li>جمع الأدلة والقرائن والشهادات في القضايا الجنائية والنظامية وفحصها وفق الأصول الإجرائية</li>
+<div class="short-list-guard"><ul><li>جمع الأدلة والقرائن والشهادات في القضايا الجنائية والنظامية وفحصها وفق الأصول الإجرائية</li>
 <li>تحرير محاضر التحقيق وتوثيق الإفادات بصياغة رسمية دقيقة ووفق أحكام نظام الإجراءات الجزائية</li>
 <li>فحص الأدلة المادية والمستندية وتحليلها لدعم ملف التحقيق وربط الوقائع بالأدلة</li>
 <li>إعداد التقارير التحقيقية وتقديمها للنيابة العامة أو الجهات المختصة في صورة نهائية قابلة للمحاكمة</li>
 <li>متابعة إجراءات الضبط والإحضار وتنفيذ قرارات التحقيق ضمن الإطار النظامي المحدد</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">المرتبة والراتب</div><div class="section-body">
 <p><strong>القطاع الحكومي — مسار التحقيق القضائي والأمني والعمالي:</strong></p>
-<ul>
-<li>محقق مبتدئ (مرتبة 6–7): نحو 6,000 – 8,500 ريال شهريًا تقريبًا بما يشمل البدلات الأساسية.</li>
+<div class="short-list-guard"><ul><li>محقق مبتدئ (مرتبة 6–7): نحو 6,000 – 8,500 ريال شهريًا تقريبًا بما يشمل البدلات الأساسية.</li>
 <li>محقق أول (مرتبة 8–9): نحو 8,500 – 12,000 ريال شهريًا تقريبًا مع الأقدمية والكفاءة.</li>
 <li>رئيس قسم تحقيق (مرتبة 10–11): نحو 12,000 – 16,000 ريال شهريًا تقريبًا.</li>
 <li>مشرف تحقيقات (مرتبة 12 فأعلى): من 16,000 ريال شهريًا فأعلى تقريبًا وفق درجة التخصص والموقع.</li>
-</ul>
+</ul></div>
 <p><strong>القطاع شبه الحكومي — الهيئات الرقابية والمؤسسات الكبرى:</strong></p>
-<ul>
-<li>أخصائي تحقيق مبتدئ: نحو 8,000 – 12,000 ريال شهريًا تقريبًا في الهيئات الرقابية والمؤسسات الكبرى.</li>
+<div class="short-list-guard"><ul><li>أخصائي تحقيق مبتدئ: نحو 8,000 – 12,000 ريال شهريًا تقريبًا في الهيئات الرقابية والمؤسسات الكبرى.</li>
 <li>أخصائي تحقيق أول: نحو 12,000 – 16,000 ريال شهريًا تقريبًا مع الخبرة والشهادات المتخصصة.</li>
 <li>رئيس فريق تحقيق: من 16,000 ريال شهريًا فأعلى تقريبًا في كبرى المؤسسات.</li>
-</ul>
+</ul></div>
 <p><strong>القطاع الخاص — الشركات والمصارف:</strong></p>
-<ul>
-<li>أخصائي تحقيق/امتثال مبتدئ: نحو 6,000 – 9,000 ريال شهريًا تقريبًا في الشركات والمصارف.</li>
+<div class="short-list-guard"><ul><li>أخصائي تحقيق/امتثال مبتدئ: نحو 6,000 – 9,000 ريال شهريًا تقريبًا في الشركات والمصارف.</li>
 <li>أخصائي تحقيق أول: نحو 9,000 – 14,000 ريال شهريًا تقريبًا مع الخبرة والشهادات المتخصصة.</li>
 <li>رئيس فريق تحقيق/امتثال: من 14,000 ريال شهريًا فأعلى تقريبًا في المصارف والشركات الكبرى.</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">المزايا الوظيفية</div><div class="section-body">
 <p class="sector-label">القطاع الحكومي — النيابة العامة والأجهزة الأمنية</p>
-<ul>
-<li>الاستقرار الوظيفي العالي المصحوب بالتقاعد الحكومي الكامل وبدلات الطبيعة الخاصة المرتبطة بطبيعة عمل التحقيق.</li>
+
+<div class="short-list-guard"><ul><li>الاستقرار الوظيفي العالي المصحوب بالتقاعد الحكومي الكامل وبدلات الطبيعة الخاصة المرتبطة بطبيعة عمل التحقيق.</li>
 <li>التراكم المعرفي الميداني من القضايا المتنوعة يبني خبرة تحقيقية عميقة لا يمنحها أي برنامج أكاديمي مستقل.</li>
 <li>الطلب المتزايد على المحققين المؤهلين في ظل توسع النيابة العامة وتنامي قضايا التحقيق العمالي بالتوازي مع رؤية 2030.</li>
 <li>إمكانية التخصص في مسارات ذات قيمة عالية كتحقيقات الفساد المالي والجرائم الإلكترونية وقضايا التحرش.</li>
 <li>الانتقال إلى أدوار إشرافية في إدارات التحقيق أو المشاركة في برامج التدريب التحقيقي داخل الجهة.</li>
-</ul>
+</ul></div>
 <p class="sector-label">القطاع شبه الحكومي — الهيئات الرقابية والمؤسسات الكبرى</p>
-<ul>
-<li>استقرار وظيفي مع مزايا تنافسية في الهيئات الرقابية والمؤسسات الكبرى تشمل التأمين الصحي وبدلات الأداء.</li>
+
+<div class="short-list-guard"><ul><li>استقرار وظيفي مع مزايا تنافسية في الهيئات الرقابية والمؤسسات الكبرى تشمل التأمين الصحي وبدلات الأداء.</li>
 <li>الانفتاح على الشهادات الدولية في التحقيق المالي وفحص الاحتيال يرفع القيمة السوقية بصورة ملموسة.</li>
-</ul>
+</ul></div>
 <p class="sector-label">القطاع الخاص — الشركات والمصارف</p>
-<ul>
-<li>رواتب تنافسية في الشركات الكبرى والمصارف كثيرًا ما تتجاوز نظيرتها الحكومية مع حوافز مرتبطة بنتائج التحقيق.</li>
+
+<div class="short-list-guard"><ul><li>رواتب تنافسية في الشركات الكبرى والمصارف كثيرًا ما تتجاوز نظيرتها الحكومية مع حوافز مرتبطة بنتائج التحقيق.</li>
 <li>التعرض لقضايا احتيال وامتثال متنوعة في بيئة الشركات يُسرّع التخصص ويُعمّق القدرة التحليلية.</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">الشروط والمؤهلات</div><div class="section-body">
-<ul>
-<li><span class="condition-label">الشروط العامة:</span> الجنسية السعودية، الأهلية الكاملة، حسن السيرة والسلوك، عدم الإدانة بجريمة مخلة بالشرف أو الأمانة، اللياقة الطبية.</li>
+<div class="short-list-guard"><ul><li><span class="condition-label">الشروط العامة:</span> الجنسية السعودية، الأهلية الكاملة، حسن السيرة والسلوك، عدم الإدانة بجريمة مخلة بالشرف أو الأمانة، اللياقة الطبية.</li>
 <li><span class="condition-label">شروط المؤهل:</span> شهادة جامعية في الشريعة الإسلامية أو الأنظمة (الحقوق) أو العلوم الأمنية لمسار التحقيق القضائي والأمني، أو مؤهل مناسب معتمد لمسار التحقيق العمالي، من جامعة معترف بها لدى الجهات التعليمية المختصة. في مسار التحقيق الإداري الخاص تُقبل أيضًا مؤهلات المحاسبة والموارد البشرية وإدارة الأعمال وفق معايير كل مؤسسة.</li>
 <li><span class="condition-label">متطلب العمر:</span> لا يوجد متطلب عمر لهذه المهنة.</li>
 <li><span class="condition-label">الشروط الإضافية:</span> اجتياز الفحص الأمني واستيفاء متطلبات التأهيل للعمل في الجهات الأمنية والقضائية، وإتقان الإجراءات التحقيقية المنصوص عليها في نظام الإجراءات الجزائية ولوائحه التنفيذية.</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">متطلبات التقييم والتهيئة المهنية</div><div class="section-body">
-<span class="assessment-entity">مسار التحقيق الجنائي — النيابة العامة</span>
-<ul>
-<li><span class="condition-label">قبل التعيين:</span> اجتياز اختبارات الكفاءة في الإجراءات الجزائية والأنظمة القضائية، يعقبها مقابلة شخصية أمام لجنة <a href="https://www.pp.gov.sa">النيابة العامة</a>.</li>
+<p><span class="assessment-entity">مسار التحقيق الجنائي — النيابة العامة</span></p>
+<div class="short-list-guard"><ul><li><span class="condition-label">قبل التعيين:</span> اجتياز اختبارات الكفاءة في الإجراءات الجزائية والأنظمة القضائية، يعقبها مقابلة شخصية أمام لجنة <a href="https://www.pp.gov.sa">النيابة العامة</a>.</li>
 <li><span class="condition-label">بعد التعيين:</span> برامج تأهيل ميدانية في مرافق التحقيق بإشراف محققين أقدم قبل الاستقلالية في ملفات التحقيق.</li>
-</ul>
-<span class="assessment-entity">مسار التحقيق العمالي — وزارة الموارد البشرية</span>
-<ul>
-<li><span class="condition-label">التأهيل:</span> دورات تخصصية في قانون العمل ونظام الإجراءات الجزائية ومهارات التحقيق يُنصح بإكمالها مع <a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية</a> — يُرجع لاشتراطات المسار عند الإعلان.</li>
-</ul>
+</ul></div>
+<p><span class="assessment-entity">مسار التحقيق العمالي — وزارة الموارد البشرية</span></p>
+<div class="short-list-guard"><ul><li><span class="condition-label">التأهيل:</span> دورات تخصصية في قانون العمل ونظام الإجراءات الجزائية ومهارات التحقيق يُنصح بإكمالها مع <a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية</a> — يُرجع لاشتراطات المسار عند الإعلان.</li>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">الخبرات المطلوبة</div><div class="section-body">
 <p><span class="experience-entity">الجهات الحكومية:</span> لا تُشترط خبرة وظيفية سابقة للتعيين الابتدائي في مرتبة 6–7؛ المطلوب إلمام بأحكام نظام الإجراءات الجزائية ونظام العمل وأصول التحقيق الجنائي، وفهم منهجي لطبيعة جمع الأدلة وتحليلها. تتراكم الخبرة الجوهرية من خلال تنوع القضايا وكثافتها في الجهات ذات الحجم التحقيقي الأعلى.</p>
 <p><span class="experience-entity">القطاع شبه الحكومي والقطاع الخاص:</span> تشترط معظم الشركات والمؤسسات المالية والهيئات الرقابية خبرة لا تقل عن سنة إلى سنتين في مجال التدقيق أو الامتثال أو الموارد البشرية؛ ويُقدَّم على غيره من حمل شهادة CFE أو CAMS أو من أمضى فترة في مراجعة مخاطر الاحتيال. الخبرة في مؤسسة مالية أو شركة تدقيق تُسرّع الترقي بشكل ملموس.</p>
 </div></div>
 <div class="section"><div class="section-heading">برامج التأهيل المعتمدة</div><div class="section-body">
-<ul>
-<li><a href="https://www.ipa.edu.sa/ar/training">برنامج المحقق المعتمد - معهد الإدارة العامة</a>: يُعوّض النقص في الأدوات التحقيقية التطبيقية لدى التخصصات الأكاديمية النظرية من خلال بناء مهارات التحقيق الميداني والتوثيق الرسمي، ويسد فجوة الخبرة لدى الخريج الجديد من خلال تدريب عملي على منهجيات الاستجواب وتحليل الأدلة المستخدمة في الجهات الحكومية.</li>
-<li><a href="https://www.nauss.edu.sa">دبلوم العلوم الجنائية والتحقيق - جامعة نايف العربية للعلوم الأمنية</a>: يُعمّق الملكة التحقيقية لدى خريجي الشريعة والأنظمة من خلال مقررات متخصصة في الأدلة الجنائية وإجراءات التحقيق الأمني، ويسد فجوة الخبرة التطبيقية من خلال تدريب ميداني مع جهات إنفاذ القانون في بيئات التحقيق الفعلية.</li>
-<li><a href="https://www.hrsd.gov.sa">برنامج التحقيق في منازعات العمل - وزارة الموارد البشرية والتنمية الاجتماعية</a>: يُعوّض غياب المعرفة التخصصية في قانون العمل لدى خريجي الشريعة والأنظمة من خلال تأهيل مُركّز على تحقيقات بيئة العمل وآليات الوساطة والفصل في النزاعات، ويسد فجوة الخبرة الميدانية من خلال التدريب التطبيقي على ملفات التحقيق العمالي الفعلية.</li>
-</ul>
+<div class="short-list-guard"><ul><li><a class="linked-inline-label" href="https://www.ipa.edu.sa/ar/training">برنامج المحقق المعتمد - معهد الإدارة العامة <span class="linked-inline-arrow">↗</span></a>: يُعوّض النقص في الأدوات التحقيقية التطبيقية لدى التخصصات الأكاديمية النظرية من خلال بناء مهارات التحقيق الميداني والتوثيق الرسمي، ويسد فجوة الخبرة لدى الخريج الجديد من خلال تدريب عملي على منهجيات الاستجواب وتحليل الأدلة المستخدمة في الجهات الحكومية.</li>
+<li><a class="linked-inline-label" href="https://www.nauss.edu.sa">دبلوم العلوم الجنائية والتحقيق - جامعة نايف العربية للعلوم الأمنية <span class="linked-inline-arrow">↗</span></a>: يُعمّق الملكة التحقيقية لدى خريجي الشريعة والأنظمة من خلال مقررات متخصصة في الأدلة الجنائية وإجراءات التحقيق الأمني، ويسد فجوة الخبرة التطبيقية من خلال تدريب ميداني مع جهات إنفاذ القانون في بيئات التحقيق الفعلية.</li>
+<li><a class="linked-inline-label" href="https://www.hrsd.gov.sa">برنامج التحقيق في منازعات العمل - وزارة الموارد البشرية والتنمية الاجتماعية <span class="linked-inline-arrow">↗</span></a>: يُعوّض غياب المعرفة التخصصية في قانون العمل لدى خريجي الشريعة والأنظمة من خلال تأهيل مُركّز على تحقيقات بيئة العمل وآليات الوساطة والفصل في النزاعات، ويسد فجوة الخبرة الميدانية من خلال التدريب التطبيقي على ملفات التحقيق العمالي الفعلية.</li>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">المهارات المطلوبة</div><div class="section-body">
-<ul>
-<li>جمع الأدلة وتحليلها: لبناء ملف التحقيق الموثَّق الذي يصمد أمام الفحص القانوني</li>
+<div class="short-list-guard"><ul><li>جمع الأدلة وتحليلها: لبناء ملف التحقيق الموثَّق الذي يصمد أمام الفحص القانوني</li>
 <li>تحرير محاضر التحقيق: لاستيفاء الاشتراطات الإجرائية الرسمية وضمان صحة المحضر أمام القضاء</li>
 <li>فحص الشهود وتقييم الإفادات: للتحقق من صحة الروايات وتماسكها وكشف التناقضات</li>
 <li>إتقان الأنظمة الإجرائية الجزائية: لضمان سلامة إجراءات التحقيق وعدم بطلانها قانونيًا</li>
 <li>إعداد التقارير التحقيقية: لتقديم الوقائع والأدلة للنيابة أو الجهة المختصة بصورة منظمة</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">الدورات الداعمة</div><div class="section-body">
-<ul>
-<li>دورة <a href="https://lms.doroob.sa/courses/Doroob/W.S-LAW001/JUN2020/about">مكافحة غسل الأموال</a>: لكشف مؤشرات الاشتباه المالي</li>
-<li>دورة <a href="https://lms.doroob.sa/courses/course-v1:Doroob+C.S-SECU001+SEP2022/about">الجرائم الإلكترونية وحماية المعلومات</a>: لجمع الأدلة الرقمية التحقيقية</li>
-<li>دورة <a href="https://lms.doroob.sa/courses/Doroob/W.S-LAW002/APR2021/about">مهارات التحقيق والاستجواب الفعّال</a>: لفحص الشهود وضبط المحاضر</li>
-<li>دورة <a href="https://www.coursera.org/learn/challenging-forensic-science">تقييم وتحليل الأدلة الجنائية أمام المحاكم</a>: لتقييم الأدلة الجنائية التحقيقية</li>
-<li>دورة <a href="https://www.coursera.org/learn/negotiation">التفاوض الناجح وإدارة الخلافات</a>: لإدارة مقابلات التحقيق الإداري</li>
-</ul>
+<div class="short-list-guard"><ul><li>دورة <a class="linked-inline-label" href="https://lms.doroob.sa/courses/Doroob/W.S-LAW001/JUN2020/about">مكافحة غسل الأموال <span class="linked-inline-arrow">↗</span></a>: لكشف مؤشرات الاشتباه المالي</li>
+<li>دورة <a class="linked-inline-label" href="https://lms.doroob.sa/courses/course-v1:Doroob+C.S-SECU001+SEP2022/about">الجرائم الإلكترونية وحماية المعلومات <span class="linked-inline-arrow">↗</span></a>: لجمع الأدلة الرقمية التحقيقية</li>
+<li>دورة <a class="linked-inline-label" href="https://lms.doroob.sa/courses/Doroob/W.S-LAW002/APR2021/about">مهارات التحقيق والاستجواب الفعّال <span class="linked-inline-arrow">↗</span></a>: لفحص الشهود وضبط المحاضر</li>
+<li>دورة <a class="linked-inline-label" href="https://www.coursera.org/learn/challenging-forensic-science">تقييم وتحليل الأدلة الجنائية أمام المحاكم <span class="linked-inline-arrow">↗</span></a>: لتقييم الأدلة الجنائية التحقيقية</li>
+<li>دورة <a class="linked-inline-label" href="https://www.coursera.org/learn/negotiation">التفاوض الناجح وإدارة الخلافات <span class="linked-inline-arrow">↗</span></a>: لإدارة مقابلات التحقيق الإداري</li>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">جهات التوظيف وطرق التقديم</div><div class="section-body">
-<h3 class="sector-heading">القطاع الحكومي (محقق قضائي، محقق نظامي، أخصائي تحقيق أمني، شرطي تحري، محقق عمالي)</h3>
-<ul>
-<li>جهات التحقيق القضائي ومكاتب النيابة على مستوى المناطق والمحافظات (مثل: <a href="https://www.pp.gov.sa">النيابة العامة</a>، نيابة منطقة الرياض، نيابة مكة المكرمة، نيابة المنطقة الشرقية، نيابة المدينة المنورة): التقديم عبر <a href="https://www.jadara.gov.sa">منصة جدارة</a> عند فتح الإعلان الرسمي، مع متابعة بوابة النيابة العامة دوريًا عند طرح شواغر مسار التحقيق والادعاء.</li>
-<li>الأجهزة الأمنية وإدارات الشرطة الجنائية والتحقيقية التابعة لوزارة الداخلية (مثل: <a href="https://www.moi.gov.sa">وزارة الداخلية</a>، إدارات الأمن العام في المناطق، الشرطة الجنائية، شرطة المحافظات والمراكز): التقديم عبر <a href="https://www.jadara.gov.sa">منصة جدارة</a> أو البوابة الرسمية لوزارة الداخلية عند فتح باب القبول في مسارات التحقيق الأمني.</li>
-<li>منظومة التفتيش والتحقيق العمالي الميداني التابعة لوزارة الموارد البشرية (مثل: <a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية</a>، إدارات التفتيش العمالي في المناطق، مكاتب العمل، فرق الرقابة على بيئة العمل): التقديم عبر <a href="https://www.jadara.gov.sa">منصة جدارة</a> أو بوابة الوزارة الرسمية عند الإعلان عن شواغر مفتشي العمل والمحققين العماليين.</li>
-<li>هيئات الرقابة ومكافحة الفساد والأجهزة الرقابية العليا ذات صلاحيات التحقيق المؤسسي (مثل: <a href="https://www.nazaha.gov.sa">هيئة الرقابة ومكافحة الفساد — نزاهة</a>، <a href="https://www.bog.gov.sa">ديوان المظالم</a>، <a href="https://www.gab.gov.sa">ديوان المراقبة العامة</a>): التقديم عبر بوابة التوظيف الرسمية لكل جهة عند الإعلان، مع التركيز على مسارات التحقيق والمراجعة والامتثال المؤسسي.</li>
-<li>الهيئات التنظيمية ذات الصلاحيات التفتيشية في مجالات التجارة والمال والجمارك (مثل: <a href="https://www.zatca.gov.sa">هيئة الزكاة والضريبة والجمارك</a>، <a href="https://www.cma.org.sa">هيئة السوق المالية</a>، <a href="https://www.ccp.gov.sa">هيئة المنافسة</a>، <a href="https://mc.gov.sa">وزارة التجارة</a>): التقديم عبر بوابات التوظيف الرسمية لكل هيئة أو <a href="https://www.jadara.gov.sa">منصة جدارة</a> عند توفر الإعلان، مع متابعة الشواغر في أقسام التفتيش والرقابة والامتثال.</li>
-</ul>
-<h3 class="sector-heading">القطاع شبه الحكومي (محقق نظامي، محقق إداري، أخصائي تحقيق أمني)</h3>
-<ul>
-<li>شركات صناعية وطنية كبرى تمتلك وحدات امتثال وأمن مؤسسي وتدقيق داخلي فاعلة (مثل: <a href="https://www.aramco.com/en/careers">شركة أرامكو السعودية</a>، <a href="https://www.sabic.com/ar/careers">سابك</a>، <a href="https://www.maaden.com.sa">معادن</a>): التقديم عبر بوابة Careers لكل شركة مباشرة، مع التركيز على الشواغر في وحدات الامتثال (Compliance) والتدقيق الداخلي (Internal Audit) والأمن المؤسسي.</li>
-<li>هيئات مالية ورقابية شبه حكومية لها صلاحيات تحقيق وإشراف في السوق (مثل: <a href="https://www.sama.gov.sa">البنك المركزي السعودي — ساما</a>، <a href="https://www.cma.org.sa/ar/About/Jobs/Pages/default.aspx">هيئة السوق المالية</a>، <a href="https://www.pif.gov.sa/ar/pages/careers.aspx">صندوق الاستثمارات العامة</a>): التقديم عبر بوابة التوظيف الرسمية لكل جهة عند فتح الشواغر، مع التركيز على مسارات الامتثال وإدارة المخاطر والتحقيق الداخلي.</li>
-<li>الشركات الخدمية الوطنية الكبرى التي تمتلك إدارات مراجعة داخلية وتحقيق في المخالفات المؤسسية (مثل: <a href="https://www.stc.com.sa">الشركة السعودية للاتصالات — STC</a>، <a href="https://www.se.com.sa">شركة الكهرباء السعودية</a>، <a href="https://www.nwc.com.sa">شركة المياه الوطنية</a>): التقديم عبر بوابات التوظيف الرسمية أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات كـ«مدقق داخلي» و«محقق امتثال» عند توفر الإعلان.</li>
-</ul>
-<h3 class="sector-heading">القطاع الخاص (محقق إداري، محقق عمالي)</h3>
-<ul>
-<li>المصارف والبنوك التي تمتلك وحدات متخصصة في التحقيق في الاحتيال المالي ومكافحة غسل الأموال والامتثال (مثل: <a href="https://www.alahli.com/ar-sa/about-anb/pages/work-with-us.aspx">البنك الأهلي السعودي</a>، <a href="https://www.alrajhibank.com.sa">مصرف الراجحي</a>، <a href="https://www.riyadbank.com">بنك الرياض</a>، <a href="https://www.bankalbilad.com">بنك البلاد</a>، <a href="https://www.sab.com">بنك ساب</a>): التقديم عبر صفحة Careers لكل مصرف مباشرة أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات كـ«Fraud Investigator» و«AML Analyst» و«Compliance Officer» عند فتح الشاغر.</li>
-<li>شركات التدقيق الجنائي المالي والاستشارات الدولية الكبرى التي تقدم خدمات Forensic Investigation للعملاء (مثل: <a href="https://www.pwc.com/m1/en/careers.html">PwC المملكة العربية السعودية</a>، <a href="https://kpmg.com/sa/en/home/careers.html">KPMG المملكة العربية السعودية</a>، <a href="https://www.deloitte.com/sa/en/careers.html">Deloitte المملكة العربية السعودية</a>، <a href="https://www.ey.com/en_sa/careers">EY المملكة العربية السعودية</a>): التقديم عبر بوابة Careers لكل شركة أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات كـ«Forensic Analyst» و«Investigations Associate»، مع الاستهداف المباشر لقسمَي Forensics وRisk Assurance.</li>
-<li>شركات التأمين التي تمتلك وحدات تحقيق متخصصة في المطالبات ومكافحة الاحتيال التأميني (مثل: <a href="https://www.tawuniya.com.sa">تعاونية للتأمين</a>، <a href="https://www.bupa.com.sa">بوبا العربية</a>، <a href="https://www.medgulf.com.sa">ميدغلف للتأمين</a>، <a href="https://ar.alrajhitakaful.com">الراجحي تكافل</a>): التقديم عبر بوابات التوظيف الرسمية أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات كـ«Claims Investigator» و«Anti-Fraud Specialist» عند توفر الإعلان.</li>
-<li>المجموعات الاستثمارية والشركات الكبرى ذات الهياكل التنظيمية المعقدة التي تُلزمها متطلبات الحوكمة بوجود إدارات تدقيق داخلي وامتثال (مثل: <a href="https://www.mbc.net">مجموعة MBC</a>، <a href="https://www.neom.com">شركة نيوم</a>، <a href="https://qiddiya.com">شركة القدية للاستثمار</a>، <a href="https://roshn.sa">شركة روشن العقارية</a>): التقديم عبر صفحات الوظائف الرسمية للمجموعات أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> مع متابعة إعلانات وحدات Compliance والمراجعة الداخلية.</li>
-<li>شركات التقنية المالية وشركات الدفع الرقمي الناشئة التي تبني وحدات مكافحة الاحتيال والامتثال التنظيمي في مرحلة النمو المتسارع (مثل: <a href="https://www.stcpay.com.sa">STC Pay</a>، <a href="https://tamara.co">تمارا</a>، <a href="https://tabby.ai">تابي</a>): التقديم عبر <a href="https://www.linkedin.com/jobs">LinkedIn</a> أو صفحة Careers في كل شركة بمسميات كـ«Fraud Prevention Analyst» و«AML Compliance Specialist».</li>
-</ul>
+<p>القطاع الحكومي (محقق قضائي، محقق نظامي، أخصائي تحقيق أمني، شرطي تحري، محقق عمالي)</p>
+<div class="short-list-guard"><ul><li>جهات التحقيق القضائي ومكاتب النيابة على مستوى المناطق والمحافظات (مثل: <a class="linked-inline-label" href="https://www.pp.gov.sa">النيابة العامة، نيابة منطقة الرياض، نيابة مكة المكرمة، نيابة المنطقة الشرقية، نيابة المدينة المنورة) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر <a href="https://www.jadara.gov.sa">منصة جدارة</a> عند فتح الإعلان الرسمي، مع متابعة بوابة النيابة العامة دوريًا عند طرح شواغر مسار التحقيق والادعاء.</li>
+<li>الأجهزة الأمنية وإدارات الشرطة الجنائية والتحقيقية التابعة لوزارة الداخلية (مثل: <a class="linked-inline-label" href="https://www.moi.gov.sa">وزارة الداخلية، إدارات الأمن العام في المناطق، الشرطة الجنائية، شرطة المحافظات والمراكز) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر <a href="https://www.jadara.gov.sa">منصة جدارة</a> أو البوابة الرسمية لوزارة الداخلية عند فتح باب القبول في مسارات التحقيق الأمني.</li>
+<li>منظومة التفتيش والتحقيق العمالي الميداني التابعة لوزارة الموارد البشرية (مثل: <a class="linked-inline-label" href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية، إدارات التفتيش العمالي في المناطق، مكاتب العمل، فرق الرقابة على بيئة العمل) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر <a href="https://www.jadara.gov.sa">منصة جدارة</a> أو بوابة الوزارة الرسمية عند الإعلان عن شواغر مفتشي العمل والمحققين العماليين.</li>
+<li>هيئات الرقابة ومكافحة الفساد والأجهزة الرقابية العليا ذات صلاحيات التحقيق المؤسسي (مثل: <a href="https://www.nazaha.gov.sa">هيئة الرقابة ومكافحة الفساد — نزاهة</a>، <a href="https://www.bog.gov.sa">ديوان المظالم</a>، <a class="linked-inline-label" href="https://www.gab.gov.sa">ديوان المراقبة العامة) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر بوابة التوظيف الرسمية لكل جهة عند الإعلان، مع التركيز على مسارات التحقيق والمراجعة والامتثال المؤسسي.</li>
+<li>الهيئات التنظيمية ذات الصلاحيات التفتيشية في مجالات التجارة والمال والجمارك (مثل: <a href="https://www.zatca.gov.sa">هيئة الزكاة والضريبة والجمارك</a>، <a href="https://www.cma.org.sa">هيئة السوق المالية</a>، <a href="https://www.ccp.gov.sa">هيئة المنافسة</a>، <a class="linked-inline-label" href="https://mc.gov.sa">وزارة التجارة) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر بوابات التوظيف الرسمية لكل هيئة، أو <a href="https://www.jadara.gov.sa">منصة جدارة</a> عند توفر الإعلان، مع متابعة الشواغر في أقسام التفتيش والرقابة والامتثال.</li>
+</ul></div>
+<p>القطاع شبه الحكومي (محقق نظامي، محقق إداري، أخصائي تحقيق أمني)</p>
+<div class="short-list-guard"><ul><li>شركات صناعية وطنية كبرى تمتلك وحدات امتثال وأمن مؤسسي وتدقيق داخلي فاعلة (مثل: <a href="https://www.aramco.com/en/careers">شركة أرامكو السعودية</a>، <a href="https://www.sabic.com/ar/careers">سابك</a>، <a class="linked-inline-label" href="https://www.maaden.com.sa">معادن) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر بوابة Careers لكل شركة مباشرة، مع التركيز على الشواغر في وحدات الامتثال (Compliance) والتدقيق الداخلي (Internal Audit) والأمن المؤسسي.</li>
+<li>هيئات مالية ورقابية شبه حكومية لها صلاحيات تحقيق وإشراف في السوق (مثل: <a href="https://www.sama.gov.sa">البنك المركزي السعودي — ساما</a>، <a href="https://www.cma.org.sa/ar/About/Jobs/Pages/default.aspx">هيئة السوق المالية</a>، <a class="linked-inline-label" href="https://www.pif.gov.sa/ar/pages/careers.aspx">صندوق الاستثمارات العامة) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر بوابة التوظيف الرسمية لكل جهة عند فتح الشواغر، مع التركيز على مسارات الامتثال وإدارة المخاطر والتحقيق الداخلي.</li>
+<li>الشركات الخدمية الوطنية الكبرى التي تمتلك إدارات مراجعة داخلية وتحقيق في المخالفات المؤسسية (مثل: <a href="https://www.stc.com.sa">الشركة السعودية للاتصالات — STC</a>، <a href="https://www.se.com.sa">شركة الكهرباء السعودية</a>، <a class="linked-inline-label" href="https://www.nwc.com.sa">شركة المياه الوطنية) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر بوابات التوظيف الرسمية أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات كـ«مدقق داخلي» و«محقق امتثال» عند توفر الإعلان.</li>
+</ul></div>
+<p>القطاع الخاص (محقق إداري، محقق عمالي)</p>
+<div class="short-list-guard"><ul><li>المصارف والبنوك التي تمتلك وحدات متخصصة في التحقيق في الاحتيال المالي ومكافحة غسل الأموال والامتثال (مثل: <a href="https://www.alahli.com/ar-sa/about-anb/pages/work-with-us.aspx">البنك الأهلي السعودي</a>، <a href="https://www.alrajhibank.com.sa">مصرف الراجحي</a>، <a href="https://www.riyadbank.com">بنك الرياض</a>، <a href="https://www.bankalbilad.com">بنك البلاد</a>، <a class="linked-inline-label" href="https://www.sab.com">بنك ساب) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر صفحة Careers لكل مصرف مباشرة، أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات كـ«Fraud Investigator» و«AML Analyst» و«Compliance Officer» عند فتح الشاغر.</li>
+<li>شركات التدقيق الجنائي المالي والاستشارات الدولية الكبرى التي تقدم خدمات Forensic Investigation للعملاء (مثل: <a href="https://www.pwc.com/m1/en/careers.html">PwC المملكة العربية السعودية</a>، <a href="https://kpmg.com/sa/en/home/careers.html">KPMG المملكة العربية السعودية</a>، <a href="https://www.deloitte.com/sa/en/careers.html">Deloitte المملكة العربية السعودية</a>، <a class="linked-inline-label" href="https://www.ey.com/en_sa/careers">EY المملكة العربية السعودية) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر بوابة Careers لكل شركة، أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات كـ«Forensic Analyst» و«Investigations Associate»، مع الاستهداف المباشر لقسمَي Forensics وRisk Assurance.</li>
+<li>شركات التأمين التي تمتلك وحدات تحقيق متخصصة في المطالبات ومكافحة الاحتيال التأميني (مثل: <a href="https://www.tawuniya.com.sa">تعاونية للتأمين</a>، <a href="https://www.bupa.com.sa">بوبا العربية</a>، <a href="https://www.medgulf.com.sa">ميدغلف للتأمين</a>، <a class="linked-inline-label" href="https://ar.alrajhitakaful.com">الراجحي تكافل) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر بوابات التوظيف الرسمية أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> بمسميات كـ«Claims Investigator» و«Anti-Fraud Specialist» عند توفر الإعلان.</li>
+<li>المجموعات الاستثمارية والشركات الكبرى ذات الهياكل التنظيمية المعقدة التي تُلزمها متطلبات الحوكمة بوجود إدارات تدقيق داخلي وامتثال (مثل: <a href="https://www.mbc.net">مجموعة MBC</a>، <a href="https://www.neom.com">شركة نيوم</a>، <a href="https://qiddiya.com">شركة القدية للاستثمار</a>، <a class="linked-inline-label" href="https://roshn.sa">شركة روشن العقارية) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر صفحات الوظائف الرسمية للمجموعات أو <a href="https://www.linkedin.com/jobs">LinkedIn</a> مع متابعة إعلانات وحدات Compliance والمراجعة الداخلية.</li>
+<li>شركات التقنية المالية وشركات الدفع الرقمي الناشئة التي تبني وحدات مكافحة الاحتيال والامتثال التنظيمي في مرحلة النمو المتسارع (مثل: <a href="https://www.stcpay.com.sa">STC Pay</a>، <a href="https://tamara.co">تمارا</a>، <a class="linked-inline-label" href="https://tabby.ai">تابي) <span class="linked-inline-arrow">↗</span></a>: التقديم عبر <a href="https://www.linkedin.com/jobs">LinkedIn</a> أو صفحة Careers في كل شركة بمسميات كـ«Fraud Prevention Analyst» و«AML Compliance Specialist».</li>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">المسار الوظيفي والتطور المهني</div><div class="section-body">
-<ul>
-<li><strong>مسار الترقي:</strong> يبدأ «محققًا» في مرتبة 6–7، ثم «محققًا أول» في مرتبة 8–9، وصولًا إلى «رئيس قسم تحقيق» في مرتبة 10–11 فـ«مشرف تحقيقات» في مرتبة 12 فأعلى وفق الأقدمية والكفاءة والتقييم السنوي.</li>
+<div class="short-list-guard"><ul><li><strong>مسار الترقي:</strong> يبدأ «محققًا» في مرتبة 6–7، ثم «محققًا أول» في مرتبة 8–9، وصولًا إلى «رئيس قسم تحقيق» في مرتبة 10–11 فـ«مشرف تحقيقات» في مرتبة 12 فأعلى وفق الأقدمية والكفاءة والتقييم السنوي.</li>
 <li><strong>مسار الانتقال:</strong> يمكن الانتقال إلى مناصب إشرافية في إدارات التحقيق أو التخصص في أنواع محددة كتحقيقات الفساد المالي والجرائم الإلكترونية، وكذلك الانتقال إلى <a href="https://www.nazaha.gov.sa">هيئة الرقابة ومكافحة الفساد</a> أو <a href="https://www.pp.gov.sa">النيابة العامة</a> عبر المنافسة الداخلية.</li>
 <li><strong>مسار التخصص:</strong> التحقيق في قضايا الاحتيال المالي، والجرائم الإلكترونية، وقضايا التحرش في بيئة العمل، وتحقيقات مكافحة الفساد.</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">الشهادات المهنية الاحترافية</div><div class="section-body">
-<ul>
-<li><a href="https://www.acfe.com/cfe-credential/how-to-earn-your-cfe-credential">شهادة محترف فحص الاحتيال المعتمد (CFE)</a>: لكشف الاحتيال والتلاعب في الوثائق ضمن قضايا التحقيق المالي والإداري (مدعومة)</li>
-<li><a href="https://www.acams.org/en/certifications/cams-certification">شهادة أخصائي مكافحة غسل الأموال المعتمد (CAMS)</a>: لرصد مؤشرات الاشتباه في قضايا الجرائم المالية وتعزيز قدرة المحقق على تتبع المعاملات المشبوهة (غير مدعومة)</li>
-<li><a href="https://www.wicklander-zulawski.com/forensic-interviewing-certification">شهادة المحقق الجنائي المعتمد (CFI)</a>: لتطوير مهارات الاستجواب والتحقيق الميداني وبناء حوارات تحقيقية فعّالة مع الشهود والمشتبه بهم (غير مدعومة)</li>
-<li><a href="https://www.iacsp.com/certifications">شهادة محلل الاستخبارات الجنائية المعتمد (CFIA)</a>: لتعزيز قدرات التحليل الجنائي واستخلاص الأنماط الإجرامية من البيانات في قضايا التحقيق المعقدة (غير مدعومة)</li>
-</ul>
+<div class="short-list-guard"><ul><li><a class="linked-inline-label" href="https://www.acfe.com/cfe-credential/how-to-earn-your-cfe-credential">شهادة محترف فحص الاحتيال المعتمد (CFE) <span class="linked-inline-arrow">↗</span></a>: لكشف الاحتيال والتلاعب في الوثائق ضمن قضايا التحقيق المالي والإداري (مدعومة)</li>
+<li><a class="linked-inline-label" href="https://www.acams.org/en/certifications/cams-certification">شهادة أخصائي مكافحة غسل الأموال المعتمد (CAMS) <span class="linked-inline-arrow">↗</span></a>: لرصد مؤشرات الاشتباه في قضايا الجرائم المالية وتعزيز قدرة المحقق على تتبع المعاملات المشبوهة (غير مدعومة)</li>
+<li><a class="linked-inline-label" href="https://www.wicklander-zulawski.com/forensic-interviewing-certification">شهادة المحقق الجنائي المعتمد (CFI) <span class="linked-inline-arrow">↗</span></a>: لتطوير مهارات الاستجواب والتحقيق الميداني وبناء حوارات تحقيقية فعّالة مع الشهود والمشتبه بهم (غير مدعومة)</li>
+<li><a class="linked-inline-label" href="https://www.iacsp.com/certifications">شهادة محلل الاستخبارات الجنائية المعتمد (CFIA) <span class="linked-inline-arrow">↗</span></a>: لتعزيز قدرات التحليل الجنائي واستخلاص الأنماط الإجرامية من البيانات في قضايا التحقيق المعقدة (غير مدعومة)</li>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">الملاحظات المهنية المتقدمة</div><div class="section-body">
-<ul>
-<li>التصنيف الوطني <a href="https://www.hrsd.gov.sa/skills-taxonomy/occupations">3355 — ضباط الشرطة والمحققون</a> يضع أخصائي التحقيق القضائي ضمن فئة «الفنيون ومساعدو المهنيين» لا «الاختصاصيون»؛ هذا يعني أن الدخول أوسع للتخصصات غير القانونية في بعض مسارات التحقيق العمالي مقارنةً بمسار التحقيق القضائي الذي يشترط غالبًا الشريعة أو الأنظمة.</li>
+<div class="short-list-guard"><ul><li>التصنيف الوطني <a href="https://www.hrsd.gov.sa/skills-taxonomy/occupations">3355 — ضباط الشرطة والمحققون</a> يضع أخصائي التحقيق القضائي ضمن فئة «الفنيون ومساعدو المهنيين» لا «الاختصاصيون»؛ هذا يعني أن الدخول أوسع للتخصصات غير القانونية في بعض مسارات التحقيق العمالي مقارنةً بمسار التحقيق القضائي الذي يشترط غالبًا الشريعة أو الأنظمة.</li>
 <li>الفرق الجوهري بين المسارات الثلاثة: محقق النيابة العامة يعمل تحت إشراف المدعي العام ويُمثّل الدولة في ملاحقة الجرائم، ومحقق الشرطة يُنجز التحقيق الأولي قبل إحالة الملف للنيابة، بينما محقق وزارة الموارد البشرية يُحقق في انتهاكات بيئة العمل والنزاعات العمالية خارج المسار الجنائي. كل مسار له اشتراطاته ومؤهلاته ومساره الوظيفي المستقل.</li>
 <li>نظام الإجراءات الجزائية الصادر بالمرسوم الملكي م/39 لعام 1422هـ هو المرجع الحاكم لعمل المحقق في الجرائم الجنائية؛ أي خرق إجرائي — كالاستجواب دون توثيق أو ضبط الأدلة خارج الأصول — يُعرّض ملف التحقيق للبطلان ويُفقد الأدلة قيمتها القانونية.</li>
 <li>الطلب على المحققين العماليين في تصاعد مستمر مع ارتفاع حجم القوى العاملة الوافدة واشتداد الرقابة على بيئات العمل في إطار رؤية 2030؛ <a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية</a> توسّعت في إنشاء فرق التفتيش والتحقيق العمالي الميداني خلال الأعوام الأخيرة.</li>
 <li>سلامة الإجراءات التحقيقية ليست مجرد متطلب شكلي؛ ملف التحقيق المبني على إجراءات صحيحة يُمثّل قاعدة الاتهام في المحاكمة، وأي ثغرة إجرائية قد تُحوّل دليلًا دامغًا إلى دليل مردود شكلًا — مما يجعل الدقة الإجرائية ركيزة المهنة وليس مجرد مهارة إضافية.</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section"><div class="section-heading">النصائح العملية الإضافية</div><div class="section-body">
-<ul>
-<li>أتقن نظام الإجراءات الجزائية ولوائحه التنفيذية بعمق تطبيقي لا مجرد معرفة نظرية؛ المحضر الذي تُعدّه يُبنى عليه قرار الاتهام أو الحفظ، وكل ثغرة إجرائية تُضعف الملف أمام القضاء.</li>
+<div class="short-list-guard"><ul><li>أتقن نظام الإجراءات الجزائية ولوائحه التنفيذية بعمق تطبيقي لا مجرد معرفة نظرية؛ المحضر الذي تُعدّه يُبنى عليه قرار الاتهام أو الحفظ، وكل ثغرة إجرائية تُضعف الملف أمام القضاء.</li>
 <li>طوّر مهارة الاستماع الفاعل والتحليل السريع للتناقضات في الإفادات؛ المحقق المتمرس يُلاحظ ما بين السطور قبل ما فيها، وهذه مهارة تتراكم بالتدريب المتعمد لا بمجرد الممارسة العشوائية.</li>
 <li>اكتسب خبرة مبكرة في الجهات ذات الحجم التحقيقي العالي كفروع النيابة في المناطق الحضرية الكبرى؛ تنوع القضايا يبني سرعة الحكم الإجرائي التي لا تُعوّضها سنوات في بيئة ذات نشاط محدود.</li>
 <li>إذا كنت تستهدف مسار التحقيق العمالي، استثمر في فهم نظام العمل ولوائحه وآليات التسوية الودية؛ المحقق العمالي يحتاج أن يُميّز بين النزاع القابل للوساطة والانتهاك الذي يستوجب إجراء رسميًا.</li>
 <li>بنِ قاعدة معرفية في الجرائم الإلكترونية والأدلة الرقمية؛ حجم القضايا التي تشتمل على أدلة رقمية في ارتفاع متواصل، والمحقق القادر على قراءة السجلات الرقمية وتحليل أدلة الأجهزة يُشكّل قيمة مضافة نادرة.</li>
-</ul>
+</ul></div>
 </div></div>
 <div class="section table-page-group"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
-<div class="acceptance-table-wrapper">
-<table class="acceptance-table table-page-block">
-<thead><tr>
+<div class="acceptance-table-wrapper"><img class="acceptance-table-watermark" src="data:image/jpeg;base64,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" alt=""><table class="acceptance-table table-page-block">
+<thead>
+<tr>
 <th>التخصص</th>
 <th>مدى القبول</th>
 <th>السبب</th>
 <th>ما يرفع القبول</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
-<tr><td>الشريعة الإسلامية</td><td class="acceptance-level-cell"><span class="badge-high">عالي</span></td><td>أساس الإجراءات الجزائية في النظام السعودي شرعي — تخصص مقبول نظاميًا وفعليًا في مسار التحقيق القضائي والنيابة العامة</td><td>لا يحتاج برنامجًا تعويضيًا — دبلوم العلوم الجنائية داعم للتطبيق الميداني</td></tr>
-<tr><td>الأنظمة (الحقوق)</td><td class="acceptance-level-cell"><span class="badge-high">عالي</span></td><td>يُغطي الإجراءات الجزائية والقانون الجنائي ونظام العمل — الأقرب لمتطلبات التحقيق في المسارات الثلاثة</td><td>لا يحتاج برنامجًا تعويضيًا — هو التخصص الأكثر توافقًا مع متطلبات مسار التحقيق</td></tr>
-<tr><td>العلوم الأمنية</td><td class="acceptance-level-cell"><span class="badge-high">عالي</span></td><td>مُصمَّم مباشرةً لمسار التحقيق الأمني والشرطي — يمنح الأدوات التحقيقية الميدانية والأمنية</td><td>لا يحتاج برنامجًا تعويضيًا — الأنسب لمسار تحقيق الأجهزة الأمنية</td></tr>
-<tr><td>الشريعة والقانون</td><td class="acceptance-level-cell"><span class="badge-high">عالي</span></td><td>يجمع الإطار الشرعي مع الإجرائي القانوني — يُتيح العمل في جميع مسارات التحقيق</td><td>لا يحتاج برنامجًا تعويضيًا — يُغطي المسارات الثلاثة في آن واحد</td></tr>
-<tr><td>الإدارة العامة</td><td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td><td>يُتيح الدخول لمسار التحقيق العمالي في وزارة الموارد البشرية لكنه لا يُغطي الجانب الإجرائي القانوني للتحقيق الجنائي</td><td>دبلوم العلوم الجنائية أو برامج معهد الإدارة العامة في التحقيق لسد الفجوة الإجرائية</td></tr>
-<tr><td>علم الاجتماع الجنائي</td><td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td><td>يمنح أدوات تحليل السلوك الإجرامي لكن دون الغطاء الإجرائي القانوني اللازم للتحقيق الرسمي</td><td>دبلوم العلوم الجنائية أو الأنظمة لاكتساب الأساس الإجرائي المطلوب للتعيين</td></tr>
-<tr><td>إدارة الأعمال</td><td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td><td>لا يُغطي الجانب الإجرائي القانوني المطلوب في التحقيق الجنائي — الدخول ممكن عبر التحقيق العمالي لكن المنافسة عالية مع التخصصات الأقرب</td><td>لا يوجد برنامج يُحوّل هذا التخصص إلى مؤهل تنافسي لوظائف التحقيق الجنائي تحديدًا</td></tr>
+<tr>
+<td>الشريعة</td>
+<td class="acceptance-level-cell"><span class="badge-high">عالي</span></td>
+<td>نظام الإجراءات الجزائية شرعي الأساس — مقبول فعليًا في مسار التحقيق القضائي والنيابة العامة</td>
+<td>لا يحتاج تعويضًا — دبلوم العلوم الجنائية داعم للتطبيق الميداني</td>
+</tr>
+<tr>
+<td>الدراسات الإسلامية</td>
+<td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td>
+<td>يُعطي الأساس الشرعي لكن لا يُغطي الإجراءات الجزائية التطبيقية المطلوبة في التحقيق</td>
+<td>دبلوم العلوم الجنائية لاكتساب الجانب الإجرائي الجنائي المطلوب</td>
+</tr>
+<tr>
+<td>الثقافة الإسلامية</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>تخصص عام لا يُغطي الجانب الجنائي الإجرائي اللازم لمسارات التحقيق الرسمية</td>
+<td>دبلوم العلوم الجنائية ضروري — لكن القبول يبقى ضعيفًا أمام التخصصات الأقرب</td>
+</tr>
+<tr>
+<td>أصول الدين</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>يتمحور حول العقيدة والمنهج ولا صلة مباشرة له بإجراءات التحقيق الجنائي الرسمية</td>
+<td>لا يوجد برنامج يُحوله إلى مؤهل تنافسي في مسارات التحقيق القضائي</td>
+</tr>
+<tr>
+<td>الدعوة</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>لا يُغطي الإجراءات الجزائية ولا أدوات جمع الأدلة المطلوبة في التحقيق الميداني</td>
+<td>لا يوجد برنامج يُحوله إلى مؤهل تنافسي في التحقيق القضائي أو الأمني</td>
+</tr>
+<tr>
+<td>الحسبة والرقابة</td>
+<td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td>
+<td>يشترك مع التحقيق في مفهوم الرقابة والمحاسبة — مفيد في مسار التحقيق العمالي والإداري</td>
+<td>دبلوم العلوم الجنائية أو الأنظمة لاكتساب الأساس الإجرائي المطلوب للتعيين</td>
+</tr>
+<tr>
+<td>الحديث والسنة وعلومها</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>علوم نقلية لا ترتبط مباشرةً بأدوات التحقيق الجنائي وإجراءاته الرسمية</td>
+<td>دبلوم العلوم الجنائية ضروري — لكن القبول يبقى ضعيفًا في مسارات التحقيق</td>
+</tr>
+<tr>
+<td>التفسير والقرآن وعلومه</td>
+<td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td>
+<td>لا صلة مهنية بإجراءات التحقيق الجنائي وضبط الأدلة والاستجواب الرسمي</td>
+<td>لا يوجد برنامج يُحوله إلى مؤهل تنافسي لوظائف التحقيق القضائي</td>
+</tr>
 </tbody>
-</table>
-</div>
-</div></div>
+</table></div></div></div>
 </div>
 </body>
 </html>
