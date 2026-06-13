@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <style>
+/* ── Fonts (مضمّنة من design_reference/fonts) ────────── */
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoKufiArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Kufi Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoKufiArabic-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoNaskhArabic-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/NotoNaskhArabic-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Aniq';
+  src: url('file:///home/user/tawjeeh-sharia-cards/design_reference/fonts/aa-aniq-bold.otf');
+  font-weight: bold;
+}
+
+/* ── Page layout ─────────────────────────────────────── */
+@page {
+  size: A4;
+  margin-top: 17mm;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+:root {
+  --page-top-safe-gap: 17mm;
+  --footer-height: 12.5mm;
+  --footer-safe-gap: 8mm;
+  --footer-reserved: 32mm;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  direction: rtl;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  background: #ffffff;
+  color: #023663;
+}
+
+p, li, td, th {
+  orphans: 2;
+  widows: 2;
+}
+
+.page-watermark {
+  position: fixed;
+  top: 122mm;
+  left: 105mm;
+  transform: translate(-50%, -50%);
+  width: 135mm;
+  opacity: 0.30;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 12.5mm;
+  background: linear-gradient(90deg, #023e96 0%, #017593 50%, #01b68e 100%);
+  border-radius: 0;
+  box-sizing: border-box;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+.footer-inner {
+  position: relative;
+  height: 12mm;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 14mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: ltr;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+  flex: 0 0 auto;
+}
+
+.footer-icon {
+  display: inline-block;
+  width: 3.5mm;
+  height: 3.5mm;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.footer-icon-on-light {
+  width: 2.6mm;
+  height: 2.6mm;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.78);
+  background-size: 1.9mm 1.9mm;
+  padding: 0.45mm;
+  box-sizing: content-box;
+}
+
+.footer-link a {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  color: #ffffff;
+  font-size: 7.8pt;
+  font-weight: 700;
+  letter-spacing: 0.2pt;
+  text-decoration: none;
+  text-shadow: 0 0.2mm 0.3mm rgba(0, 0, 0, 0.22);
+}
+
+.footer-divider {
+  flex: 0 0 auto;
+  width: 0.3mm;
+  height: 6mm;
+  background: rgba(120, 235, 210, 0.45);
+  border-radius: 0.2mm;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  padding: 0 17mm 32mm 17mm;
+}
+
+.profession-title {
+  font-family: 'Aniq', 'Noto Naskh Arabic', serif;
+  font-size: 17pt;
+  font-weight: bold;
+  color: #049e9e;
+  text-align: right;
+  margin-bottom: 5mm;
+  line-height: 1.25;
+}
+
+.section {
+  margin-bottom: 4mm;
+  break-inside: auto;
+  page-break-inside: auto;
+  orphans: 3;
+  widows: 3;
+}
+
+.section-heading {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 12pt;
+  font-weight: bold;
+  color: #5e4360;
+  text-align: right;
+  margin-bottom: 2mm;
+  line-height: 1.4;
+  background: none;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10pt;
+  color: #023663;
+  text-align: right;
+  line-height: 1.72;
+  break-inside: auto;
+  page-break-inside: auto;
+  orphans: 3;
+  widows: 3;
+}
+
+.section-body > *:first-child {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+.section-body > *:nth-child(2) {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+
+.section-body h3 {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 11.5pt;
+  font-weight: bold;
+  color: #496379;
+  margin-top: 2.6mm;
+  margin-bottom: 1mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body h3.sector-heading {
+  color: #023663;
+}
+
+.section-body p  {
+  margin-bottom: 1.4mm;
+  break-inside: avoid-page;
+}
+
+.section-body .sector-label {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #023663;
+  margin-top: 2.6mm;
+  margin-bottom: 1mm;
+}
+
+.section-body .employment-sector {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: #023663;
+  margin-top: 3mm;
+  margin-bottom: 1.2mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body .employment-subcategory {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #496379;
+  margin-top: 2mm;
+  margin-bottom: 0.8mm;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.section-body .condition-label {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 1.08em;
+  font-weight: 700;
+  color: #496379;
+}
+
+.section-body .experience-entity {
+  color: #023663;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 10.8pt;
+}
+
+.section-body .assessment-entity {
+  color: #023663;
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-weight: 700;
+  font-size: 10.8pt;
+  display: block;
+  margin: 1.8mm 0 1mm 0;
+}
+
+.section-body ul,
+.section-body ol {
+  padding-right: 5mm;
+  padding-left: 0;
+  margin-top: 1.4mm;
+  margin-bottom: 2.2mm;
+  list-style-type: disc;
+  list-style-position: outside;
+}
+.section-body li {
+  margin-bottom: 1.2mm;
+  line-height: 1.68;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+.section-body li::marker {
+  color: #023663;
+  font-size: 1.35em;
+}
+
+.section-body a {
+  color: #023663;
+  text-decoration: none;
+  font-size: inherit;
+}
+.section-body a.linked-inline-label {
+  color: #023663;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #023663;
+  text-decoration-thickness: 0.3mm;
+  text-underline-offset: 0.65mm;
+  font-weight: inherit;
+  font-size: inherit;
+}
+.section-body .linked-inline-arrow {
+  font-size: 0.88em;
+  color: #023663;
+  font-weight: 400;
+}
+.section-body strong { font-weight: bold; color: #023663; }
+
+.section-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  margin-top: 1.6mm;
+  color: #023663;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.section-body thead, .section-body tbody, .section-body tfoot {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.section-body thead {
+  display: table-header-group;
+}
+.section-body tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.short-list-guard {
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+  display: block;
+}
+
+.long-list-flow {
+  display: block;
+}
+
+.section.clean-page-required {
+  break-before: page;
+  page-break-before: always;
+}
+
+.section.table-page-group {
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  padding-top: 0;
+}
+.section-body table.table-page-block {
+  break-before: page;
+  page-break-before: always;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-top: 0;
+}
+.section.table-page-group .section-body table.table-page-block {
+  break-before: auto;
+  page-break-before: auto;
+}
+.section-body th {
+  background: #023663;
+  color: #ffffff;
+  padding: 1.3mm 2.2mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 8.5pt;
+  vertical-align: middle;
+}
+.section-body td {
+  padding: 1.3mm 2.2mm;
+  border: 1px solid #c8d8e8;
+  text-align: center;
+  vertical-align: top;
+}
+.section-body tr:nth-child(even) td { background: #f0f5fa; }
+
+.acceptance-table-wrapper {
+  position: relative;
+  border-radius: 3mm;
+  overflow: hidden;
+  box-shadow: 0 0.8mm 3mm rgba(2, 54, 99, 0.13);
+  margin-top: 2mm;
+}
+
+.acceptance-table-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120mm;
+  opacity: 0.045;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.section-body .acceptance-table {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+  line-height: 1.45;
+  margin-top: 0;
+  table-layout: fixed;
+}
+
+.section-body .acceptance-table th {
+  background: #023663;
+  color: #ffffff;
+  padding: 2mm 2.5mm;
+  text-align: center;
+  font-weight: bold;
+  font-size: 8.5pt;
+  vertical-align: middle;
+  border: none;
+}
+
+.section-body .acceptance-table th:nth-child(1),
+.section-body .acceptance-table td:nth-child(1) { width: 13%; text-align: right; }
+.section-body .acceptance-table th:nth-child(2),
+.section-body .acceptance-table td:nth-child(2) { width: 10%; text-align: center; }
+.section-body .acceptance-table th:nth-child(3),
+.section-body .acceptance-table td:nth-child(3) { width: 37%; text-align: right; }
+.section-body .acceptance-table th:nth-child(4),
+.section-body .acceptance-table td:nth-child(4) { width: 40%; text-align: right; }
+
+.section-body .acceptance-table td {
+  padding: 2mm 2.5mm;
+  border: 0.25mm solid #c8d8e8;
+  vertical-align: middle;
+  color: #023663;
+  font-size: 8.5pt;
+}
+
+.section-body .acceptance-table tr:nth-child(odd) td  { background: #ffffff; }
+.section-body .acceptance-table tr:nth-child(even) td { background: #f2f6fb; }
+
+.section-body .acceptance-table .acceptance-level-cell {
+  text-align: center;
+  vertical-align: middle;
+  padding: 1.5mm 1.5mm;
+}
+
+.section-body .acceptance-table td:nth-child(1) {
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #023663;
+  line-height: 1.45;
+}
+
+.badge-high,
+.badge-medium,
+.badge-low {
+  display: inline-block;
+  width: auto;
+  min-width: 0;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: 1.2mm 4mm;
+  border-radius: 10mm;
+  font-size: 7.8pt;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1;
+  text-align: center;
+}
+
+.badge-high   { background: #049E9E; }
+.badge-medium { background: #007F9E; }
+.badge-low    { background: #5E4360; }
+</style>
+</head>
+<body>
+<img class="page-watermark" src="data:image/jpeg;base64,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" alt="">
+<div class="footer">
+  <div class="footer-inner">
+    <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj48Y2lyY2xlIGN4PSI5IiBjeT0iMTYuMyIgcj0iMy40Ii8+PHBhdGggZD0iTTEyLjQgMy42aDIuN2MuMyAyLjUgMiA0LjMgNC41IDQuNnYyLjdjLTEuNyAwLTMuMi0uNS00LjUtMS40djYuOGMwIC4yIDAgLjQtLjEuNmgtMi42YzAtLjIuMS0uNC4xLS42VjMuNnoiLz48L3N2Zz4=')"></span><a href="https://www.tiktok.com/@tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjE3IiBoZWlnaHQ9IjE3IiByeD0iNSIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjQuMiIvPjwvc3ZnPg==')"></span><a href="https://instagram.com/tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgNGMyLjQgMCA0IDEuOSA0IDQuNCAwIDEuNi4xIDMgLjkgMy45LjYuNiAxLjMuOCAyIDEtLjQuOS0xLjUgMS4zLTIuNSAxLjUgMCAuNi0uMiAxLjItLjcgMS4ycy0xLS4zLTEuNy0uM2MtLjkgMC0xLjUuOS0yIC45cy0xLjEtLjktMi0uOWMtLjcgMC0xLjIuMy0xLjcuM3MtLjctLjYtLjctMS4yYy0xLS4yLTIuMS0uNi0yLjUtMS41LjctLjIgMS40LS40IDItMSAuOC0uOS45LTIuMy45LTMuOUM4IDUuOSA5LjYgNCAxMiA0eiIvPjwvc3ZnPg==')"></span><a href="https://www.snapchat.com/add/tawjeeh.hub">tawjeeh.hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon footer-icon-on-light" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwMDAwMCIgc3Ryb2tlPSJub25lIj48cGF0aCBkPSJNNS4yIDQuNmgzLjFsMy43IDQuOSA0LTQuOWgyLjhMMTMuNiAxMWw1LjQgOC40aC0zLjFsLTQtNS4zLTQuNCA1LjNINC42bDUuOS03LjJ6Ii8+PC9zdmc+')"></span><a href="https://x.com/tawjeeh_hub">tawjeeh_hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzIiB5PSI1LjUiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMyIgcng9IjMuNSIvPjxwYXRoIGQ9Ik0xMCA5LjNsNS4yIDIuNy01LjIgMi43eiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSJub25lIi8+PC9zdmc+')"></span><a href="https://www.youtube.com/@tawjeeh_hub">tawjeeh_hub</a></span>
+    <span class="footer-divider"></span>
+    <span class="footer-link"><span class="footer-icon" style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI4LjIiLz48cGF0aCBkPSJNMy44IDEyaDE2LjRNMTIgMy44YzIuNiAyLjIgMi42IDE0LjIgMCAxNi40Ii8+PC9zdmc+')"></span><a href="https://www.tawjeeh.hub">www.tawjeeh.hub</a></span>
+  </div>
+</div>
+<div class="content">
+  <div class="profession-title">أخصائي تحقيق قضائي ونظامي</div>
+  <div class="section"><div class="section-heading">المسميات المكافئة</div><div class="section-body">
+<p>محقق، أخصائي تحقيق أمني، شرطي تحري، محقق عمالي</p>
+</div></div>
+<div class="section"><div class="section-heading">التصنيف الوطني SSC</div><div class="section-body">
+<ul>
+<li>المجموعة الرئيسية: 3 - الفنيون ومساعدو المهنيين</li>
+<li>المجموعة الفرعية: 33 - الفنيون ومساعدو المهنيين في مجالات القانون والاجتماع والدين والثقافة</li>
+<li>المجموعة الرئيسية الدقيقة: 335 - المساعدون المهنيون في مجالات الشرطة والسجون والجمارك</li>
+<li>المجموعة الثانوية: 3355 - ضباط الشرطة والمحققون</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">طبيعة العمل</div><div class="section-body">
+<p>أخصائي التحقيق القضائي والنظامي هو الحلقة الجوهرية في منظومة إثبات الجريمة وتحقيق العدالة: يجمع الأدلة ويحقق في الوقائع ويُحرر المحاضر الرسمية في الجهات القضائية والأمنية والعمالية. يعمل في ثلاثة مسارات رئيسية: مسار التحقيق الجنائي في <a href="https://www.pp.gov.sa">النيابة العامة</a> والشرطة لفحص الجرائم الجنائية والجنح، ومسار التحقيق الأمني في الأجهزة الأمنية للتحقق من المخاطر الأمنية، ومسار التحقيق العمالي في <a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية</a> للفصل في النزاعات العمالية وانتهاكات بيئة العمل.</p>
+<p>تتقاطع المسارات الثلاثة في مهارة جوهرية واحدة: القدرة على استخلاص الحقيقة من الأدلة والإفادات وبناء ملف تحقيق متماسك يصمد أمام الفحص القانوني.</p>
+</div></div>
+<div class="section"><div class="section-heading">المهام الرئيسية</div><div class="section-body">
+<ul>
+<li>جمع الأدلة والقرائن والشهادات في القضايا الجنائية والنظامية وفحصها وفق الأصول الإجرائية</li>
+<li>تحرير محاضر التحقيق وتوثيق الإفادات بصياغة رسمية دقيقة ووفق أحكام نظام الإجراءات الجزائية</li>
+<li>فحص الأدلة المادية والمستندية وتحليلها لدعم ملف التحقيق وربط الوقائع بالأدلة</li>
+<li>إعداد التقارير التحقيقية وتقديمها للنيابة العامة أو الجهات المختصة في صورة نهائية قابلة للمحاكمة</li>
+<li>متابعة إجراءات الضبط والإحضار وتنفيذ قرارات التحقيق ضمن الإطار النظامي المحدد</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">المرتبة والراتب</div><div class="section-body">
+<p class="sector-label">القطاع الحكومي — مسار التحقيق القضائي والأمني والعمالي:</p>
+<ul>
+<li>محقق مبتدئ (مرتبة 6–7): نحو 6,000 – 8,500 ريال شهريًا تقريبًا بما يشمل البدلات الأساسية.</li>
+<li>محقق أول (مرتبة 8–9): نحو 8,500 – 12,000 ريال شهريًا تقريبًا مع الأقدمية والكفاءة.</li>
+<li>رئيس قسم تحقيق (مرتبة 10–11): نحو 12,000 – 16,000 ريال شهريًا تقريبًا.</li>
+<li>مشرف تحقيقات (مرتبة 12 فأعلى): من 16,000 ريال شهريًا فأعلى تقريبًا وفق درجة التخصص والموقع.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">المزايا الوظيفية</div><div class="section-body">
+<p class="sector-label">القطاع الحكومي — النيابة العامة والأجهزة الأمنية</p>
+<ul>
+<li>الاستقرار الوظيفي العالي المصحوب بالتقاعد الحكومي الكامل وبدلات الطبيعة الخاصة المرتبطة بطبيعة عمل التحقيق.</li>
+<li>التراكم المعرفي الميداني من القضايا المتنوعة يبني خبرة تحقيقية عميقة لا يمنحها أي برنامج أكاديمي مستقل.</li>
+<li>الطلب المتزايد على المحققين المؤهلين في ظل توسع النيابة العامة وتنامي قضايا التحقيق العمالي بالتوازي مع رؤية 2030.</li>
+<li>إمكانية التخصص في مسارات ذات قيمة عالية كتحقيقات الفساد المالي والجرائم الإلكترونية وقضايا التحرش.</li>
+<li>الانتقال إلى أدوار إشرافية في إدارات التحقيق أو المشاركة في برامج التدريب التحقيقي داخل الجهة.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">الشروط والمؤهلات</div><div class="section-body">
+<ul>
+<li><span class="condition-label">الشروط العامة:</span> الجنسية السعودية، الأهلية الكاملة، حسن السيرة والسلوك، عدم الإدانة بجريمة مخلة بالشرف أو الأمانة، اللياقة الطبية.</li>
+<li><span class="condition-label">شروط المؤهل:</span> شهادة جامعية في الشريعة الإسلامية أو الأنظمة (الحقوق) أو العلوم الأمنية لمسار التحقيق القضائي والأمني، أو مؤهل مناسب معتمد من جهة التعليم العالي لمسار التحقيق العمالي، من جامعة معترف بها لدى الجهات التعليمية المختصة.</li>
+<li><span class="condition-label">متطلب العمر:</span> لا يوجد متطلب عمر لهذه المهنة.</li>
+<li><span class="condition-label">الشروط الإضافية:</span> اجتياز الفحص الأمني واستيفاء متطلبات التأهيل للعمل في الجهات الأمنية والقضائية، وإتقان الإجراءات التحقيقية المنصوص عليها في نظام الإجراءات الجزائية ولوائحه التنفيذية.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">متطلبات التقييم والتهيئة المهنية</div><div class="section-body">
+<span class="assessment-entity">مسار التحقيق الجنائي — النيابة العامة</span>
+<ul>
+<li><span class="condition-label">قبل التعيين:</span> اجتياز اختبارات الكفاءة في الإجراءات الجزائية والأنظمة القضائية، يعقبها مقابلة شخصية أمام لجنة <a href="https://www.pp.gov.sa">النيابة العامة</a>.</li>
+<li><span class="condition-label">بعد التعيين:</span> برامج تأهيل ميدانية في مرافق التحقيق بإشراف محققين أقدم قبل الاستقلالية في ملفات التحقيق.</li>
+</ul>
+<span class="assessment-entity">مسار التحقيق العمالي — وزارة الموارد البشرية</span>
+<ul>
+<li><span class="condition-label">التأهيل:</span> دورات تخصصية في قانون العمل ونظام الإجراءات الجزائية ومهارات التحقيق يُنصح بإكمالها مع <a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية</a> — يُرجع لاشتراطات المسار عند الإعلان.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">الخبرات المطلوبة</div><div class="section-body">
+<p><span class="experience-entity">الجهات الحكومية:</span> لا تُشترط خبرة وظيفية سابقة للتعيين الابتدائي في مرتبة 6–7؛ المطلوب إلمام بأحكام نظام الإجراءات الجزائية ونظام العمل وأصول التحقيق الجنائي، وفهم منهجي لطبيعة جمع الأدلة وتحليلها. تتراكم الخبرة الجوهرية من خلال تنوع القضايا وكثافتها في الجهات ذات الحجم التحقيقي الأعلى.</p>
+</div></div>
+<div class="section"><div class="section-heading">برامج التأهيل المعتمدة</div><div class="section-body">
+<ul>
+<li><a href="https://www.ipa.edu.sa/ar/training">برنامج المحقق المعتمد - معهد الإدارة العامة</a>: يُعوّض النقص في الأدوات التحقيقية التطبيقية لدى التخصصات الأكاديمية النظرية من خلال بناء مهارات التحقيق الميداني والتوثيق الرسمي، ويسد فجوة الخبرة لدى الخريج الجديد من خلال تدريب عملي على منهجيات الاستجواب وتحليل الأدلة المستخدمة في الجهات الحكومية.</li>
+<li><a href="https://www.nauss.edu.sa">دبلوم العلوم الجنائية والتحقيق - جامعة نايف العربية للعلوم الأمنية</a>: يُعمّق الملكة التحقيقية لدى خريجي الشريعة والأنظمة من خلال مقررات متخصصة في الأدلة الجنائية وإجراءات التحقيق الأمني، ويسد فجوة الخبرة التطبيقية من خلال تدريب ميداني مع جهات إنفاذ القانون في بيئات التحقيق الفعلية.</li>
+<li><a href="https://www.hrsd.gov.sa">برنامج التحقيق في منازعات العمل - وزارة الموارد البشرية والتنمية الاجتماعية</a>: يُعوّض غياب المعرفة التخصصية في قانون العمل لدى خريجي الشريعة والأنظمة من خلال تأهيل مُركّز على تحقيقات بيئة العمل وآليات الوساطة والفصل في النزاعات، ويسد فجوة الخبرة الميدانية من خلال التدريب التطبيقي على ملفات التحقيق العمالي الفعلية.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">المهارات المطلوبة</div><div class="section-body">
+<ul>
+<li>جمع الأدلة وتحليلها: لبناء ملف التحقيق الموثَّق الذي يصمد أمام الفحص القانوني</li>
+<li>تحرير محاضر التحقيق: لاستيفاء الاشتراطات الإجرائية الرسمية وضمان صحة المحضر أمام القضاء</li>
+<li>فحص الشهود وتقييم الإفادات: للتحقق من صحة الروايات وتماسكها وكشف التناقضات</li>
+<li>إتقان الأنظمة الإجرائية الجزائية: لضمان سلامة إجراءات التحقيق وعدم بطلانها قانونيًا</li>
+<li>إعداد التقارير التحقيقية: لتقديم الوقائع والأدلة للنيابة أو الجهة المختصة بصورة منظمة</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">الدورات الداعمة</div><div class="section-body">
+<ul>
+<li>دورة <a href="https://lms.doroob.sa/courses/Doroob/W.S-LAW001/JUN2020/about">مكافحة غسل الأموال</a>: لرصد مؤشرات الجرائم المالية ضمن قضايا التحقيق العمالي والمالي وتعزيز القدرة على تحليل المستندات المشبوهة</li>
+<li>دورة <a href="https://lms.doroob.sa/courses/Doroob/C.S-INTEC007/SEP2020/about">تقنيات رقمنة الوثائق الأرشيفية</a>: لرقمنة ملفات التحقيق وحفظ الأدلة المستندية إلكترونيًا بصورة منظمة قابلة للاسترجاع</li>
+<li>دورة <a href="https://lms.doroob.sa/courses/course-v1:Doroob+C.S-INTEC013+AUG2024/about">تقنيات المستقبل في الحكومة الرقمية</a>: لإتقان أدوات التحقيق الرقمي والأنظمة الإلكترونية المستخدمة في الجهات القضائية والأمنية</li>
+<li>دورة <a href="https://www.coursera.org/learn/financial-accounting">المحاسبة المالية</a>: لفحص المستندات المالية ضمن قضايا الاحتيال والفساد المالي وتحليل القيود المحاسبية المشبوهة</li>
+<li>دورة <a href="https://www.coursera.org/learn/law">مدخل إلى القانون</a>: لتعزيز فهم الأطر القانونية الإجرائية الداعمة لصحة محاضر التحقيق وسلامتها أمام القضاء</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">جهات التوظيف وطرق التقديم</div><div class="section-body">
+<h3 class="sector-heading">القطاع الحكومي</h3>
+<h3>جهات سبق وأعلنت</h3>
+<ul>
+<li><a href="https://www.pp.gov.sa">النيابة العامة</a> (في مختلف مناطق المملكة): التقديم عبر <a href="https://jadara.gov.sa">منصة جدارة</a> عند الإعلان عن الشواغر، ويمر المتقدم باختبار الكفاءة ثم المقابلة الشخصية قبل التعيين.</li>
+<li><a href="https://www.moi.gov.sa">وزارة الداخلية — الأمن العام</a>: تُعلن شواغرها عبر <a href="https://jadara.gov.sa">جدارة</a> وتطلب استيفاء متطلبات الفحص الأمني وإجراءات القبول المخصصة للجهات الأمنية.</li>
+<li><a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية والتنمية الاجتماعية</a> (للتحقيق العمالي): تُعلن شواغرها عبر <a href="https://jadara.gov.sa">جدارة</a> وتستهدف خريجي الشريعة والأنظمة وإدارة الموارد البشرية للتحقيق في النزاعات العمالية.</li>
+<li><a href="https://www.nazaha.gov.sa">هيئة الرقابة ومكافحة الفساد — نزاهة</a>: تُعلن شواغرها بصفة مستقلة وتُطبّق معايير تعيين صارمة مع اشتراط التأهيل في مجال التحقيق ومكافحة الفساد.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">المسار الوظيفي والتطور المهني</div><div class="section-body">
+<ul>
+<li><strong>مسار الترقي:</strong> يبدأ «محققًا» في مرتبة 6–7، ثم «محققًا أول» في مرتبة 8–9، وصولًا إلى «رئيس قسم تحقيق» في مرتبة 10–11 فـ«مشرف تحقيقات» في مرتبة 12 فأعلى وفق الأقدمية والكفاءة والتقييم السنوي.</li>
+<li><strong>مسار الانتقال:</strong> يمكن الانتقال إلى مناصب إشرافية في إدارات التحقيق أو التخصص في أنواع محددة كتحقيقات الفساد المالي والجرائم الإلكترونية، وكذلك الانتقال إلى <a href="https://www.nazaha.gov.sa">هيئة الرقابة ومكافحة الفساد</a> أو <a href="https://www.pp.gov.sa">النيابة العامة</a> عبر المنافسة الداخلية.</li>
+<li><strong>مسار التخصص:</strong> التحقيق في قضايا الاحتيال المالي، والجرائم الإلكترونية، وقضايا التحرش في بيئة العمل، وتحقيقات مكافحة الفساد.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">الشهادات المهنية الاحترافية</div><div class="section-body">
+<ul>
+<li><a href="https://www.acfe.com/cfe-credential/how-to-earn-your-cfe-credential">شهادة محترف فحص الاحتيال المعتمد (CFE)</a>: لكشف الاحتيال والتلاعب في الوثائق ضمن قضايا التحقيق المالي والإداري (مدعومة)</li>
+<li><a href="https://www.acams.org/en/certifications/cams-certification">شهادة أخصائي مكافحة غسل الأموال المعتمد (CAMS)</a>: لرصد مؤشرات الاشتباه في قضايا الجرائم المالية وتعزيز قدرة المحقق على تتبع المعاملات المشبوهة (غير مدعومة)</li>
+<li><a href="https://www.wicklander-zulawski.com/forensic-interviewing-certification">شهادة المحقق الجنائي المعتمد (CFI)</a>: لتطوير مهارات الاستجواب والتحقيق الميداني وبناء حوارات تحقيقية فعّالة مع الشهود والمشتبه بهم (غير مدعومة)</li>
+<li><a href="https://www.iacsp.com/certifications">شهادة محلل الاستخبارات الجنائية المعتمد (CFIA)</a>: لتعزيز قدرات التحليل الجنائي واستخلاص الأنماط الإجرامية من البيانات في قضايا التحقيق المعقدة (غير مدعومة)</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">الملاحظات المهنية المتقدمة</div><div class="section-body">
+<ul>
+<li>التصنيف الوطني <a href="https://www.hrsd.gov.sa/skills-taxonomy/occupations">3355 — ضباط الشرطة والمحققون</a> يضع أخصائي التحقيق القضائي ضمن فئة «الفنيون ومساعدو المهنيين» لا «الاختصاصيون»؛ هذا يعني أن الدخول أوسع للتخصصات غير القانونية في بعض مسارات التحقيق العمالي مقارنةً بمسار التحقيق القضائي الذي يشترط غالبًا الشريعة أو الأنظمة.</li>
+<li>الفرق الجوهري بين المسارات الثلاثة: محقق النيابة العامة يعمل تحت إشراف المدعي العام ويُمثّل الدولة في ملاحقة الجرائم، ومحقق الشرطة يُنجز التحقيق الأولي قبل إحالة الملف للنيابة، بينما محقق وزارة الموارد البشرية يُحقق في انتهاكات بيئة العمل والنزاعات العمالية خارج المسار الجنائي. كل مسار له اشتراطاته ومؤهلاته ومساره الوظيفي المستقل.</li>
+<li>نظام الإجراءات الجزائية الصادر بالمرسوم الملكي م/39 لعام 1422هـ هو المرجع الحاكم لعمل المحقق في الجرائم الجنائية؛ أي خرق إجرائي — كالاستجواب دون توثيق أو ضبط الأدلة خارج الأصول — يُعرّض ملف التحقيق للبطلان ويُفقد الأدلة قيمتها القانونية.</li>
+<li>الطلب على المحققين العماليين في تصاعد مستمر مع ارتفاع حجم القوى العاملة الوافدة واشتداد الرقابة على بيئات العمل في إطار رؤية 2030؛ <a href="https://www.hrsd.gov.sa">وزارة الموارد البشرية</a> توسّعت في إنشاء فرق التفتيش والتحقيق العمالي الميداني خلال الأعوام الأخيرة.</li>
+<li>سلامة الإجراءات التحقيقية ليست مجرد متطلب شكلي؛ ملف التحقيق المبني على إجراءات صحيحة يُمثّل قاعدة الاتهام في المحاكمة، وأي ثغرة إجرائية قد تُحوّل دليلًا دامغًا إلى دليل مردود شكلًا — مما يجعل الدقة الإجرائية ركيزة المهنة وليس مجرد مهارة إضافية.</li>
+</ul>
+</div></div>
+<div class="section"><div class="section-heading">النصائح العملية الإضافية</div><div class="section-body">
+<ul>
+<li>أتقن نظام الإجراءات الجزائية ولوائحه التنفيذية بعمق تطبيقي لا مجرد معرفة نظرية؛ المحضر الذي تُعدّه يُبنى عليه قرار الاتهام أو الحفظ، وكل ثغرة إجرائية تُضعف الملف أمام القضاء.</li>
+<li>طوّر مهارة الاستماع الفاعل والتحليل السريع للتناقضات في الإفادات؛ المحقق المتمرس يُلاحظ ما بين السطور قبل ما فيها، وهذه مهارة تتراكم بالتدريب المتعمد لا بمجرد الممارسة العشوائية.</li>
+<li>اكتسب خبرة مبكرة في الجهات ذات الحجم التحقيقي العالي كفروع النيابة في المناطق الحضرية الكبرى؛ تنوع القضايا يبني سرعة الحكم الإجرائي التي لا تُعوّضها سنوات في بيئة ذات نشاط محدود.</li>
+<li>إذا كنت تستهدف مسار التحقيق العمالي، استثمر في فهم نظام العمل ولوائحه وآليات التسوية الودية؛ المحقق العمالي يحتاج أن يُميّز بين النزاع القابل للوساطة والانتهاك الذي يستوجب إجراء رسميًا.</li>
+<li>بنِ قاعدة معرفية في الجرائم الإلكترونية والأدلة الرقمية؛ حجم القضايا التي تشتمل على أدلة رقمية في ارتفاع متواصل، والمحقق القادر على قراءة السجلات الرقمية وتحليل أدلة الأجهزة يُشكّل قيمة مضافة نادرة.</li>
+</ul>
+</div></div>
+<div class="section table-page-group"><div class="section-heading">جدول مدى قبول التخصصات</div><div class="section-body">
+<div class="acceptance-table-wrapper">
+<table class="acceptance-table table-page-block">
+<thead><tr>
+<th>التخصص</th>
+<th>مدى القبول</th>
+<th>السبب</th>
+<th>ما يرفع القبول</th>
+</tr></thead>
+<tbody>
+<tr><td>الشريعة الإسلامية</td><td class="acceptance-level-cell"><span class="badge-high">عالي</span></td><td>أساس الإجراءات الجزائية في النظام السعودي شرعي — تخصص مقبول نظاميًا وفعليًا في مسار التحقيق القضائي والنيابة العامة</td><td>لا يحتاج برنامجًا تعويضيًا — دبلوم العلوم الجنائية داعم للتطبيق الميداني</td></tr>
+<tr><td>الأنظمة (الحقوق)</td><td class="acceptance-level-cell"><span class="badge-high">عالي</span></td><td>يُغطي الإجراءات الجزائية والقانون الجنائي ونظام العمل — الأقرب لمتطلبات التحقيق في المسارات الثلاثة</td><td>لا يحتاج برنامجًا تعويضيًا — هو التخصص الأكثر توافقًا مع متطلبات مسار التحقيق</td></tr>
+<tr><td>العلوم الأمنية</td><td class="acceptance-level-cell"><span class="badge-high">عالي</span></td><td>مُصمَّم مباشرةً لمسار التحقيق الأمني والشرطي — يمنح الأدوات التحقيقية الميدانية والأمنية</td><td>لا يحتاج برنامجًا تعويضيًا — الأنسب لمسار تحقيق الأجهزة الأمنية</td></tr>
+<tr><td>الشريعة والقانون</td><td class="acceptance-level-cell"><span class="badge-high">عالي</span></td><td>يجمع الإطار الشرعي مع الإجرائي القانوني — يُتيح العمل في جميع مسارات التحقيق</td><td>لا يحتاج برنامجًا تعويضيًا — يُغطي المسارات الثلاثة في آن واحد</td></tr>
+<tr><td>الإدارة العامة</td><td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td><td>يُتيح الدخول لمسار التحقيق العمالي في وزارة الموارد البشرية لكنه لا يُغطي الجانب الإجرائي القانوني للتحقيق الجنائي</td><td>دبلوم العلوم الجنائية أو برامج معهد الإدارة العامة في التحقيق لسد الفجوة الإجرائية</td></tr>
+<tr><td>علم الاجتماع الجنائي</td><td class="acceptance-level-cell"><span class="badge-medium">متوسط</span></td><td>يمنح أدوات تحليل السلوك الإجرامي لكن دون الغطاء الإجرائي القانوني اللازم للتحقيق الرسمي</td><td>دبلوم العلوم الجنائية أو الأنظمة لاكتساب الأساس الإجرائي المطلوب للتعيين</td></tr>
+<tr><td>إدارة الأعمال</td><td class="acceptance-level-cell"><span class="badge-low">ضعيف</span></td><td>لا يُغطي الجانب الإجرائي القانوني المطلوب في التحقيق الجنائي — الدخول ممكن عبر التحقيق العمالي لكن المنافسة عالية مع التخصصات الأقرب</td><td>لا يوجد برنامج يُحوّل هذا التخصص إلى مؤهل تنافسي لوظائف التحقيق الجنائي تحديدًا</td></tr>
+</tbody>
+</table>
+</div>
+</div></div>
+</div>
+</body>
+</html>
