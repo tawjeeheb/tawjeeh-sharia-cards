@@ -159,10 +159,10 @@
 
 الدورات الداعمة
 * دورة [مكافحة غسل الأموال](https://lms.doroob.sa/courses/Doroob/W.S-LAW001/JUN2020/about): لضبط الامتثال الشرعي المالي
-* دورة [التمويل الإسلامي والمصرفية الإسلامية](https://www.coursera.org/learn/islamic-banking): لفهم المنتجات الشرعية المالية
-* دورة [قانون العقود والمعاملات التجارية](https://www.coursera.org/learn/contracts): لمراجعة العقود الشرعية التجارية
+* دورة [منتجات البنك التمويلية والتمكينية](https://lms.doroob.sa/courses/course-v1:Doroob+W.S-FINAN011+MAR2024/about): لفهم المنتجات الشرعية المالية
+* دورة [إدارة المشتريات والعقود](https://www.coursera.org/learn/procurement-and-contracts-management): لمراجعة العقود الشرعية التجارية
 * دورة [التفاوض الناجح وإدارة الخلافات](https://www.coursera.org/learn/negotiation): لإدارة التسويات الشرعية التعاقدية
-* دورة [الحوكمة المؤسسية والامتثال](https://www.coursera.org/learn/corporate-governance): لضمان الامتثال الشرعي المؤسسي
+* دورة [إدارة شركات المستقبل](https://www.coursera.org/learn/company-future-management-ar): لضمان الامتثال الشرعي المؤسسي
 
 جهات التوظيف وطرق التقديم
 
