@@ -380,6 +380,149 @@
       "suitable_for": [
         "programs"
       ]
+    },
+    {
+      "url": "https://www.isaca.org/credentialing/crisc",
+      "name_ar": "CRISC",
+      "name_en": "CRISC",
+      "type": "certification",
+      "owner": "ISACA",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: CRISC® Certification | Certified in Risk and Information Systems Control® | ISACA",
+      "suitable_for": [
+        "certifications"
+      ]
+    },
+    {
+      "url": "https://www.isc2.org/certifications/cgrc",
+      "name_ar": "CGRC",
+      "name_en": "CGRC",
+      "type": "certification",
+      "owner": "ISC2",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: CGRC Governance, Risk and Compliance Certification ISC2",
+      "suitable_for": [
+        "certifications"
+      ]
+    },
+    {
+      "url": "https://www.oceg.org/certifications/grc-professional-certification",
+      "name_ar": "GRCP",
+      "name_en": "GRCP",
+      "type": "certification",
+      "owner": "OCEG",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: GRC Professional GRCP Certification OCEG",
+      "suitable_for": [
+        "certifications"
+      ]
+    },
+    {
+      "url": "https://www.isaca.org/credentialing/cisa",
+      "name_ar": "CISA",
+      "name_en": "CISA",
+      "type": "certification",
+      "owner": "ISACA",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: CISA Certification Certified Information Systems Auditor ISACA",
+      "suitable_for": [
+        "certifications"
+      ]
+    },
+    {
+      "url": "https://www.int-comp.org/courses/ica-advanced-certificate-in-governance-risk-and-compliance",
+      "name_ar": "ICA Advanced Certificate GRC",
+      "name_en": "ICA Advanced Certificate GRC",
+      "type": "program",
+      "owner": "ICA",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: ICA Advanced Certificate in Governance Risk and Compliance",
+      "suitable_for": [
+        "programs"
+      ]
+    },
+    {
+      "url": "https://www.int-comp.org/courses/ica-diploma-in-governance-risk-and-compliance",
+      "name_ar": "ICA Diploma GRC",
+      "name_en": "ICA Diploma GRC",
+      "type": "program",
+      "owner": "ICA",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: ICA Diploma in Governance Risk and Compliance Level 6",
+      "suitable_for": [
+        "programs"
+      ]
+    },
+    {
+      "url": "https://www.coursera.org/learn/foundations-of-governance-risk-and-compliance",
+      "name_ar": "Foundations of Governance Risk and Compliance",
+      "name_en": "Foundations of Governance Risk and Compliance",
+      "type": "course",
+      "owner": "ISC2 / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: Foundations of Governance Risk and Compliance Coursera ISC2",
+      "suitable_for": [
+        "courses"
+      ]
+    },
+    {
+      "url": "https://www.edx.org/learn/risk-management/the-international-monetary-fund-vitara-enterprise-risk-management",
+      "name_ar": "VITARA Enterprise Risk Management",
+      "name_en": "VITARA Enterprise Risk Management",
+      "type": "course",
+      "owner": "IMF / edX",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: IMFx VITARA Enterprise Risk Management edX",
+      "suitable_for": [
+        "courses"
+      ]
+    },
+    {
+      "url": "https://ethrai.sa/course-details/%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9-%D8%A7%D9%84%D8%AD%D9%88%D9%83%D9%85%D8%A9",
+      "name_ar": "إدارة الحوكمة",
+      "name_en": "إدارة الحوكمة",
+      "type": "course",
+      "owner": "Ethrai / إثرائي",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: إدارة الحوكمة — إثرائي",
+      "suitable_for": [
+        "courses"
+      ]
+    },
+    {
+      "url": "https://www.coursera.org/learn/packt-grc-fundamentals-learn-governance-risk-and-compliance-mzusy",
+      "name_ar": "GRC Fundamentals",
+      "name_en": "GRC Fundamentals",
+      "type": "course",
+      "owner": "Packt / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: GRC Fundamentals Learn Governance Risk and Compliance Coursera Packt",
+      "suitable_for": [
+        "courses"
+      ]
+    },
+    {
+      "url": "https://www.coursera.org/specializations/cyber-security-essentials-for-governance-risk-compliance",
+      "name_ar": "Cyber Security GRC Specialization",
+      "name_en": "Cyber Security GRC Specialization",
+      "type": "course",
+      "owner": "Macquarie University / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: Cyber Security Essentials for Governance Risk Compliance Coursera Macquarie University",
+      "suitable_for": [
+        "courses"
+      ]
     }
   ],
   "_not_verified": [
