@@ -158,18 +158,37 @@
 ### القاعدة الصارمة
 
 **FAIL_OPEN > 0 → فشل إلزامي. لا يُعتمد PDF ولا يُسمح بـ commit.**
+**FAIL_USER_OPEN > 0 → فشل إلزامي. لا يُعتمد PDF ولا يُسمح بـ commit.**
+
+لا يتحمل المستخدم مراجعة الروابط يدويًا. النظام مسؤول عن فحص روابط PDF النهائية واستبدال أي رابط غير صالح أو غير نافع للقارئ.
 
 لا يوجد استثناء. لا توجد مراجعة يدوية. النظام هو المسؤول الكامل عن الفحص.
+
+### وضع USER_OPEN_STRICT (الافتراضي في pipeline)
+
+يُستخدم `--user-open-strict` (أو `strict=True`) كوضع افتراضي في `step_pdf_links()`. في هذا الوضع:
+- **000 أو 404** → FAIL_USER_OPEN
+- **KNOWN_LOGIN_REQUIRED** (مثل `lms.doroob.sa/courses/` أو `fa.gov.sa/Services/ProgramDetails/`) → FAIL_USER_OPEN
+- **Bare homepage** (نطاق بلا مسار محدد) → WARN_GENERAL_PAGE (مقبول — لا يُحتسب فشلًا)
+- **غير ذلك (بما في ذلك 403)** → PASS_OFFICIAL_SPECIFIC
+
+### قاعدة تنوع منصات الدورات
+
+الدورات الداعمة يجب أن تكون متنوعة المصدر:
+- النمط المفضّل: **3 دورات Coursera + 2 دورات إثرائي/إيثراEd**
+- **محظور:** دورات all-doroob — الروابط المحمية (`lms.doroob.sa/courses/`) تفشل FAIL_USER_OPEN
+- **مقبول:** Coursera (بمزودين مختلفين) + إثرائي + ACAMS + CFA Institute عبر Coursera
 
 ### التكامل في Pipeline
 
 يتم تنفيذ الفحص تلقائيًا كخطوة **5** في `run_card_pipeline.py`:
 - `scripts/validate_pdf_links.py` — السكريبت المستقل للفحص.
-- `step_pdf_links()` في `run_card_pipeline.py` — الدالة المندمجة في pipeline.
+- `step_pdf_links()` في `run_card_pipeline.py` — الدالة المندمجة في pipeline (strict=True افتراضيًا).
 - `sanitize_url_for_pdf()` في `outputs/pdf/convert.py` — تنظيف تلقائي للروابط قبل توليد PDF.
 
 ### ممنوعات
 
-* ممنوع اعتماد بطاقة وفيها FAIL_OPEN واحد.
-* ممنوع commit إذا كان FAIL_OPEN > 0.
+* ممنوع اعتماد بطاقة وفيها FAIL_OPEN أو FAIL_USER_OPEN واحد.
+* ممنوع commit إذا كان FAIL_OPEN > 0 أو FAIL_USER_OPEN > 0.
 * ممنوع الاعتماد على فحص Markdown أو HTML بدلًا من فحص PDF نفسه.
+* ممنوع استخدام روابط لمنصات تتطلب تسجيل دخول (doroob/courses، fa.gov.sa/Services) في أقسام الدورات.

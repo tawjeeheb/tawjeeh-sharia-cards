@@ -126,11 +126,11 @@
 * تحليل السياسات العمالية ورصد التعديلات: لمتابعة التغييرات على نظام العمل وقرارات مجلس الوزراء المتعلقة بسوق العمل وترجمتها إلى إجراءات تشغيلية داخلية
 
 الدورات الداعمة
-* دورة [الثقافة العمالية وفق نظام العمل السعودي](https://lms.doroob.sa/courses/Doroob/C.S-LAW001/2019/about): لفهم حقوق طرفي عقد العمل
-* دورة [أسس إدارة الموارد البشرية](https://lms.doroob.sa/courses/Doroob/W.S-PUBAD001/JUN2020/about): لإدارة علاقات العمل مؤسسيًا
-* دورة [دورة حياة المشاريع وحوكمتها](https://lms.doroob.sa/courses/course-v1:Doroob+W.S-BUSAD040+JUL2025/about): لإدارة ملفات المنازعات منهجيًا
-* دورة [المنصة الوطنية الموحدة للتوظيف للأفراد](https://lms.doroob.sa/courses/course-v1:Doroob+W.S-HUMRS004+JAN2025/about): لآليات تقديم شكاوى سوق العمل
-* دورة [إدارة المخاطر](https://lms.doroob.sa/courses/Doroob/C.S-BUSAD005/DEC2020/about?lang=ar): لتحديد مخاطر الامتثال العمالي
+* [تخصص إدارة الموارد البشرية — Coursera / جامعة مينيسوتا](https://www.coursera.org/specializations/human-resource-management): لبناء كفاءة العلاقات العمالية
+* [شهادة إدارة المشاريع المهنية — Google / Coursera](https://www.coursera.org/professional-certificates/google-project-management): لإدارة ملفات المنازعات منهجيًا
+* [تحليل البيانات المهني — Google / Coursera](https://www.coursera.org/professional-certificates/google-data-analytics): لتحليل بيانات الامتثال العمالي
+* [برامج التعلم والتطوير المهني — إثرائي](https://ethrai.sa/ar/programs/icreate): لتعزيز مهارات الإبداع والتفكير المنهجي
+* [برامج التنمية المهنية — إثرائي / إيثراEd](https://www.ithra.com/ar/programs/ithraed): لتطوير المهارات القيادية والمهنية
 
 جهات التوظيف وطرق التقديم
 

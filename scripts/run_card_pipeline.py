@@ -184,14 +184,16 @@ def step_pdf_links(card_path):
     pp = pdf_path(card_path)
     if not os.path.exists(pp):
         return False, f'PDF غير موجود — شغّل مع --build أولًا'
-    results = validate_pdf_links([pp], verbose=False)
-    n_pass = len(results['pass_open'])
-    n_fail = len(results['fail_open'])
-    total = n_pass + n_fail
+    results = validate_pdf_links([pp], verbose=False, strict=True)
+    n_pass = len(results['pass_official_specific'])
+    n_warn = len(results['warn_general_page'])
+    n_fail = len(results['fail_user_open'])
+    total = n_pass + n_warn + n_fail
     if n_fail > 0:
-        fail_urls = ' | '.join(e['url'] for e in results['fail_open'][:3])
-        return False, f'FAIL_OPEN={n_fail}/{total} — {fail_urls}'
-    return True, f'PASS_OPEN={n_pass}/{total} — صفر FAIL_OPEN'
+        fail_urls = ' | '.join(e['url'] for e in results['fail_user_open'][:3])
+        return False, f'FAIL_USER_OPEN={n_fail}/{total} — {fail_urls}'
+    warn_str = f' | WARN_GENERAL_PAGE={n_warn}' if n_warn > 0 else ''
+    return True, f'PASS_OFFICIAL_SPECIFIC={n_pass}/{total}{warn_str} — صفر FAIL_USER_OPEN'
 
 
 # ── خطوة: تحقق git نظيف ──────────────────────────────────────────────────────
