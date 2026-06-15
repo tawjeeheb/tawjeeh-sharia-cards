@@ -287,6 +287,48 @@ def step_link_type_boundary_check(card_path) -> tuple[bool, str]:
     return True, f'BOUNDARY_PASS: جميع الأنواع متوافقة مع أقسامها'
 
 
+# ── خطوة: CONTENT STRUCTURE FREEZE CHECK v1.0 ───────────────────────────────
+
+def step_structure_freeze(card_path) -> tuple[bool, str]:
+    """
+    Step 1.8: CONTENT STRUCTURE FREEZE CHECK v1.0
+
+    يتحقق من:
+      - وجود العناصر الـ 18 بالترتيب الصحيح (ELEMENT ORDER LOCK)
+      - شكل كل عنصر ثابت بين البطاقات (ELEMENT SHAPE LOCK)
+      - لا تلوث بين العناصر (CONTENT CROSS-CONTAMINATION LOCK)
+      - لا انحراف بنيوي > 15% (FAIL_STRUCTURE_DRIFT)
+
+    يمنع توليد HTML/PDF إذا فشل أي فحص.
+    """
+    try:
+        from check_structure_freeze import run_freeze_checks
+    except ImportError:
+        return False, 'check_structure_freeze.py غير متاح'
+
+    card_name = os.path.basename(card_path)
+    data_path = os.path.join(REPO_ROOT, 'data', card_name)
+    if not os.path.exists(data_path):
+        data_path = card_path
+
+    passed, failed, drift_fails = run_freeze_checks(data_path)
+
+    if failed:
+        drift_count = len(drift_fails)
+        other_count = len(failed) - drift_count
+        details = []
+        for e in failed[:4]:
+            details.append(f'{e["verdict"]}: [{e["code"]}] {e["label"][:40]}')
+        summary = (
+            f'FREEZE_FAIL: {len(failed)} انتهاك(ات) '
+            f'({drift_count} DRIFT, {other_count} FAIL)\n'
+            + '\n'.join(f'       → {d}' for d in details)
+        )
+        return False, summary
+
+    return True, f'FREEZE_PASS: {len(passed)}/{len(passed)} فحص — البنية مطابقة للنموذج المجمَّد'
+
+
 # ── خطوة: PDF LINK VALIDATION LOCK v1.2 ────────────────────────────────────
 
 def step_pdf_links(card_path):
@@ -397,6 +439,13 @@ def run_pipeline(card_path, build=False, allowed=None, release=False):
     # Step 1.5: LINK TYPE BOUNDARY LOCK v1.0
     ok, detail = step_link_type_boundary_check(card_path)
     steps.append(('Step 1.5 — LINK TYPE BOUNDARY LOCK v1.0', ok, detail))
+    if not ok:
+        print_pipeline_report(card_path, steps)
+        return False
+
+    # Step 1.8: CONTENT STRUCTURE FREEZE CHECK v1.0
+    ok, detail = step_structure_freeze(card_path)
+    steps.append(('Step 1.8 — CONTENT STRUCTURE FREEZE CHECK v1.0', ok, detail))
     if not ok:
         print_pipeline_report(card_path, steps)
         return False

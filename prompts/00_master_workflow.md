@@ -226,6 +226,36 @@ HIGH_VERIFIED وحده لا يكفي للإدراج — يجب مطابقة ال
 
 ---
 
+## CONTENT STRUCTURE FREEZE CHECK v1.0 — قفل إلزامي قبل توليد HTML/PDF
+
+### القفول المُطبَّقة
+
+| القفل | المعنى |
+|---|---|
+| **ELEMENT ORDER LOCK** | العناصر الـ 18 موجودة بترتيبها المجمَّد |
+| **ELEMENT SHAPE LOCK** | شكل كل عنصر ثابت بين البطاقات |
+| **CONTENT CROSS-CONTAMINATION LOCK** | لا محتوى عنصر يدخل عنصرًا آخر |
+| **FAIL_STRUCTURE_DRIFT** | انحراف بنيوي > 15% = فشل إلزامي |
+
+### ما يمنعه القفل
+
+* حذف أي عنصر من الـ 18 أو إضافة عنصر جديد
+* تغيير ترتيب العناصر أو عنوان أي عنصر
+* إدخال "قبل التعيين/بعد التعيين" في الشروط والمؤهلات
+* إدخال شهادة داخل برامج التأهيل (CROSS-CONTAMINATION)
+* إدخال برنامج داخل الشهادات (CROSS-CONTAMINATION)
+* إدخال شهادة أو برنامج داخل الدورات الداعمة (CROSS-CONTAMINATION)
+* عدد دورات ≠ 5 (ELEMENT SHAPE LOCK)
+* عدد شهادات < 4 (ELEMENT SHAPE LOCK)
+* جدول مدى القبول ≠ 4 أعمدة (ELEMENT SHAPE LOCK)
+
+### موقع التطبيق
+
+**Step 1.8** في `run_card_pipeline.py` — بعد LINK TYPE BOUNDARY LOCK وقبل توليد HTML/PDF.  
+السكربت المستقل: `scripts/check_structure_freeze.py`
+
+---
+
 ## PDF LINK VALIDATION LOCK v1.0 — خطوة إلزامية بعد كل توليد PDF
 
 ### المبدأ
