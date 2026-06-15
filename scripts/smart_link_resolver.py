@@ -46,6 +46,61 @@ SECTION_TYPES = {
     'courses':        'الدورات الداعمة',
 }
 
+# ── LINK TYPE BOUNDARY LOCK v1.0 ─────────────────────────────────────────────
+# الأنواع المسموحة لكل قسم حرج. الرابط الصحيح في النوع الخطأ = رابط مرفوض.
+SECTION_ALLOWED_TYPES: dict[str, frozenset[str]] = {
+    'برامج التأهيل المعتمدة':      frozenset({'program', 'diploma', 'degree'}),
+    'الشهادات المهنية الاحترافية': frozenset({'certification'}),
+    'الدورات الداعمة':             frozenset({'course'}),
+}
+ALLOWED_COURSE_DOMAINS = frozenset({'coursera.org', 'ethrai.sa', 'lms.doroob.sa'})
+
+
+def check_type_boundary(url: str, section_name: str, registry_type: str) -> dict:
+    """
+    LINK TYPE BOUNDARY LOCK v1.0
+
+    يتحقق أن نوع الرابط يطابق القسم الذي أُدرج فيه.
+
+    يُعيد dict بـ:
+      verdict : 'TYPE_OK' | 'TYPE_MISMATCH' | 'COURSE_PLATFORM_NOT_ALLOWED' | 'UNKNOWN_TYPE'
+      reason  : سبب الرفض (فارغ عند النجاح)
+    """
+    allowed = SECTION_ALLOWED_TYPES.get(section_name)
+    if allowed is None:
+        # قسم غير حرج — لا فحص
+        return {'verdict': 'TYPE_OK', 'reason': ''}
+
+    if not registry_type:
+        return {
+            'verdict': 'UNKNOWN_TYPE',
+            'reason': f'حقل type مفقود في السجل — لا يمكن التحقق من التوافق',
+        }
+
+    if registry_type not in allowed:
+        return {
+            'verdict': 'TYPE_MISMATCH',
+            'reason': (
+                f'الرابط نوعه [{registry_type}] '
+                f'لكنه أُدرج في [{section_name}] '
+                f'التي تقبل فقط {sorted(allowed)}'
+            ),
+        }
+
+    # للدورات: فحص إضافي على المنصة
+    if section_name == 'الدورات الداعمة':
+        domain = re.sub(r'^https?://(www\.)?', '', url).split('/')[0]
+        if domain not in ALLOWED_COURSE_DOMAINS:
+            return {
+                'verdict': 'COURSE_PLATFORM_NOT_ALLOWED',
+                'reason': (
+                    f'منصة [{domain}] غير معتمدة. '
+                    f'المنصات المسموحة: {sorted(ALLOWED_COURSE_DOMAINS)}'
+                ),
+            }
+
+    return {'verdict': 'TYPE_OK', 'reason': ''}
+
 RESOLUTION_STATES = {
     'CACHE_HIT_HIGH':   'رابط مثبت في السجل — قبول مباشر',
     'CACHE_HIT_BAD':    'رابط مرفوض في السجل — استبدال إلزامي',

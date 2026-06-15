@@ -87,10 +87,15 @@ def extract_critical_links(md_path: str) -> list[dict]:
 
 def classify_link(link: dict, verified: dict, not_verified: set) -> dict:
     """
-    يصنّف الرابط مقابل السجل.
-    النتائج الممكنة: HIGH_VERIFIED / MEDIUM_VERIFIED / NOT_VERIFIED / UNKNOWN / NEEDS_RESOLUTION
+    يصنّف الرابط مقابل السجل + LINK TYPE BOUNDARY LOCK v1.0.
+
+    النتائج الممكنة:
+      HIGH_VERIFIED / MEDIUM_VERIFIED / NOT_VERIFIED / NEEDS_RESOLUTION
+      TYPE_MISMATCH / COURSE_PLATFORM_NOT_ALLOWED / UNKNOWN_TYPE
     """
-    from smart_link_resolver import SmartLinkResolver, is_bare_homepage, is_login_required
+    from smart_link_resolver import (
+        is_bare_homepage, is_login_required, check_type_boundary,
+    )
 
     url = link['url'].rstrip('/')
 
@@ -104,9 +109,24 @@ def classify_link(link: dict, verified: dict, not_verified: set) -> dict:
 
     if url in not_verified:
         return {**link, 'verdict': 'NOT_VERIFIED', 'reason': 'موجود في قائمة _not_verified (فاشل مؤكد)'}
+
     if url in verified:
         entry = verified[url]
         v = entry.get('verification', 'UNKNOWN')
+
+        if v == 'HIGH_VERIFIED':
+            # ── LINK TYPE BOUNDARY LOCK v1.0 ─────────────────────────────
+            registry_type = entry.get('type', '')
+            boundary = check_type_boundary(link['url'], link['section'], registry_type)
+            if boundary['verdict'] != 'TYPE_OK':
+                return {**link,
+                        'verdict': boundary['verdict'],
+                        'entry': entry,
+                        'reason': boundary['reason']}
+            # ─────────────────────────────────────────────────────────────
+            return {**link, 'verdict': 'HIGH_VERIFIED', 'entry': entry,
+                    'reason': entry.get('evidence', '—')}
+
         return {**link, 'verdict': v, 'entry': entry,
                 'reason': entry.get('evidence', '—')}
 
@@ -120,17 +140,50 @@ def classify_link(link: dict, verified: dict, not_verified: set) -> dict:
             )}
 
 
+TYPE_BOUNDARY_VERDICTS = frozenset({
+    'TYPE_MISMATCH', 'COURSE_PLATFORM_NOT_ALLOWED', 'UNKNOWN_TYPE',
+    'DUPLICATE_ENTITY_ACROSS_SECTIONS',
+})
+
+
+def detect_duplicates(links: list[dict]) -> list[dict]:
+    """
+    LINK TYPE BOUNDARY LOCK v1.0 — كشف التكرار عبر الأقسام.
+    يكتشف نفس الرابط موجودًا في أكثر من قسم حرج.
+    """
+    from collections import defaultdict
+    url_sections: dict[str, list] = defaultdict(list)
+    for link in links:
+        url_sections[link['url'].rstrip('/')].append(link)
+
+    duplicates = []
+    for url, occurrences in url_sections.items():
+        sections = list({o['section'] for o in occurrences})
+        if len(sections) > 1:
+            for occ in occurrences:
+                duplicates.append({
+                    **occ,
+                    'verdict': 'DUPLICATE_ENTITY_ACROSS_SECTIONS',
+                    'reason': (
+                        f'نفس الرابط موجود في {len(sections)} أقسام: '
+                        + ' و '.join(f'[{s}]' for s in sections)
+                    ),
+                })
+    return duplicates
+
+
 def check_md_files(
     md_paths: list[str],
     verbose: bool = False,
     list_unresolved: bool = False,
 ) -> tuple[list, list, list]:
     """
-    يفحص ملفات Markdown مقابل السجل.
+    يفحص ملفات Markdown مقابل السجل + LINK TYPE BOUNDARY LOCK v1.0.
     يُعيد (passed, failed, needs_resolution).
 
-    passed          : HIGH_VERIFIED
-    failed          : NOT_VERIFIED / MEDIUM_VERIFIED / REJECTED / DEPRECATED
+    passed          : HIGH_VERIFIED + TYPE_OK
+    failed          : NOT_VERIFIED / MEDIUM_VERIFIED / TYPE_MISMATCH /
+                      COURSE_PLATFORM_NOT_ALLOWED / DUPLICATE_ENTITY_ACROSS_SECTIONS
     needs_resolution: روابط UNKNOWN تحتاج SMART LINK RESOLUTION ENGINE
     """
     registry = load_registry()
@@ -142,8 +195,26 @@ def check_md_files(
 
     for md_path in md_paths:
         links = extract_critical_links(md_path)
+
+        # فحص التكرار عبر الأقسام
+        dup_results = detect_duplicates(links)
+        dup_urls = {r['url'].rstrip('/') for r in dup_results}
+
         for link in links:
             result = classify_link(link, verified, not_verified)
+            # إذا الرابط مكرر عبر أقسام، يُعامل كفشل
+            if link['url'].rstrip('/') in dup_urls:
+                # ابحث عن نتيجة التكرار المحددة لهذا السطر
+                dup = next(
+                    (d for d in dup_results
+                     if d['url'].rstrip('/') == link['url'].rstrip('/')
+                     and d['line'] == link['line']),
+                    None,
+                )
+                if dup:
+                    failed.append(dup)
+                    continue
+
             if result['verdict'] == 'HIGH_VERIFIED':
                 passed.append(result)
             elif result['verdict'] == 'NEEDS_RESOLUTION':
@@ -160,6 +231,7 @@ def print_report(passed: list, failed: list, verbose: bool = False,
     print('=' * 60)
     print('  LINK SELECTION & VERIFICATION PROTOCOL v2.0')
     print('  + SMART LINK RESOLUTION ENGINE')
+    print('  + LINK TYPE BOUNDARY LOCK v1.0')
     print('  فحص الروابط الحرجة مقابل verified_link_registry')
     print('=' * 60)
 
@@ -178,16 +250,28 @@ def print_report(passed: list, failed: list, verbose: bool = False,
             print(f'     الإجراء: سيُشغَّل SMART LINK RESOLUTION ENGINE تلقائيًا')
 
     if failed:
-        print(f'\n  ❌ روابط مرفوضة ({len(failed)}):')
-        for r in failed:
-            print(f'\n  ❌ {r["verdict"]} | {r["section"]}')
-            print(f'     النص: {r["text"]}')
-            print(f'     URL : {r["url"]}')
-            print(f'     السبب: {r["reason"]}')
-            if r["verdict"] == "MEDIUM_VERIFIED":
-                restr = r.get("entry", {}).get("restrictions", "")
-                if restr:
-                    print(f'     القيود: {restr}')
+        type_fails = [r for r in failed if r['verdict'] in TYPE_BOUNDARY_VERDICTS]
+        other_fails = [r for r in failed if r['verdict'] not in TYPE_BOUNDARY_VERDICTS]
+
+        if type_fails:
+            print(f'\n  🔒 LINK TYPE BOUNDARY LOCK — انتهاكات ({len(type_fails)}):')
+            for r in type_fails:
+                print(f'\n  🔒 {r["verdict"]} | {r["section"]}')
+                print(f'     النص: {r["text"]}')
+                print(f'     URL : {r["url"]}')
+                print(f'     السبب: {r["reason"]}')
+
+        if other_fails:
+            print(f'\n  ❌ روابط مرفوضة ({len(other_fails)}):')
+            for r in other_fails:
+                print(f'\n  ❌ {r["verdict"]} | {r["section"]}')
+                print(f'     النص: {r["text"]}')
+                print(f'     URL : {r["url"]}')
+                print(f'     السبب: {r["reason"]}')
+                if r["verdict"] == "MEDIUM_VERIFIED":
+                    restr = r.get("entry", {}).get("restrictions", "")
+                    if restr:
+                        print(f'     القيود: {restr}')
 
     total = len(passed) + len(failed) + len(needs_resolution)
     print(f'\n  الإجمالي الحرج: {total}')

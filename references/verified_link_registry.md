@@ -1,5 +1,5 @@
 # Verified Link Registry — سجل الروابط المعتمدة
-**الإصدار:** v2.0 — SMART LINK RESOLUTION ENGINE  
+**الإصدار:** v2.1 — SMART LINK RESOLUTION ENGINE + LINK TYPE BOUNDARY LOCK  
 **آخر تحديث:** 2026-06-15  
 **القاعدة:** السجل **Cache ذكي**، ليس whitelist مغلقًا. أي رابط جديد يُحلَّل تلقائيًا ويُرقَّى إلى HIGH_VERIFIED أو يُستبدَل دون تدخل المستخدم.
 
@@ -18,7 +18,20 @@
 إذا الرابط غير موجود في السجل → يشغّل SMART LINK RESOLUTION ENGINE تلقائيًا.
 إذا فشل الاكتشاف → استبدل المحتوى ببديل يملك رابطًا HIGH_VERIFIED.
 المستخدم لا يراجع الروابط يدويًا — النظام مسؤول كامل.
+
+الرابط الصحيح في النوع الخطأ = رابط مرفوض.
+HIGH_VERIFIED وحده لا يكفي — يجب أن يطابق نوع الرابط [type] نوع القسم الذي أُدرج فيه.
 ```
+
+### LINK TYPE BOUNDARY LOCK v1.0 — قواعد مطابقة النوع
+
+| القسم | الأنواع المقبولة | مثال على خلط مرفوض |
+|---|---|---|
+| برامج التأهيل المعتمدة | `program`, `diploma`, `degree` | SHRM-CP = TYPE_MISMATCH |
+| الشهادات المهنية الاحترافية | `certification` | ICA Diploma في الشهادات = TYPE_MISMATCH |
+| الدورات الداعمة | `course` (Coursera/إثرائي/دروب) | edX = COURSE_PLATFORM_NOT_ALLOWED |
+
+**أنواع الأخطاء:** `TYPE_MISMATCH` \| `COURSE_PLATFORM_NOT_ALLOWED` \| `DUPLICATE_ENTITY_ACROSS_SECTIONS` \| `UNKNOWN_TYPE`
 
 ## حالات الروابط في السجل
 

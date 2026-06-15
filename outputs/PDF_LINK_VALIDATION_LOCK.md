@@ -13,7 +13,26 @@
 السجل ليس whitelist مغلقًا؛ السجل Cache ذكي.
 أي رابط جديد يُحلَّل تلقائيًا عبر SMART LINK RESOLUTION ENGINE
 ويُرقَّى إلى HIGH_VERIFIED أو يُستبدَل — دون تدخل المستخدم.
+
+الرابط الصحيح في النوع الخطأ = رابط مرفوض.
+HIGH_VERIFIED وحده لا يكفي — يجب أن يتطابق نوع الرابط مع نوع القسم.
 ```
+
+### LINK TYPE BOUNDARY LOCK v1.0 — الطبقة الثانية (بعد HIGH_VERIFIED)
+
+| القسم | الأنواع المقبولة | مثال مرفوض |
+|---|---|---|
+| برامج التأهيل المعتمدة | `program`, `diploma`, `degree` | SHRM-CP (certification) في برامج التأهيل |
+| الشهادات المهنية الاحترافية | `certification` | ICA Program (program) في الشهادات |
+| الدورات الداعمة | `course` من منصة معتمدة | edX (منصة غير معتمدة) |
+
+**أخطاء القفل:**
+- `TYPE_MISMATCH` — نوع الرابط لا يطابق القسم
+- `COURSE_PLATFORM_NOT_ALLOWED` — منصة الدورة غير معتمدة
+- `DUPLICATE_ENTITY_ACROSS_SECTIONS` — نفس الرابط في أكثر من قسم
+- `UNKNOWN_TYPE` — حقل type مفقود في السجل
+
+**موقع التطبيق:** Step 1.5 في `run_card_pipeline.py` — بعد SMART LINK RESOLUTION وقبل توليد PDF.
 
 ### الأقسام الحرجة (تطبّق عليها القاعدة بالكامل):
 - برامج التأهيل المعتمدة

@@ -245,6 +245,47 @@ def step_registry_check(card_path):
     return step_resolve_links(card_path)
 
 
+# ── خطوة: LINK TYPE BOUNDARY LOCK v1.0 ──────────────────────────────────────
+
+def step_link_type_boundary_check(card_path) -> tuple[bool, str]:
+    """
+    Step 1.5: LINK TYPE BOUNDARY LOCK v1.0
+
+    يتحقق أن كل رابط حرج نوعه يطابق القسم الذي أُدرج فيه.
+    الرابط الصحيح في النوع الخطأ = رابط مرفوض.
+
+    يكتشف:
+      TYPE_MISMATCH                 : شهادة في برامج التأهيل أو برنامج في الشهادات
+      COURSE_PLATFORM_NOT_ALLOWED   : دورة من منصة غير معتمدة
+      DUPLICATE_ENTITY_ACROSS_SECTIONS: نفس الرابط في أكثر من قسم
+      UNKNOWN_TYPE                  : رابط بلا حقل type في السجل
+    """
+    try:
+        from check_critical_links import check_md_files, TYPE_BOUNDARY_VERDICTS
+    except ImportError:
+        return False, 'check_critical_links.py غير متاح'
+
+    card_name = os.path.basename(card_path)
+    data_path = os.path.join(REPO_ROOT, 'data', card_name)
+    if not os.path.exists(data_path):
+        data_path = card_path
+
+    passed, failed, needs_res = check_md_files([data_path])
+
+    boundary_fails = [r for r in failed if r['verdict'] in TYPE_BOUNDARY_VERDICTS]
+
+    if boundary_fails:
+        details = []
+        for r in boundary_fails:
+            details.append(f'{r["verdict"]}: [{r["text"][:30]}] في [{r["section"]}]')
+        return False, (
+            f'BOUNDARY_FAIL: {len(boundary_fails)} انتهاك(ات) لحدود الأنواع\n'
+            + '\n'.join(f'       → {d}' for d in details)
+        )
+
+    return True, f'BOUNDARY_PASS: جميع الأنواع متوافقة مع أقسامها'
+
+
 # ── خطوة: PDF LINK VALIDATION LOCK v1.2 ────────────────────────────────────
 
 def step_pdf_links(card_path):
@@ -352,8 +393,12 @@ def run_pipeline(card_path, build=False, allowed=None, release=False):
         print_pipeline_report(card_path, steps)
         return False
 
-    # Step 2: رفض الروابط غير المحلولة (Step 1 يتكفل بذلك — هنا للوضوح)
-    # (مدمجة في Step 1)
+    # Step 1.5: LINK TYPE BOUNDARY LOCK v1.0
+    ok, detail = step_link_type_boundary_check(card_path)
+    steps.append(('Step 1.5 — LINK TYPE BOUNDARY LOCK v1.0', ok, detail))
+    if not ok:
+        print_pipeline_report(card_path, steps)
+        return False
 
     # Step 3: توليد HTML/PDF
     if build:
