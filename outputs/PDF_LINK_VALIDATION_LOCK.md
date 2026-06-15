@@ -1,5 +1,32 @@
-# PDF LINK VALIDATION LOCK v1.1
+# PDF LINK VALIDATION LOCK v1.2
 ## قفل التحقق من روابط PDF — نظام إلزامي دائم
+## + LINK SELECTION & VERIFICATION PROTOCOL v1.0
+
+---
+
+## LINK SELECTION & VERIFICATION PROTOCOL v1.0 — الطبقة الأولى (قبل الإدراج)
+
+**القاعدة المطلقة:** المستخدم لا يراجع الروابط يدويًا. النظام لا يدرج أي رابط حرج في البطاقة إلا إذا كان مثبتًا مسبقًا بدرجة HIGH_VERIFIED في `references/verified_link_registry.json`.
+
+### الأقسام الحرجة (تطبّق عليها القاعدة بالكامل):
+- برامج التأهيل المعتمدة
+- الشهادات المهنية الاحترافية
+- الدورات الداعمة
+
+### الممنوعات:
+```
+ممنوع إدراج رابط حرج بدرجة MEDIUM_VERIFIED أو UNKNOWN أو NOT_VERIFIED.
+ممنوع تخمين URL من نمط متوقع دون دليل بحث مؤكد.
+ممنوع استخدام صفحة رئيسية عامة أو صفحة كلية أو صفحة منصة عامة.
+ممنوع استخدام رابط يتطلب تسجيل دخول.
+إذا لم يوجد رابط HIGH_VERIFIED → استبدل البرنامج/الشهادة/الدورة نفسها.
+```
+
+### آلية التطبيق:
+- **Step 0** في `run_card_pipeline.py` — `step_registry_check()` يفحص كل رابط حرج قبل أي خطوة.
+- `scripts/check_critical_links.py` — سكريبت مستقل للفحص اليدوي.
+- `references/verified_link_registry.json` — السجل الآلي (machine-readable).
+- `references/verified_link_registry.md` — السجل البشري القابل للقراءة.
 
 ---
 

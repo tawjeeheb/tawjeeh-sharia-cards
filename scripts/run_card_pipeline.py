@@ -175,7 +175,43 @@ def step_artifacts(card_path):
     return True, f'HTML ✅ | PDF ✅'
 
 
-# ── خطوة: PDF LINK VALIDATION LOCK v1.0 ────────────────────────────────────
+# ── خطوة 0 (قبل PDF): LINK SELECTION & VERIFICATION PROTOCOL v1.0 ──────────
+
+def step_registry_check(card_path):
+    """
+    يفحص كل روابط العناصر الحرجة في Markdown مقابل verified_link_registry.json.
+    يُوقف Pipeline فورًا إذا وُجد أي رابط ليس HIGH_VERIFIED.
+    يجب تشغيله قبل توليد PDF.
+    """
+    try:
+        from check_critical_links import check_md_files
+    except ImportError:
+        return False, 'check_critical_links.py غير متاح في scripts/'
+
+    # ابحث عن ملف Markdown في data/
+    card_name = os.path.basename(card_path)
+    data_path = os.path.join(REPO_ROOT, 'data', card_name)
+    if not os.path.exists(data_path):
+        data_path = card_path  # fallback: outputs
+
+    passed, failed = check_md_files([data_path])
+    total = len(passed) + len(failed)
+
+    if failed:
+        n_not = sum(1 for r in failed if r['verdict'] == 'NOT_VERIFIED')
+        n_med = sum(1 for r in failed if r['verdict'] == 'MEDIUM_VERIFIED')
+        n_unk = sum(1 for r in failed if r['verdict'] == 'UNKNOWN')
+        first = failed[0]
+        detail = f'{first["verdict"]} | {first["section"]} | {first["url"]}'
+        return False, (
+            f'REGISTRY_FAIL: {len(failed)}/{total} روابط مرفوضة'
+            f' (NOT={n_not}, MEDIUM={n_med}, UNKNOWN={n_unk})'
+            f' | أول خطأ: {detail}'
+        )
+    return True, f'REGISTRY_PASS: {len(passed)}/{total} HIGH_VERIFIED — صفر روابط مرفوضة'
+
+
+# ── خطوة: PDF LINK VALIDATION LOCK v1.2 ────────────────────────────────────
 
 def step_pdf_links(card_path):
     """يفحص روابط PDF annotation مباشرة — PDF LINK VALIDATION LOCK v1.0."""
@@ -255,6 +291,13 @@ def print_pipeline_report(card_path, steps):
 def run_pipeline(card_path, build=False, allowed=None, release=False):
     steps = []
 
+    # 0. LINK SELECTION & VERIFICATION PROTOCOL — قبل أي توليد
+    ok, detail = step_registry_check(card_path)
+    steps.append(('Link Registry Check (HIGH_VERIFIED only)', ok, detail))
+    if not ok:
+        print_pipeline_report(card_path, steps)
+        return False
+
     # 1. تحقق وجود artifacts (HTML/PDF)
     if build:
         ok, detail = step_build(card_path)
@@ -278,9 +321,9 @@ def run_pipeline(card_path, build=False, allowed=None, release=False):
     ok, detail = step_scope(card_path, allowed)
     steps.append(('Scope Guard', ok, detail))
 
-    # 5. PDF LINK VALIDATION LOCK v1.0
+    # 5. PDF LINK VALIDATION LOCK v1.2 (strict=True)
     ok, detail = step_pdf_links(card_path)
-    steps.append(('PDF Link Validation Lock v1.0', ok, detail))
+    steps.append(('PDF Link Validation Lock v1.2', ok, detail))
     if not ok:
         print_pipeline_report(card_path, steps)
         return False

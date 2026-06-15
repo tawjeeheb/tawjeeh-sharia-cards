@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PDF LINK VALIDATION LOCK v1.1
+PDF LINK VALIDATION LOCK v1.2
 ==============================
 يستخرج الروابط من PDF annotation مباشرة ويفحصها عبر HTTP.
 الفحص من PDF نفسه — لا من Markdown ولا من HTML.
@@ -181,9 +181,57 @@ def validate_pdf_links(pdf_paths: list[str], verbose: bool = False, strict: bool
     return results
 
 
+def validate_markdown_critical_links(md_path: str) -> dict:
+    """
+    فحص section-aware للروابط الحرجة من ملف Markdown.
+    يُطبّق قواعد صارمة على العناصر الحرجة:
+      برامج التأهيل المعتمدة / الشهادات المهنية الاحترافية / الدورات الداعمة
+    في هذه الأقسام: WARN_GENERAL_PAGE = FAIL_CRITICAL
+    """
+    CRITICAL_SECTIONS = {'برامج التأهيل المعتمدة', 'الشهادات المهنية الاحترافية', 'الدورات الداعمة'}
+    NON_CRITICAL_MARKERS = [
+        'جهات التوظيف', 'المسار الوظيفي', 'الملاحظات', 'النصائح',
+        'المهارات', 'الخبرات', 'المهام', 'طبيعة العمل',
+        'المرتبة', 'المزايا', 'الشروط', 'متطلبات', 'التصنيف',
+        'المسميات المكافئة',
+    ]
+    url_re = re.compile(r'\[([^\]]+)\]\((https?://[^\s\)]+)\)')
+    section = None
+    results = {'pass': [], 'fail_critical': [], 'details': []}
+
+    with open(md_path, encoding='utf-8') as f:
+        for line in f:
+            stripped = line.strip()
+            if stripped in CRITICAL_SECTIONS:
+                section = stripped
+                continue
+            is_non_critical = any(m in stripped for m in NON_CRITICAL_MARKERS)
+            if is_non_critical and stripped not in CRITICAL_SECTIONS:
+                if section not in CRITICAL_SECTIONS or not stripped.startswith('*'):
+                    section = stripped
+
+            if section in CRITICAL_SECTIONS:
+                for text, url in url_re.findall(line):
+                    is_login_required = any(p.search(url) for p in KNOWN_LOGIN_REQUIRED)
+                    is_bare = bool(_BARE_HOMEPAGE.match(url))
+                    issues = validate_url_integrity(url)
+                    http_code = check_url(url)
+                    is_http_fail = http_code in ('000', '404')
+
+                    if is_login_required or is_bare or issues or is_http_fail:
+                        status = 'FAIL_CRITICAL'
+                        results['fail_critical'].append({'section': section, 'text': text, 'url': url,
+                                                         'http_code': http_code, 'reason': 'login_required' if is_login_required else ('bare_homepage' if is_bare else ('integrity' if issues else 'http_fail'))})
+                    else:
+                        status = 'PASS_CRITICAL'
+                        results['pass'].append({'section': section, 'text': text, 'url': url, 'http_code': http_code})
+                    results['details'].append({'section': section, 'text': text, 'url': url, 'http_code': http_code, 'status': status})
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(
-        description='PDF LINK VALIDATION LOCK v1.0 — فحص إلزامي لروابط PDF'
+        description='PDF LINK VALIDATION LOCK v1.2 — فحص إلزامي لروابط PDF'
     )
     parser.add_argument('pdfs', nargs='+', help='ملفات PDF للفحص')
     parser.add_argument('--verbose', '-v', action='store_true',

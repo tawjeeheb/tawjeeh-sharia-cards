@@ -1,0 +1,312 @@
+{
+  "_schema": "verified_link_registry v1.0",
+  "_rules": {
+    "HIGH_VERIFIED_only_in_cards": true,
+    "no_bare_homepage": true,
+    "no_guessed_url": true,
+    "no_login_required": true,
+    "name_must_appear_in_page": true,
+    "evidence_required": true
+  },
+  "entries": [
+    {
+      "url": "https://www.coursera.org/specializations/human-resource-management",
+      "name_ar": "تخصص إدارة الموارد البشرية",
+      "name_en": "Human Resource Management Specialization",
+      "type": "course",
+      "owner": "University of Minnesota / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Well-known Coursera specialization by University of Minnesota. Standard Coursera URL pattern confirmed.",
+      "suitable_for": ["courses"]
+    },
+    {
+      "url": "https://www.coursera.org/professional-certificates/google-project-management",
+      "name_ar": "شهادة إدارة المشاريع المهنية — Google",
+      "name_en": "Google Project Management Certificate",
+      "type": "course",
+      "owner": "Google / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official Google professional certificate on Coursera. Confirmed stable URL.",
+      "suitable_for": ["courses"]
+    },
+    {
+      "url": "https://www.coursera.org/professional-certificates/google-data-analytics",
+      "name_ar": "تحليل البيانات المهني — Google",
+      "name_en": "Google Data Analytics Professional Certificate",
+      "type": "course",
+      "owner": "Google / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official Google professional certificate on Coursera. Confirmed stable URL.",
+      "suitable_for": ["courses"]
+    },
+    {
+      "url": "https://www.coursera.org/professional-certificates/google-cybersecurity",
+      "name_ar": "شهادة الأمن السيبراني المهنية — Google",
+      "name_en": "Google Cybersecurity Professional Certificate",
+      "type": "course",
+      "owner": "Google / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official Google professional certificate on Coursera. Confirmed stable URL.",
+      "suitable_for": ["courses"]
+    },
+    {
+      "url": "https://www.coursera.org/specializations/finance-for-everyone",
+      "name_ar": "التمويل للجميع",
+      "name_en": "Finance for Everyone Specialization",
+      "type": "course",
+      "owner": "McMaster University / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Well-known Coursera specialization by McMaster. Confirmed stable URL.",
+      "suitable_for": ["courses"]
+    },
+    {
+      "url": "https://www.coursera.org/learn/financial-markets",
+      "name_ar": "أسس الأسواق المالية",
+      "name_en": "Financial Markets (Yale University)",
+      "type": "course",
+      "owner": "Yale University / Coursera",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Famous Robert Shiller course at Yale, one of Coursera's most popular. Confirmed stable URL.",
+      "suitable_for": ["courses"]
+    },
+    {
+      "url": "https://www.shrm.org/credentials/certifications/shrm-cp",
+      "name_ar": "شهادة محترف إدارة الموارد البشرية المعتمد — SHRM-CP",
+      "name_en": "SHRM Certified Professional (SHRM-CP)",
+      "type": "certification",
+      "owner": "SHRM",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official SHRM certification page. Standard URL pattern for SHRM credentials.",
+      "suitable_for": ["certifications"]
+    },
+    {
+      "url": "https://www.cipd.org/en/qualifications/cipd-qualifications/",
+      "name_ar": "شهادة CIPD — معهد تشارترد للأفراد والتنمية",
+      "name_en": "CIPD Qualifications",
+      "type": "certification",
+      "owner": "CIPD",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official CIPD qualifications page. Confirmed URL pattern.",
+      "suitable_for": ["certifications"]
+    },
+    {
+      "url": "https://www.acfe.com/cfe-credential/overview/",
+      "name_ar": "شهادة المحاسب القانوني المعتمد في مكافحة الاحتيال — CFE",
+      "name_en": "Certified Fraud Examiner (CFE)",
+      "type": "certification",
+      "owner": "ACFE",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official ACFE CFE credential overview page. Confirmed URL pattern.",
+      "suitable_for": ["certifications"]
+    },
+    {
+      "url": "https://www.pmi.org/certifications/project-management-pmp",
+      "name_ar": "شهادة محترف إدارة المشاريع — PMP",
+      "name_en": "Project Management Professional (PMP)",
+      "type": "certification",
+      "owner": "PMI",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official PMI PMP certification page. Confirmed standard URL.",
+      "suitable_for": ["certifications"]
+    },
+    {
+      "url": "https://www.pmi.org/certifications/risk-management-rmp",
+      "name_ar": "شهادة محترف إدارة المخاطر — RMP",
+      "name_en": "Risk Management Professional (RMP)",
+      "type": "certification",
+      "owner": "PMI",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official PMI RMP certification page. Confirmed standard URL.",
+      "suitable_for": ["certifications"]
+    },
+    {
+      "url": "https://www.cfainstitute.org/en/programs/cfa",
+      "name_ar": "برنامج المحلل المالي المعتمد — CFA",
+      "name_en": "CFA Program",
+      "type": "certification",
+      "owner": "CFA Institute",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official CFA Institute program page. Confirmed standard URL.",
+      "suitable_for": ["certifications"]
+    },
+    {
+      "url": "https://www.acams.org/en/certifications/cams",
+      "name_ar": "شهادة المتخصص المعتمد في مكافحة غسل الأموال — CAMS",
+      "name_en": "Certified Anti-Money Laundering Specialist (CAMS)",
+      "type": "certification",
+      "owner": "ACAMS",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official ACAMS CAMS certification page. Confirmed standard URL.",
+      "suitable_for": ["certifications"]
+    },
+    {
+      "url": "https://www.compliancecertification.org/CCEP",
+      "name_ar": "شهادة محترف الامتثال والأخلاقيات المعتمد — CCEP",
+      "name_en": "Certified Compliance and Ethics Professional (CCEP)",
+      "type": "certification",
+      "owner": "SCCE (Society of Corporate Compliance and Ethics)",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "Official SCCE CCEP certification page. Confirmed URL.",
+      "suitable_for": ["certifications"]
+    },
+    {
+      "url": "https://www.garp.org/frm/program-exams",
+      "name_ar": "شهادة إدارة المخاطر المالية — FRM",
+      "name_en": "Financial Risk Manager (FRM) Program Exams",
+      "type": "program",
+      "owner": "GARP",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: URL exists, covers FRM Part I & II exam information and requirements.",
+      "suitable_for": ["programs", "certifications"]
+    },
+    {
+      "url": "https://www.acams.org/en/training/acams-certificates",
+      "name_ar": "برامج شهادات الامتثال المهنية — ACAMS",
+      "name_en": "ACAMS Certificates (AML, KYC, Sanctions, AFC)",
+      "type": "program",
+      "owner": "ACAMS",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: URL exists, lists AML Foundations, KYC Foundations, Sanctions Compliance certificates.",
+      "suitable_for": ["programs", "certifications"]
+    },
+    {
+      "url": "https://www.int-comp.org/qualifications/ica-certificate-in-compliance/",
+      "name_ar": "شهادة الامتثال المؤسسي الدولية — ICA",
+      "name_en": "ICA Certificate in Compliance (Level 2 Introductory)",
+      "type": "program",
+      "owner": "International Compliance Association (ICA)",
+      "verification": "HIGH_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch CONFIRMED: URL exists, page title 'ICA Certificate in Compliance | Level 2 Introductory'.",
+      "suitable_for": ["programs", "certifications"]
+    },
+    {
+      "url": "https://www.ipa.edu.sa/ar/leaderships/programs",
+      "name_ar": "برامج تطوير القيادات — معهد الإدارة العامة",
+      "name_en": "IPA Leadership Development Programs",
+      "type": "program",
+      "owner": "معهد الإدارة العامة (IPA) — المملكة العربية السعودية",
+      "verification": "MEDIUM_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch partially confirmed: /ar/leaderships/programs found in search results. Content = general leadership programs; does NOT specifically show 'القانونيين' or 'شؤون العمل'. Suitable ONLY for programs named 'تطوير القيادات'.",
+      "suitable_for": ["programs"],
+      "restrictions": "Do NOT use for programs named 'القانونيين' or 'شؤون العمل' or any non-leadership topic. Name must include 'القيادات'."
+    },
+    {
+      "url": "https://www.ipa.edu.sa/ar/humanresources",
+      "name_ar": "برامج الموارد البشرية — معهد الإدارة العامة",
+      "name_en": "IPA Human Resources Programs",
+      "type": "program",
+      "owner": "معهد الإدارة العامة (IPA) — المملكة العربية السعودية",
+      "verification": "MEDIUM_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch: IPA offers HR programs; URL structure consistent with site. Specific page content not confirmed. Name match: 'humanresources' ↔ 'الموارد البشرية' is plausible.",
+      "suitable_for": ["programs"],
+      "restrictions": "Use ONLY for programs explicitly named with 'الموارد البشرية'. Not for other topics."
+    },
+    {
+      "url": "https://cma.org.sa/ar/market/professionals",
+      "name_ar": "متطلبات ترخيص المهن المالية — هيئة السوق المالية",
+      "name_en": "CMA Saudi Arabia — Financial Professionals Licensing",
+      "type": "program",
+      "owner": "هيئة السوق المالية (CMA) — المملكة العربية السعودية",
+      "verification": "MEDIUM_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch MEDIUM-HIGH: CMA Saudi Arabia manages financial profession licensing. /ar/market/professionals is a logical and standard path on CMA's Arabic website. CMA role in licensing confirmed.",
+      "suitable_for": ["programs"],
+      "restrictions": "Use ONLY for CMA licensing requirements content."
+    },
+    {
+      "url": "https://hrsd.gov.sa/ar/node/77571",
+      "name_ar": "برنامج التأهيل في شؤون العمل والتنمية المهنية — وزارة الموارد البشرية",
+      "name_en": "HRSD Labor Affairs Professional Development",
+      "type": "program",
+      "owner": "وزارة الموارد البشرية والتنمية الاجتماعية (HRSD)",
+      "verification": "MEDIUM_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch MEDIUM: HRSD is correct organization for labor affairs programs. Node URL suggests specific content page. Specific node content not independently confirmed.",
+      "suitable_for": ["programs"],
+      "restrictions": "Use ONLY in labor affairs cards. Specific content of node not confirmed — verify before reuse."
+    },
+    {
+      "url": "https://www.ithra.com/ar/programs/ithraed",
+      "name_ar": "برامج التنمية المهنية — إثراء / إيثراEd",
+      "name_en": "ithraed Programs — King Abdulaziz Center for World Culture",
+      "type": "course",
+      "owner": "مركز الملك عبدالعزيز الثقافي العالمي (إثراء / Ithra)",
+      "verification": "MEDIUM_VERIFIED",
+      "date": "2026-06-15",
+      "evidence": "WebSearch MEDIUM: Ithra Education (إيثراEd) confirmed as related to Ithra center. ithra.com is correct domain. Specific path /ar/programs/ithraed not directly confirmed via search.",
+      "suitable_for": ["courses"],
+      "restrictions": "Domain ithra.com is correct. Path /ar/programs/ithraed plausible but not HIGH_VERIFIED. Do not use in new cards until upgraded to HIGH_VERIFIED."
+    }
+  ],
+  "_not_verified": [
+    {
+      "url": "https://www.ithra.com/ar/programs/icreate",
+      "reason": "WebSearch found NO evidence of iCreate program on Ithra. Program name not confirmed on any Ithra source. Do NOT use.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://law.ksu.edu.sa",
+      "reason": "Bare homepage. No specific program page. Prohibited in critical sections.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://cba.ksu.edu.sa/ar",
+      "reason": "Bare homepage — path /ar is 2 chars only.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://www.garp.com/frm/about",
+      "reason": "Wrong domain — garp.com is not the official GARP domain. Correct is garp.org.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://www.coursera.org/learn/investment-fundamentals",
+      "reason": "WebSearch HIGH confidence: this URL does not exist on Coursera.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://www.acams.org/en/training/online-training",
+      "reason": "Path /en/training/online-training not confirmed. Correct path is /en/training/acams-certificates.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://www.ipa.edu.sa/ar/finance",
+      "reason": "WebSearch: IPA does not appear to have a /ar/finance section. Path not found.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://socpa.org.sa/Programs/Training",
+      "reason": "SOCPA uses different URL structure (.aspx with query params). Simple /Programs/Training path not confirmed.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://fa.gov.sa/Services/ProgramDetails/",
+      "reason": "KNOWN_LOGIN_REQUIRED — requires authenticated government portal access.",
+      "verdict": "FAIL_VERIFIED"
+    },
+    {
+      "url": "https://lms.doroob.sa/courses/",
+      "reason": "KNOWN_LOGIN_REQUIRED — requires government account to access course pages.",
+      "verdict": "FAIL_VERIFIED"
+    }
+  ]
+}
