@@ -4,9 +4,16 @@
 
 ---
 
-## LINK SELECTION & VERIFICATION PROTOCOL v1.0 — الطبقة الأولى (قبل الإدراج)
+## LINK SELECTION & VERIFICATION PROTOCOL v2.0 — الطبقة الأولى (قبل الإدراج)
+## + SMART LINK RESOLUTION ENGINE v1.0
 
-**القاعدة المطلقة:** المستخدم لا يراجع الروابط يدويًا. النظام لا يدرج أي رابط حرج في البطاقة إلا إذا كان مثبتًا مسبقًا بدرجة HIGH_VERIFIED في `references/verified_link_registry.json`.
+**القاعدة المطلقة:** المستخدم لا يراجع الروابط يدويًا. النظام لا يدرج أي رابط حرج إلا إذا كان HIGH_VERIFIED.
+
+```
+السجل ليس whitelist مغلقًا؛ السجل Cache ذكي.
+أي رابط جديد يُحلَّل تلقائيًا عبر SMART LINK RESOLUTION ENGINE
+ويُرقَّى إلى HIGH_VERIFIED أو يُستبدَل — دون تدخل المستخدم.
+```
 
 ### الأقسام الحرجة (تطبّق عليها القاعدة بالكامل):
 - برامج التأهيل المعتمدة
@@ -15,17 +22,36 @@
 
 ### الممنوعات:
 ```
-ممنوع إدراج رابط حرج بدرجة MEDIUM_VERIFIED أو UNKNOWN أو NOT_VERIFIED.
-ممنوع تخمين URL من نمط متوقع دون دليل بحث مؤكد.
+ممنوع إدراج رابط حرج بدرجة MEDIUM أو UNKNOWN أو NOT_VERIFIED أو NEEDS_RESOLUTION.
+ممنوع تخمين URL من نمط متوقع دون دليل WebSearch مؤكد.
 ممنوع استخدام صفحة رئيسية عامة أو صفحة كلية أو صفحة منصة عامة.
 ممنوع استخدام رابط يتطلب تسجيل دخول.
-إذا لم يوجد رابط HIGH_VERIFIED → استبدل البرنامج/الشهادة/الدورة نفسها.
+إذا الرابط غير موجود في السجل → يشغّل SMART LINK RESOLUTION ENGINE تلقائيًا.
+إذا فشل الاكتشاف → استبدل المحتوى ببديل يملك رابطًا HIGH_VERIFIED.
+```
+
+### مسار حل الرابط التلقائي:
+```
+رابط جديد في البطاقة
+    ↓
+هل هو في السجل؟
+    ├─ HIGH_VERIFIED → ✅ قبول مباشر (CACHE_HIT_HIGH)
+    ├─ REJECTED / NOT_VERIFIED → ❌ استبدال إلزامي (CACHE_HIT_BAD)
+    └─ UNKNOWN / غير موجود
+         ↓
+         SMART LINK RESOLUTION ENGINE
+         [WebSearch للاكتشاف التلقائي]
+              ↓
+         هل الصفحة محددة + هل الاسم ظاهر في النتيجة؟
+              ├─ نعم → DISCOVERED → أُضيف للسجل HIGH_VERIFIED → ✅
+              └─ لا  → ابحث عن بديل HIGH_VERIFIED → استبدل → ✅
 ```
 
 ### آلية التطبيق:
-- **Step 0** في `run_card_pipeline.py` — `step_registry_check()` يفحص كل رابط حرج قبل أي خطوة.
-- `scripts/check_critical_links.py` — سكريبت مستقل للفحص اليدوي.
-- `references/verified_link_registry.json` — السجل الآلي (machine-readable).
+- **Step 1** في `run_card_pipeline.py` — `step_resolve_links()` يحل كل رابط حرج تلقائيًا.
+- `scripts/check_critical_links.py` — سكريبت مستقل للفحص (يُعيد NEEDS_RESOLUTION للمجهول).
+- `scripts/smart_link_resolver.py` — محرك الاكتشاف والتحقق التلقائي.
+- `references/verified_link_registry.json` — السجل الآلي (machine-readable Cache).
 - `references/verified_link_registry.md` — السجل البشري القابل للقراءة.
 
 ---

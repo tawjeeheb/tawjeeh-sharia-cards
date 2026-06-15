@@ -143,9 +143,16 @@
 
 ---
 
-## LINK SELECTION & VERIFICATION PROTOCOL v1.0 — خطوة إلزامية قبل إدراج أي رابط
+## LINK SELECTION & VERIFICATION PROTOCOL v2.0 — خطوة إلزامية قبل إدراج أي رابط
+## + SMART LINK RESOLUTION ENGINE v1.0
 
-**القاعدة المطلقة:** المستخدم لا يراجع الروابط يدويًا. النظام لا يدرج أي رابط حرج في البطاقة إلا إذا كان مثبتًا مسبقًا بدرجة HIGH_VERIFIED.
+**القاعدة المطلقة:** المستخدم لا يراجع الروابط يدويًا. النظام لا يدرج أي رابط حرج إلا إذا كان HIGH_VERIFIED.
+
+```
+السجل ليس whitelist مغلقًا؛ السجل Cache ذكي.
+أي رابط جديد يُحلَّل تلقائيًا عبر SMART LINK RESOLUTION ENGINE
+ويُرقَّى إلى HIGH_VERIFIED أو يُستبدَل — دون تدخل المستخدم.
+```
 
 ### الأقسام الحرجة:
 - برامج التأهيل المعتمدة
@@ -153,16 +160,18 @@
 - الدورات الداعمة
 
 ### الممنوعات المطلقة:
-* ممنوع إدراج رابط حرج بدرجة MEDIUM_VERIFIED أو UNKNOWN أو NOT_VERIFIED.
+* ممنوع إدراج رابط حرج بدرجة MEDIUM أو UNKNOWN أو NOT_VERIFIED أو NEEDS_RESOLUTION.
 * ممنوع تخمين URL من نمط متوقع دون بحث WebSearch مؤكد.
 * ممنوع استخدام صفحة رئيسية عامة (bare homepage) أو صفحة كلية.
 * ممنوع استخدام رابط يتطلب تسجيل دخول.
-* إذا لم يوجد رابط HIGH_VERIFIED → استبدل البرنامج/الشهادة/الدورة نفسها.
+* إذا الرابط غير موجود في السجل → يشغّل SMART LINK RESOLUTION ENGINE تلقائيًا.
+* إذا فشل الاكتشاف → استبدل المحتوى ببديل يملك رابطًا HIGH_VERIFIED.
 
 ### آلية التطبيق:
 * قبل كتابة أي رابط في قسم حرج: ابحث في `references/verified_link_registry.json`.
-* إذا لم يكن HIGH_VERIFIED: نفّذ WebSearch للتحقق → سجّل في الـ JSON → ثم أدرجه.
-* `step_registry_check()` في pipeline (Step 0) يمنع التوليد إذا وُجد أي رابط غير HIGH_VERIFIED.
+* إذا لم يكن في السجل: المحرك يُشغّل WebSearch تلقائيًا → يتحقق → يُسجّل → يُدرج.
+* `step_resolve_links()` في pipeline (Step 1) يمنع التوليد إذا وُجد أي رابط غير HIGH_VERIFIED.
+* `scripts/smart_link_resolver.py` — محرك الاكتشاف والتحقق التلقائي (CLI + Python module).
 
 ---
 

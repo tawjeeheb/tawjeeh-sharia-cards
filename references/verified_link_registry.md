@@ -1,19 +1,52 @@
 # Verified Link Registry — سجل الروابط المعتمدة
-**الإصدار:** v1.0  
+**الإصدار:** v2.0 — SMART LINK RESOLUTION ENGINE  
 **آخر تحديث:** 2026-06-15  
-**القاعدة:** لا يدخل أي رابط في بطاقة إلا إذا كان **HIGH_VERIFIED** في هذا السجل.
+**القاعدة:** السجل **Cache ذكي**، ليس whitelist مغلقًا. أي رابط جديد يُحلَّل تلقائيًا ويُرقَّى إلى HIGH_VERIFIED أو يُستبدَل دون تدخل المستخدم.
 
 ---
 
 ## القواعد الإلزامية
 
 ```
-ممنوع إدراج أي رابط حرج (برامج التأهيل / الشهادات / الدورات) بدرجة MEDIUM أو UNKNOWN أو NOT_VERIFIED.
-ممنوع تخمين URL من نمط متوقع دون دليل بحث.
+السجل ليس whitelist مغلقًا؛ السجل Cache ذكي.
+أي رابط جديد يُحلَّل تلقائيًا عبر SMART LINK RESOLUTION ENGINE ويُرقَّى إلى HIGH_VERIFIED أو يُستبدَل — دون تدخل المستخدم.
+
+ممنوع إدراج رابط حرج بدرجة MEDIUM أو UNKNOWN أو NOT_VERIFIED أو NEEDS_RESOLUTION.
+ممنوع تخمين URL من نمط متوقع دون دليل WebSearch مؤكد.
 ممنوع استخدام صفحة رئيسية عامة أو صفحة كلية أو صفحة منصة عامة.
 ممنوع استخدام رابط يتطلب تسجيل دخول.
-إذا لم يوجد رابط HIGH_VERIFIED → استبدل البرنامج/الشهادة/الدورة نفسها.
-المستخدم لا يراجع الروابط يدويًا.
+إذا الرابط غير موجود في السجل → يشغّل SMART LINK RESOLUTION ENGINE تلقائيًا.
+إذا فشل الاكتشاف → استبدل المحتوى ببديل يملك رابطًا HIGH_VERIFIED.
+المستخدم لا يراجع الروابط يدويًا — النظام مسؤول كامل.
+```
+
+## حالات الروابط في السجل
+
+| الحالة | المعنى | مسموح في البطاقات؟ |
+|--------|--------|-------------------|
+| **HIGH_VERIFIED** | مثبت بـ WebSearch أو مرجع رسمي | ✅ نعم |
+| **MEDIUM_VERIFIED** | موجود في البطاقات القديمة فقط | ❌ لا |
+| **REJECTED** | مرفوض مع سبب موثق | ❌ لا |
+| **NOT_VERIFIED** | غير مثبت أو فشل | ❌ لا |
+
+## مسار حل الرابط التلقائي (SMART LINK RESOLUTION ENGINE)
+
+```
+رابط جديد في البطاقة
+    ↓
+هل هو في السجل؟
+    ├─ HIGH_VERIFIED → ✅ قبول مباشر
+    ├─ REJECTED / NOT_VERIFIED → ❌ استبدال إلزامي
+    └─ UNKNOWN / غير موجود
+         ↓
+         SMART LINK RESOLUTION ENGINE
+         [smart_link_resolver.py resolve --url X --name Y --title T --snippet S]
+              ↓
+         هل الصفحة محددة (ليست homepage)؟ + هل الاسم ظاهر في النتيجة؟
+              ├─ نعم → DISCOVERED → أُضيف للسجل → HIGH_VERIFIED → ✅
+              └─ لا  → ابحث عن بديل
+                       ├─ وُجد بديل HIGH_VERIFIED → استبدل → ✅
+                       └─ لا بديل → غيّر المحتوى → ✅
 ```
 
 ---
@@ -30,6 +63,8 @@
 | شهادة الأمن السيبراني المهنية — Google | Google Cybersecurity | `coursera.org/professional-certificates/google-cybersecurity` | Google / Coursera | شهادة Google رسمية |
 | التمويل للجميع | Finance for Everyone | `coursera.org/specializations/finance-for-everyone` | McMaster / Coursera | نمط Coursera رسمي |
 | أسس الأسواق المالية | Financial Markets | `coursera.org/learn/financial-markets` | Yale (Shiller) / Coursera | أشهر دورة تمويل على Coursera |
+| التفاوض الناجح | Successful Negotiation | `coursera.org/learn/negotiation-skills` | University of Michigan / Coursera | **WebSearch CONFIRMED** — اكتشفه ENGINE تلقائيًا 2026-06-15 |
+| برنامج القراءة — iRead | iRead Program | `ithra.com/en/special-programs/iread` | Ithra / مركز الملك عبدالعزيز | **WebSearch CONFIRMED** — اكتشفه ENGINE تلقائيًا 2026-06-15 |
 
 ### الشهادات المهنية الاحترافية
 

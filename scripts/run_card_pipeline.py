@@ -175,40 +175,74 @@ def step_artifacts(card_path):
     return True, f'HTML ✅ | PDF ✅'
 
 
-# ── خطوة 0 (قبل PDF): LINK SELECTION & VERIFICATION PROTOCOL v1.0 ──────────
+# ── خطوة: SMART LINK RESOLUTION ENGINE ──────────────────────────────────────
 
-def step_registry_check(card_path):
+def step_extract_links(card_path) -> tuple[bool, str, list]:
     """
-    يفحص كل روابط العناصر الحرجة في Markdown مقابل verified_link_registry.json.
-    يُوقف Pipeline فورًا إذا وُجد أي رابط ليس HIGH_VERIFIED.
-    يجب تشغيله قبل توليد PDF.
+    Step 0: استخرج الروابط الحرجة من مسودة البطاقة.
+    يُعيد (ok, detail, links_list).
+    """
+    try:
+        from check_critical_links import extract_critical_links
+    except ImportError:
+        return False, 'check_critical_links.py غير متاح', []
+
+    card_name = os.path.basename(card_path)
+    data_path = os.path.join(REPO_ROOT, 'data', card_name)
+    if not os.path.exists(data_path):
+        data_path = card_path
+
+    links = extract_critical_links(data_path)
+    return True, f'عُثر على {len(links)} رابط حرج', links
+
+
+def step_resolve_links(card_path) -> tuple[bool, str]:
+    """
+    Step 1: حل الروابط عبر SMART LINK RESOLUTION ENGINE.
+
+    المنطق:
+      - HIGH_VERIFIED في السجل → قبول فوري
+      - UNKNOWN → NEEDS_RESOLUTION (يحتاج WebSearch خارجي)
+      - NOT_VERIFIED / REJECTED → فشل فوري
     """
     try:
         from check_critical_links import check_md_files
     except ImportError:
-        return False, 'check_critical_links.py غير متاح في scripts/'
+        return False, 'check_critical_links.py غير متاح'
 
-    # ابحث عن ملف Markdown في data/
     card_name = os.path.basename(card_path)
     data_path = os.path.join(REPO_ROOT, 'data', card_name)
     if not os.path.exists(data_path):
-        data_path = card_path  # fallback: outputs
+        data_path = card_path
 
-    passed, failed = check_md_files([data_path])
-    total = len(passed) + len(failed)
+    passed, failed, needs_res = check_md_files([data_path])
+    total = len(passed) + len(failed) + len(needs_res)
 
     if failed:
         n_not = sum(1 for r in failed if r['verdict'] == 'NOT_VERIFIED')
         n_med = sum(1 for r in failed if r['verdict'] == 'MEDIUM_VERIFIED')
-        n_unk = sum(1 for r in failed if r['verdict'] == 'UNKNOWN')
         first = failed[0]
-        detail = f'{first["verdict"]} | {first["section"]} | {first["url"]}'
         return False, (
             f'REGISTRY_FAIL: {len(failed)}/{total} روابط مرفوضة'
-            f' (NOT={n_not}, MEDIUM={n_med}, UNKNOWN={n_unk})'
-            f' | أول خطأ: {detail}'
+            f' (NOT={n_not}, MEDIUM={n_med})'
+            f' | أول خطأ: {first["verdict"]} | {first["url"]}'
         )
+
+    if needs_res:
+        urls_str = ' | '.join(r['url'] for r in needs_res[:3])
+        return False, (
+            f'NEEDS_RESOLUTION: {len(needs_res)} روابط غير موجودة في السجل'
+            f' — شغّل SMART LINK RESOLUTION ENGINE: {urls_str}'
+        )
+
     return True, f'REGISTRY_PASS: {len(passed)}/{total} HIGH_VERIFIED — صفر روابط مرفوضة'
+
+
+# ── خطوة (legacy alias) ───────────────────────────────────────────────────────
+
+def step_registry_check(card_path):
+    """alias لـ step_resolve_links — للتوافق مع الكود القديم."""
+    return step_resolve_links(card_path)
 
 
 # ── خطوة: PDF LINK VALIDATION LOCK v1.2 ────────────────────────────────────
@@ -289,49 +323,72 @@ def print_pipeline_report(card_path, steps):
 
 
 def run_pipeline(card_path, build=False, allowed=None, release=False):
+    """
+    SMART CARD PIPELINE v2.0
+    ========================
+    Step 0: استخراج الروابط الحرجة من المسودة
+    Step 1: حل الروابط عبر SMART LINK RESOLUTION ENGINE
+    Step 2: رفض الروابط غير المحلولة
+    Step 3: توليد HTML/PDF (أو التحقق من وجودهما)
+    Step 4: فحص الجودة C1-C23
+    Step 5: التحقق من ملف evidence
+    Step 6: Scope Guard
+    Step 7: PDF Link Validation Lock v1.2
+    Step 8: git نظيف (release فقط)
+    """
     steps = []
 
-    # 0. LINK SELECTION & VERIFICATION PROTOCOL — قبل أي توليد
-    ok, detail = step_registry_check(card_path)
-    steps.append(('Link Registry Check (HIGH_VERIFIED only)', ok, detail))
+    # Step 0: استخراج الروابط الحرجة
+    ok, detail, _ = step_extract_links(card_path)
+    steps.append(('Step 0 — استخراج الروابط الحرجة', ok, detail))
     if not ok:
         print_pipeline_report(card_path, steps)
         return False
 
-    # 1. تحقق وجود artifacts (HTML/PDF)
+    # Step 1: حل الروابط عبر SMART LINK RESOLUTION ENGINE
+    ok, detail = step_resolve_links(card_path)
+    steps.append(('Step 1 — Smart Link Resolution (HIGH_VERIFIED only)', ok, detail))
+    if not ok:
+        print_pipeline_report(card_path, steps)
+        return False
+
+    # Step 2: رفض الروابط غير المحلولة (Step 1 يتكفل بذلك — هنا للوضوح)
+    # (مدمجة في Step 1)
+
+    # Step 3: توليد HTML/PDF
     if build:
         ok, detail = step_build(card_path)
-        steps.append(('توليد HTML/PDF', ok, detail))
+        steps.append(('Step 3 — توليد HTML/PDF', ok, detail))
         if not ok:
             print_pipeline_report(card_path, steps)
             return False
     else:
         ok, detail = step_artifacts(card_path)
-        steps.append(('HTML/PDF موجودان', ok, detail))
+        steps.append(('Step 3 — HTML/PDF موجودان', ok, detail))
 
-    # 2. بوابة الجودة C1-C23
+    # Step 4: بوابة الجودة C1-C23
     ok, detail, _ = step_quality(card_path)
-    steps.append(('بوابة الجودة C1–C23', ok, detail))
+    steps.append(('Step 4 — بوابة الجودة C1–C23', ok, detail))
 
-    # 3. Evidence
+    # Step 5: Evidence
     ok, detail = step_evidence(card_path)
-    steps.append(('ملف evidence', ok, detail))
+    steps.append(('Step 5 — ملف evidence', ok, detail))
 
-    # 4. Scope Guard
+    # Step 6: Scope Guard
     ok, detail = step_scope(card_path, allowed)
-    steps.append(('Scope Guard', ok, detail))
+    steps.append(('Step 6 — Scope Guard', ok, detail))
 
-    # 5. PDF LINK VALIDATION LOCK v1.2 (strict=True)
+    # Step 7: PDF Link Validation Lock v1.2 (strict=True)
     ok, detail = step_pdf_links(card_path)
-    steps.append(('PDF Link Validation Lock v1.2', ok, detail))
+    steps.append(('Step 7 — PDF Link Validation Lock v1.2', ok, detail))
     if not ok:
         print_pipeline_report(card_path, steps)
         return False
 
-    # 6. Git نظيف (للـ release فقط)
+    # Step 8: Git نظيف (للـ release فقط)
     if release:
         ok, detail = step_git_clean()
-        steps.append(('git نظيف', ok, detail))
+        steps.append(('Step 8 — git نظيف', ok, detail))
 
     return print_pipeline_report(card_path, steps)
 
