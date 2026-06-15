@@ -41,6 +41,12 @@ try:
 except ImportError:
     _SG_AVAILABLE = False
 
+try:
+    from validate_pdf_links import validate_pdf_links
+    _VPL_AVAILABLE = True
+except ImportError:
+    _VPL_AVAILABLE = False
+
 
 # ── أدوات مساعدة ──────────────────────────────────────────────────────────────
 
@@ -169,6 +175,25 @@ def step_artifacts(card_path):
     return True, f'HTML ✅ | PDF ✅'
 
 
+# ── خطوة: PDF LINK VALIDATION LOCK v1.0 ────────────────────────────────────
+
+def step_pdf_links(card_path):
+    """يفحص روابط PDF annotation مباشرة — PDF LINK VALIDATION LOCK v1.0."""
+    if not _VPL_AVAILABLE:
+        return False, 'validate_pdf_links.py غير متاح'
+    pp = pdf_path(card_path)
+    if not os.path.exists(pp):
+        return False, f'PDF غير موجود — شغّل مع --build أولًا'
+    results = validate_pdf_links([pp], verbose=False)
+    n_pass = len(results['pass_open'])
+    n_fail = len(results['fail_open'])
+    total = n_pass + n_fail
+    if n_fail > 0:
+        fail_urls = ' | '.join(e['url'] for e in results['fail_open'][:3])
+        return False, f'FAIL_OPEN={n_fail}/{total} — {fail_urls}'
+    return True, f'PASS_OPEN={n_pass}/{total} — صفر FAIL_OPEN'
+
+
 # ── خطوة: تحقق git نظيف ──────────────────────────────────────────────────────
 
 def step_git_clean():
@@ -251,7 +276,14 @@ def run_pipeline(card_path, build=False, allowed=None, release=False):
     ok, detail = step_scope(card_path, allowed)
     steps.append(('Scope Guard', ok, detail))
 
-    # 5. Git نظيف (للـ release فقط)
+    # 5. PDF LINK VALIDATION LOCK v1.0
+    ok, detail = step_pdf_links(card_path)
+    steps.append(('PDF Link Validation Lock v1.0', ok, detail))
+    if not ok:
+        print_pipeline_report(card_path, steps)
+        return False
+
+    # 6. Git نظيف (للـ release فقط)
     if release:
         ok, detail = step_git_clean()
         steps.append(('git نظيف', ok, detail))
