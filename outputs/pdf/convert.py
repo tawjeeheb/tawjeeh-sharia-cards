@@ -165,6 +165,31 @@ md_content = re.sub(r'---\s*\n## سجل المصادر.*', '', md_content, flags
 
 html_body = markdown.markdown(md_content, extensions=['tables', 'nl2br'])
 
+# ── URL sanitizer ─────────────────────────────────────────────────────────────
+# Applied after markdown→HTML conversion to clean href attributes before WeasyPrint.
+# Prevents invisible Unicode control chars, trailing punctuation, and arrow symbols
+# from contaminating href values in PDF annotations.
+_INVISIBLE = re.compile(
+    r'[​‌‍‎‏'   # zero-width, LTR/RTL marks
+    r'‪‫‬‭‮'    # bidirectional embedding
+    r'⁠⁡⁢⁣⁤'    # word joiners / invisible operators
+    r'﻿­]'                      # BOM, soft-hyphen
+)
+_TRAILING_JUNK = re.compile(r'[.,،؛;:!?)\]↗\s]+$')
+
+def sanitize_url_for_pdf(href: str) -> str:
+    href = _INVISIBLE.sub('', href)
+    href = _TRAILING_JUNK.sub('', href)
+    return href.strip()
+
+def _sanitize_hrefs(html: str) -> str:
+    def _fix(m):
+        cleaned = sanitize_url_for_pdf(m.group(1))
+        return f'href="{cleaned}"'
+    return re.sub(r'href="([^"]*)"', _fix, html)
+
+html_body = _sanitize_hrefs(html_body)
+
 # Post-process: wrap "program link - institution:" so dotted underline + arrow
 # covers the full label (program + institution) up to but not including the colon.
 # Pattern: <a href="url">program</a> - institution:
