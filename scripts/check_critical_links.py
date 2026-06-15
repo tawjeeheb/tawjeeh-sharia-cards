@@ -142,7 +142,7 @@ def classify_link(link: dict, verified: dict, not_verified: set) -> dict:
 
 TYPE_BOUNDARY_VERDICTS = frozenset({
     'TYPE_MISMATCH', 'COURSE_PLATFORM_NOT_ALLOWED', 'UNKNOWN_TYPE',
-    'DUPLICATE_ENTITY_ACROSS_SECTIONS',
+    'DUPLICATE_ENTITY_ACROSS_SECTIONS', 'CONTENT_TYPE_REWRITE_ATTEMPT',
 })
 
 
@@ -202,17 +202,23 @@ def check_md_files(
 
         for link in links:
             result = classify_link(link, verified, not_verified)
-            # إذا الرابط مكرر عبر أقسام، يُعامل كفشل
-            if link['url'].rstrip('/') in dup_urls:
-                # ابحث عن نتيجة التكرار المحددة لهذا السطر
+            url_norm = link['url'].rstrip('/')
+
+            # إذا الرابط مكرر عبر أقسام: اعرض DUPLICATE + TYPE_MISMATCH معاً إن وُجدا
+            if url_norm in dup_urls:
                 dup = next(
                     (d for d in dup_results
-                     if d['url'].rstrip('/') == link['url'].rstrip('/')
+                     if d['url'].rstrip('/') == url_norm
                      and d['line'] == link['line']),
                     None,
                 )
                 if dup:
+                    # أضف حكم DUPLICATE دائماً
                     failed.append(dup)
+                    # إذا classify كشف أيضًا TYPE_MISMATCH أو COURSE_PLATFORM_NOT_ALLOWED → أضفه كحكم مستقل
+                    if result['verdict'] in TYPE_BOUNDARY_VERDICTS and result['verdict'] != 'DUPLICATE_ENTITY_ACROSS_SECTIONS':
+                        failed.append({**result, 'verdict': result['verdict'],
+                                        'reason': f'[مستقل] {result["reason"]}'})
                     continue
 
             if result['verdict'] == 'HIGH_VERIFIED':

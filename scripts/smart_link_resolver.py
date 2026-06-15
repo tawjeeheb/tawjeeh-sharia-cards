@@ -55,6 +55,13 @@ SECTION_ALLOWED_TYPES: dict[str, frozenset[str]] = {
 }
 ALLOWED_COURSE_DOMAINS = frozenset({'coursera.org', 'ethrai.sa', 'lms.doroob.sa'})
 
+# قوائم الرفض الصريحة لكل قسم (CONTENT PRESERVATION DURING LINK REPAIR LOCK v1.0)
+SECTION_REJECTED_TYPES: dict[str, frozenset[str]] = {
+    'برامج التأهيل المعتمدة':      frozenset({'certification', 'course', 'employer', 'source'}),
+    'الشهادات المهنية الاحترافية': frozenset({'program', 'diploma', 'degree', 'course', 'employer', 'source'}),
+    'الدورات الداعمة':             frozenset({'certification', 'program', 'diploma', 'degree', 'employer', 'source'}),
+}
+
 
 def check_type_boundary(url: str, section_name: str, registry_type: str) -> dict:
     """
@@ -84,6 +91,16 @@ def check_type_boundary(url: str, section_name: str, registry_type: str) -> dict
                 f'الرابط نوعه [{registry_type}] '
                 f'لكنه أُدرج في [{section_name}] '
                 f'التي تقبل فقط {sorted(allowed)}'
+            ),
+        }
+
+    rejected = SECTION_REJECTED_TYPES.get(section_name, frozenset())
+    if registry_type in rejected:
+        return {
+            'verdict': 'TYPE_MISMATCH',
+            'reason': (
+                f'الرابط نوعه [{registry_type}] مرفوض صراحةً من [{section_name}]. '
+                f'CONTENT PRESERVATION LOCK: لا يجوز استبدال النوع.'
             ),
         }
 
@@ -435,6 +452,97 @@ class SmartLinkResolver:
         add_rejection(url, f'Auto-rejected: specific={specific}, name_found={name_found}')
         self.rejected.add(url_norm)
         return Resolution('UNRESOLVABLE', url, None, 'Failed discovery', name, section_type)
+
+    def resolve_for_content(
+        self,
+        content_text: str,
+        required_type: str,
+        section_name: str,
+        search_evidence: Optional[str] = None,
+    ) -> dict:
+        """
+        LINKS ARE ATTACHED TO APPROVED CONTENT, NOT USED TO REWRITE CONTENT
+        =====================================================================
+
+        يبحث عن رابط يطابق النص المعتمد ونفس نوع القسم.
+
+        القاعدة:
+          - required_type يحدد النوع المطلوب (program / certification / course).
+          - إذا وُجد رابط HIGH_VERIFIED من نفس النوع يطابق content_text → قبول.
+          - إذا وُجد رابط HIGH_VERIFIED من نوع مختلف → CONTENT_TYPE_REWRITE_ATTEMPT (رفض).
+          - لا يُسمح أبدًا بإرجاع رابط من نوع مختلف بديلاً.
+          - إذا فشل الاكتشاف → NEEDS_ALTERNATIVE_SAME_TYPE (يحتاج بديلاً من نفس النوع فقط).
+
+        المُدخلات:
+          content_text  : النص الكامل للكيان كما هو في البطاقة.
+          required_type : 'program' | 'certification' | 'course'
+          section_name  : اسم القسم الحرج للتحقق من الحدود.
+          search_evidence: نتيجة WebSearch اختيارية.
+
+        المُخرجات: dict بـ
+          verdict : 'LINK_OK' | 'CONTENT_TYPE_REWRITE_ATTEMPT' | 'NEEDS_ALTERNATIVE_SAME_TYPE' | 'UNRESOLVABLE'
+          url     : الرابط المقبول أو None
+          reason  : سبب القرار
+        """
+        # ابحث في السجل عن رابط يطابق النص ونفس النوع
+        matched_url = None
+        wrong_type_url = None
+
+        for url_norm, entry in self.verified.items():
+            entry_type = entry.get('type', '')
+            # تطابق جزئي بالاسم
+            name_ar = entry.get('name_ar', '')
+            name_en = entry.get('name_en', '')
+            text_lower = content_text.lower()
+            if not (name_ar in content_text or name_en.lower() in text_lower):
+                continue
+
+            if entry_type == required_type:
+                # تحقق من حدود النوع
+                boundary = check_type_boundary(
+                    'https://' + url_norm if not url_norm.startswith('http') else url_norm,
+                    section_name, entry_type,
+                )
+                if boundary['verdict'] == 'TYPE_OK':
+                    matched_url = url_norm
+                    break
+            else:
+                # رابط HIGH_VERIFIED لكن نوعه مختلف — إشارة خطر
+                if wrong_type_url is None:
+                    wrong_type_url = (url_norm, entry_type)
+
+        if matched_url:
+            return {
+                'verdict': 'LINK_OK',
+                'url': matched_url,
+                'required_type': required_type,
+                'reason': f'رابط HIGH_VERIFIED من نفس النوع [{required_type}] مطابق للمحتوى',
+            }
+
+        if wrong_type_url:
+            wrong_url, wrong_type = wrong_type_url
+            return {
+                'verdict': 'CONTENT_TYPE_REWRITE_ATTEMPT',
+                'url': None,
+                'required_type': required_type,
+                'reason': (
+                    f'CONTENT PRESERVATION LOCK — '
+                    f'وُجد رابط HIGH_VERIFIED [{wrong_url}] لكن نوعه [{wrong_type}] '
+                    f'يختلف عن المطلوب [{required_type}]. '
+                    f'ممنوع استخدامه بديلاً — يجب البحث عن [{required_type}] فقط.'
+                ),
+            }
+
+        return {
+            'verdict': 'NEEDS_ALTERNATIVE_SAME_TYPE',
+            'url': None,
+            'required_type': required_type,
+            'reason': (
+                f'لم يُعثر على رابط من نوع [{required_type}] يطابق المحتوى. '
+                f'يجب البحث عن بديل من نفس النوع [{required_type}] فقط — '
+                f'ممنوع تغيير النوع.'
+            ),
+        }
 
 
 # ── واجهة سطر الأوامر ────────────────────────────────────────────────────────

@@ -192,3 +192,16 @@ python scripts/validate_pdf_links.py --verbose outputs/pdf/tawjeeh_cards_015_017
 3. **`step_pdf_links()` في pipeline** — يوقف pipeline ويمنع commit إذا FAIL_OPEN > 0.
 
 أي PDF بـ FAIL_OPEN > 0 **يفشل تلقائيًا** ويظهر في تقرير pipeline قبل أي commit.
+
+## CONTENT PRESERVATION DURING LINK REPAIR LOCK v1.0
+
+إصلاح الرابط لا يسمح بتغيير نوع العنصر أو وظيفة المحتوى.
+
+القاعدة:
+* أي تغيير في محتوى البطاقة بسبب الرابط يجب أن يبقى داخل نفس النوع ونفس العنصر.
+* برنامج تأهيل ← يُستبدل ببرنامج تأهيل فقط
+* شهادة مهنية ← تُستبدل بشهادة مهنية فقط
+* دورة ← تُستبدل بدورة من منصة معتمدة فقط
+* إذا لم يجد النظام رابطًا مطابقًا لنفس النوع → يوقف الإنتاج ويبلغ عن الفشل
+* ممنوع استبدال برنامج بشهادة أو شهادة بدورة أو أي خلط مشابه
+* CONTENT_TYPE_VIOLATION → FAIL (أعلى من HIGH_VERIFIED)

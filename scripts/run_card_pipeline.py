@@ -255,10 +255,11 @@ def step_link_type_boundary_check(card_path) -> tuple[bool, str]:
     الرابط الصحيح في النوع الخطأ = رابط مرفوض.
 
     يكتشف:
-      TYPE_MISMATCH                 : شهادة في برامج التأهيل أو برنامج في الشهادات
-      COURSE_PLATFORM_NOT_ALLOWED   : دورة من منصة غير معتمدة
+      TYPE_MISMATCH                   : شهادة في برامج التأهيل أو برنامج في الشهادات
+      COURSE_PLATFORM_NOT_ALLOWED     : دورة من منصة غير معتمدة
       DUPLICATE_ENTITY_ACROSS_SECTIONS: نفس الرابط في أكثر من قسم
-      UNKNOWN_TYPE                  : رابط بلا حقل type في السجل
+      UNKNOWN_TYPE                    : رابط بلا حقل type في السجل
+      CONTENT_TYPE_REWRITE_ATTEMPT    : محاولة استبدال نوع المحتوى برابط من نوع مختلف
     """
     try:
         from check_critical_links import check_md_files, TYPE_BOUNDARY_VERDICTS
