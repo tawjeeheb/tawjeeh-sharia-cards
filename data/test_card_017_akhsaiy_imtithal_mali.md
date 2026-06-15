@@ -101,7 +101,7 @@
 
 برامج التأهيل المعتمدة
 * [برامج شهادات الامتثال المهنية — ACAMS](https://www.acams.org/en/training/acams-certificates): يعوض غياب التأهيل التخصصي في AML ويسد متطلبات الحصول على الاعتراف المهني الدولي في مكافحة غسل الأموال.
-* [برامج تطوير القيادات في المالية والرقابة — معهد الإدارة العامة](https://www.ipa.edu.sa/ar/leaderships/programs): يعوض الفجوة في تطبيق الأنظمة التنظيمية المحلية ويسد متطلبات العمل في البيئات المالية الحكومية السعودية.
+* [شهادة إدارة المخاطر المالية (FRM) — GARP](https://www.garp.org/frm/program-exams): يعوض محدودية الخلفية في تقييم المخاطر المالية ويسد الأساس التحليلي في بناء نماذج مخاطر AML/CFT على مستوى المنتجات والعمليات والبيئات الجغرافية عالية المخاطر.
 * [شهادة الامتثال المؤسسي الدولية — المنظمة الدولية للامتثال (ICA)](https://www.int-comp.org/qualifications/ica-certificate-in-compliance/): يعوض محدودية الخلفية في الامتثال المؤسسي ويسد الأساس النظري في المراجعة والامتثال وتحليل المخاطر للكشف عن المخالفات.
 
 المهارات المطلوبة
@@ -115,8 +115,8 @@
 * [شهادة الأمن السيبراني المهنية — Google / Coursera](https://www.coursera.org/professional-certificates/google-cybersecurity): لحماية بيانات الامتثال الرقمية
 * [تحليل البيانات المهني — Google / Coursera](https://www.coursera.org/professional-certificates/google-data-analytics): لتحليل مؤشرات الامتثال المالي
 * [التمويل للجميع — Coursera / جامعة ماكماستر](https://www.coursera.org/specializations/finance-for-everyone): لفهم بيئة العمليات المالية
-* [برامج التعلم والتطوير المهني — إثرائي](https://www.ithra.com/ar/programs/icreate): لتعزيز مهارات إعداد التقارير
-* [برامج التنمية المهنية — إثرائي / إيثراEd](https://www.ithra.com/ar/programs/ithraed): لتطوير مهارات التواصل المؤسسي
+* [أسس الأسواق المالية — Yale University / Coursera](https://www.coursera.org/learn/financial-markets): لفهم أدوات السوق المالية المستخدمة في عمليات غسل الأموال المحتملة وبناء وعي باختلالات السوق
+* [شهادة إدارة المشاريع المهنية — Google / Coursera](https://www.coursera.org/professional-certificates/google-project-management): لإدارة برامج الامتثال ومتابعة ملفات AML/CFT وفق منهجية منظمة ومؤشرات قياس واضحة
 
 جهات التوظيف وطرق التقديم
 

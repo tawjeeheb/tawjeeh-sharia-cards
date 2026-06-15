@@ -140,7 +140,7 @@ def check_c13_sector_order(lines):
 def check_c14_courses_count(lines):
     """C14: عدد الدورات الداعمة يساوي 5."""
     section = extract_section(lines, COURSE_ELEMENT)
-    course_lines = [l for _, l in section if re.match(r'^\s*\*\s+', l) and 'دورة' in l]
+    course_lines = [l for _, l in section if re.match(r'^\s*\*\s+', l) and re.search(r'\]\(https?://', l)]
     count = len(course_lines)
     if count == 5:
         return ('C14', 'الدورات الداعمة: العدد 5', 'PASS',
@@ -155,7 +155,7 @@ def check_c15_courses_platforms(lines):
     section = extract_section(lines, COURSE_ELEMENT)
     violations = []
     for lineno, line in section:
-        if not (re.match(r'^\s*\*\s+', line) and 'دورة' in line):
+        if not (re.match(r'^\s*\*\s+', line) and re.search(r'\]\(https?://', line)):
             continue
         # استخرج جميع الروابط من هذا السطر
         urls = re.findall(r'\]\((https?://[^)]+)\)', line)
